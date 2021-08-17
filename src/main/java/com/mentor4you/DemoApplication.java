@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
-@Tag(name = "mentor4you", description = "Test description")
+@Tag(name = "Some Entity", description = "Test description")
 @RestController
 public class DemoApplication {
 
