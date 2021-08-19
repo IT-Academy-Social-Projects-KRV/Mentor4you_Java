@@ -18,7 +18,6 @@ public class DemoApplication {
 		SpringApplication.run(DemoApplication.class, args);
 	}
 
-
 	@Operation(summary = "Test method", description = "Returns a Hello World")
 	@GetMapping("/")
 	public String hello(@RequestParam(value = "name", defaultValue = "World!!!") String name) {

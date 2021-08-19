@@ -5,17 +5,10 @@ import javax.persistence.*;
 @Entity
 @Table(name="groupServices")
 public class GroupServices {
-    @SequenceGenerator(
-            name = "sequence_GroupServices",
-            sequenceName = "sequence_GroupServices",
-            allocationSize = 1
-    )
+
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "sequence_GroupServices"
-    )
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     private String name;
 
