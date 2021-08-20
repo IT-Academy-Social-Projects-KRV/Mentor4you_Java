@@ -18,7 +18,6 @@ public class Roles {
     }
 
     public Roles(String name) {
-
         this.name = name;
     }
 

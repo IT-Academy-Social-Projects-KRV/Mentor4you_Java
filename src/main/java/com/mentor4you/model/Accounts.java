@@ -10,6 +10,7 @@ import java.util.Objects;
 public class Accounts {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(name = "phone_number")
@@ -26,8 +27,6 @@ public class Accounts {
     @OneToOne (mappedBy = "accounts")
     private Mentors mentors;
 
-    public Accounts() {
-    }
 
     public Accounts(User user,
                     String phoneNumber,
@@ -35,6 +34,10 @@ public class Accounts {
         this.user = user;
         this.phoneNumber = phoneNumber;
         this.last_visit = last_visit;
+    }
+
+    public Accounts() {
+
     }
 
     public int getId() {return id;}

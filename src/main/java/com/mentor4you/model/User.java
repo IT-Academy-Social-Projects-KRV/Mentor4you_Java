@@ -21,7 +21,7 @@ public class User {
     private String last_name;
     private String avatar;
     private LocalDateTime registration_date;
-    private Boolean status = false;
+    private Boolean status;
 
     @OneToOne (mappedBy = "user")
     private Accounts accounts;
@@ -46,7 +46,6 @@ public class User {
         this.registration_date = registration_date;
         this.status = status;
     }
-
 
 
     public int getId() {

@@ -45,7 +45,6 @@ public class SystemController {
      * результат  -->>  1 админ \\ 2 модератора \\ 15 менторов
      */
     public String registerRoles() {
-        roleRepository.save(new Roles("notAuthorised"));
         roleRepository.save(new Roles("admin"));
         roleRepository.save(new Roles("moderator"));
         roleRepository.save(new Roles("mentor"));
