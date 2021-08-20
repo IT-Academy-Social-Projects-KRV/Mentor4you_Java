@@ -1,7 +1,7 @@
 package com.mentor4you.controller;
 
 import com.mentor4you.model.User;
-import com.mentor4you.repository.UserRepository;
+import com.mentor4you.service.MentorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,21 +16,22 @@ import java.util.Optional;
 public class MentorController {
 
     @Autowired
-    UserRepository userRepository;
+    MentorService mentorService;
 
-    public MentorController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public MentorController(MentorService mentorService) {
+        this.mentorService = mentorService;
     }
 
     //select all mentor
     @GetMapping
     List<User> getAllMentor(){
-        return userRepository.findByRoleName("Mentor");
+        return mentorService.getAllMentors();
     }
+
     //select mentor by id
     @GetMapping("/{id}")
     Optional<User> getMentorById(@PathVariable(value = "id") Integer id){
-        return userRepository.findById(id);
+        return mentorService.getMentorById(id);
     }
 
 }
