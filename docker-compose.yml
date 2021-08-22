@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+
+  mysql:
+    image: mysql:latest
+    ports:
+      - "3037:3036"
+    environment:
+      MYSQL_DATABASE: mentor4you_db
+
+  mongo_db:
+    image: "mongo:latest"
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: mentor4you_db
+
+  backend:
+    image: backend
+    build:
+      context: ./
+      dockerfile: back.Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - "mongo_db"
+      - "mysql"
