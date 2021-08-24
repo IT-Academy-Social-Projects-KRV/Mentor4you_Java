@@ -8,19 +8,19 @@ Insert data into Roles GroupServices Accounts Users Mentors
 * result  -->>  1 admin \\ 3 moderators \\ 15 mentors
 
 # Project launch:
-## Presets:
-* ####  Git and Docker are installed.
+## Presets: :desktop_computer::electric_plug::floppy_disk:
+* ####  Git and Docker are installed. 
 * #### The frontend part is downloaded:  https://github.com/IT-Academy-Social-Projects-KRV/Mentor4you_Angular.git
 * #### The backend part is downloaded:    https://github.com/IT-Academy-Social-Projects-KRV/Mentor4you_Java.git
 
 ## Execution:
-### Open the terminal in the frontend folder, run the command and wait for its execution:
+### Open the terminal in the frontend folder, run the command and wait for its execution:	:computer:
     docker build -t frontend .
-### Open the terminal in the backtend folder, and execute commands consistently:
+### Open the terminal in the backtend folder, and execute commands consistently:	:computer:
     1. mvn clean package -DskipTests
     2. docker-compose -p mentor4you up
     
-## Expected result: The project "mentor4you" is started.
+## Expected result: The project "mentor4you" is started.	
 
 
 ### Access is made from the local server to the following addresses:
