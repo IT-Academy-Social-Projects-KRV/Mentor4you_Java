@@ -4,39 +4,40 @@ http://localhost:8080/system/add
 
 localhost:8080/system/add
 
-Записывает данные в Roles  GroupServices Accounts Users Mentors
-* результат  -->>  1 админ \\ 2 модератора \\ 15 менторов
+Insert data into Roles GroupServices Accounts Users Mentors
+* result  -->>  1 admin \\ 3 moderators \\ 15 mentors
 
-# Запуск проекту:
-## Передустановки: встановлено Git, Docker.
-* #### Завантажено фронт:  https://github.com/IT-Academy-Social-Projects-KRV/Mentor4you_Angular.git
-* #### Завантажено бек:    https://github.com/IT-Academy-Social-Projects-KRV/Mentor4you_Java.git
+# Project launch:
+## Presets:
+* ####  Git and Docker are installed.
+* #### The frontend part is downloaded:  https://github.com/IT-Academy-Social-Projects-KRV/Mentor4you_Angular.git
+* #### The backend part is downloaded:    https://github.com/IT-Academy-Social-Projects-KRV/Mentor4you_Java.git
 
-
-#### Відкривши термінал в папці завантаженого проекту фронт виконати команду та дочекатись її виконання:
+## Execution:
+### Open the terminal in the frontend folder, run the command and wait for its execution:
     docker build -t frontend .
-    
-#### Відкривши термінал в папці завантаженого проекту беку послідовно виконати команди:
+### Open the terminal in the backtend folder, and execute commands consistently:
     1. mvn clean package -DskipTests
-    
     2. docker-compose -p mentor4you up
     
-### Очікуваний результат: запущено групу контейнерів з загальною назвою "mentor4you"
-### Доступ здійсюється з локального сервера за наступними адресами:
+## Expected result: The project "mentor4you" is started.
+
+
+### Access is made from the local server to the following addresses:
 * #####   Frontend:     http://localhost:4200/
 * #####   Backend:      http://localhost:8080/
 * #####   Adminer:      http://localhost:8082/
   
-#### Налаштування Adminer для доступу до баз даних:
+### Adminer setting for databases access:
 #####  - MySQL
-      Сервер:	mysql
-      Користувач:	mentor4you
-      Пароль:	1234
-      База даних:	mentor4you_db
+      Server:	mysql
+      User:	mentor4you
+      Password:	1234
+      Database:	mentor4you_db
       
 #####  - MongoDB
-      Сервер:	mongo_db
-      Користувач:	mentor4you
-      Пароль:
-      База даних:	mentor4you_db 
+      Server:	mongo_db
+      User:	mentor4you
+      Password:
+      Database:	mentor4you_db 
       
