@@ -2,8 +2,17 @@ version: '3'
 
 services:
 
+  adminer:
+    container_name: adminer
+    image: adminer
+    restart: always
+    ports:
+      - 8082:8080
+
   mysql:
+    container_name: mysql
     image: mysql:8.0
+    restart: always
     ports:
       - "3037:3036"
     environment:
@@ -12,26 +21,36 @@ services:
       MYSQL_USER: mentor4you
       MYSQL_PASSWORD: 1234
 
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8082:8080
-
   mongo_db:
+    container_name: mongodb
     image: "mongo:5.0"
+    restart: always
     ports:
       - "27017:27017"
     environment:
       MONGO_INITDB_DATABASE: mentor4you_db
 
   backend:
+    container_name: backend_mentor4you
     image: backend
+    restart: always
     build:
       context: ./
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
     depends_on:
-      - "mongo_db"
       - "mysql"
+      - "mongo_db"
+
+  frontend:
+    container_name: frontend_mentor4you
+    image: frontend
+    restart: always
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+    - "4200:4200"
+    depends_on:
+      - "backend"
