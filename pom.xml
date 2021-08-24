@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.mentor4you</groupId>
-	<artifactId>demo</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>demo</name>
-	<description>Demo project for Spring Boot</description>
+	<artifactId>mentor4you_backend</artifactId>
+	<version>0.1</version>
+	<name>mentor4you_backend</name>
+	<description>Mentor4you backend project</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
@@ -27,8 +27,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
+			<artifactId>spring-boot-starter-web</artifactId>		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
