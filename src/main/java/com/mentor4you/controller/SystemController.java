@@ -37,13 +37,8 @@ public class SystemController {
     }
 
     @GetMapping("/add")
-    //TODO удалить или сделать закрытым после тестов
-    /**
-     * Создает таблицы Roles  GroupServices Accounts Users Mentors
-     *
-     * Записывает данные в Roles  GroupServices Accounts Users Mentors
-     * результат  -->>  1 админ \\ 2 модератора \\ 15 менторов
-     */
+    //TODO delete after tests
+
     public String registerRoles() {
         roleRepository.save(new Roles("admin"));
         roleRepository.save(new Roles("moderator"));
@@ -61,7 +56,7 @@ public class SystemController {
 
         createAdmin(NUMBER_ADMINS);
         creatModerators(NUMBER_MODERATORS);
-        createUsers(NUMBER_USERS, 4);  // 4 -> Mentors Role
+        createUsers(NUMBER_USERS, 3);  // 3 -> Mentors Role
         createAccounts(numberAllUsers);
         writeMentorsInTable(numberAllUsers);
         return "tables added";
@@ -75,13 +70,11 @@ public class SystemController {
 
     //Create admin
     private void createAdmin(int numberAdmins) {
-        int ROLES_ID = 2; // admin
-        Roles role;
-        role = roleRepository.findById(ROLES_ID).get();
+        int ROLES_ID = 1; // admin
         for (int i = 1; i <= numberAdmins; i++) {
             userRepository.save(
                     new User(
-                            role,
+                            roleRepository.findById(ROLES_ID).get(),
                             i + "_admin@email",
                             i + "_Adminpassword",
                             i + "_AdminFN",
@@ -96,13 +89,11 @@ public class SystemController {
 
     //Create moderators
     private void creatModerators(int numberModerators) {
-        int ROLES_ID = 3; //moderator
-        Roles role;
-        role = roleRepository.findById(ROLES_ID).get();
+        int ROLES_ID = 2; //moderator
         for (int i = 1; i <= numberModerators; i++) {
             userRepository.save(
                     new User(
-                            role,
+                            roleRepository.findById(ROLES_ID).get(),
                             i + "_moderator@email",
                             i + "_moderatorpassword",
                             i + "_moderatorFN",
@@ -119,12 +110,11 @@ public class SystemController {
     //Create mentors
     private void createUsers(int numberUsers, int roles) {
 
-        Roles role;
-        role = roleRepository.findById(roles).get();
         for (int i = 1; i <= numberUsers; i++) {
             userRepository.save(
                     new User(
-                            role,
+
+                            roleRepository.findById(roles).get(),
                             i + "_mentor@email",
                             i + "_mentorpassword",
                             i + "_mentorFN",
@@ -156,7 +146,7 @@ public class SystemController {
     private void writeMentorsInTable(int numberAllusers) {
         System.out.println("inside WriteMentors");
         int GROUP_SERVICES = 1;
-        int MENTORS_ROLE = 4;
+        int MENTORS_ROLE = 3;
         GroupServices groupService =
                 groupServicesRepository.findById(GROUP_SERVICES).get();
 
