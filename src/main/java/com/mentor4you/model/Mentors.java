@@ -50,9 +50,6 @@ public class Mentors {
         return id;
     }
 
-    public Accounts getAccount() {
-        return accounts;
-    }
 
     public String getDescription() {
         return description;

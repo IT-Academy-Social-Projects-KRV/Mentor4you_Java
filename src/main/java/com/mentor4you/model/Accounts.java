@@ -42,8 +42,6 @@ public class Accounts {
 
     public int getId() {return id;}
 
-    public Mentors getMentor() {return mentors;}
-
     public User getUser() {
         return user;
     }
