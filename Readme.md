@@ -17,8 +17,7 @@ Insert data into Roles GroupServices Accounts Users Mentors
 ### Open the terminal in the frontend folder, run the command and wait for its execution:	:computer:
     docker build -t frontend .
 ### Open the terminal in the backtend folder, and execute commands consistently:	:computer:
-    1. mvn clean package -DskipTests
-    2. docker-compose -p mentor4you up
+    docker-compose -p mentor4you up
     
 ## Expected result: The project "mentor4you" is started.	
 
