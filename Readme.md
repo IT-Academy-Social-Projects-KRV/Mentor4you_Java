@@ -9,7 +9,7 @@ Insert data into Roles GroupServices Accounts Users Mentors
 
 
 # Project launch:
-## Presets: :desktop_computer::electric_plug::floppy_disk:
+## Presets:                             :desktop_computer::electric_plug::floppy_disk:
 * ####  Git and Docker are installed. 
 * #### The frontend part is downloaded:  https://github.com/IT-Academy-Social-Projects-KRV/Mentor4you_Angular.git
 * #### The backend part is downloaded:    https://github.com/IT-Academy-Social-Projects-KRV/Mentor4you_Java.git
@@ -32,13 +32,13 @@ Insert data into Roles GroupServices Accounts Users Mentors
 ### Adminer setting for databases access:
 #####  - MySQL
       Server:	mysql
-      User:	mentor4you
+      User:	        mentor4you
       Password:	1234
       Database:	mentor4you_db
       
 #####  - MongoDB
       Server:	mongo_db
-      User:	mentor4you
+      User: 	mentor4you
       Password:
       Database:	mentor4you_db 
       
