@@ -1,10 +1,10 @@
 package com.mentor4you.service;
 
 import com.mentor4you.model.Accounts;
-import com.mentor4you.model.Roles;
+import com.mentor4you.model.Mentors;
 import com.mentor4you.model.User;
 import com.mentor4you.repository.AccountRepository;
-import com.mentor4you.repository.RoleRepository;
+import com.mentor4you.repository.MentorRepository;
 import com.mentor4you.repository.UserRepository;
 import com.mentor4you.service.requests.RegisterRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +18,13 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
-    RoleRepository roleRepository;
     AccountRepository accountRepository;
+    MentorRepository mentorRepository;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, AccountRepository accountRepository) {
+    public UserService(UserRepository userRepository, AccountRepository accountRepository, MentorRepository mentorRepository) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
         this.accountRepository = accountRepository;
+        this.mentorRepository = mentorRepository;
     }
 
     //select all users
@@ -44,19 +44,20 @@ public class UserService {
         n.setRegistration_date(LocalDateTime.now());
         n.setStatus(true);
 
-        Roles role;
-        if(!request.getRoles_id()){
-            role = roleRepository.getById(4);
-        }else{
-            role = roleRepository.getById(3);
-        }
-        n.setRole_id(role);
-
         Accounts a = new Accounts();
-        a.setPhoneNumber(request.getPhone_number());
-        a.setUser(n);
+        Mentors m = new Mentors();
 
-        accountRepository.save(a);
+        if(!request.getRoles_id()){
+            n.setRole(com.mentor4you.model.Role.MENTEE);
+            a.setUser(n);
+            accountRepository.save(a);
+        }else{
+            n.setRole(com.mentor4you.model.Role.MENTOR);
+            a.setUser(n);
+            m.setAccounts(a);
+            mentorRepository.save(m);
+        }
+
 
         return "User created";
     }

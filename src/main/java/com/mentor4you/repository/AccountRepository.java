@@ -14,9 +14,10 @@ import java.util.Optional;
 public interface AccountRepository extends JpaRepository<Accounts, Integer> {
     Optional<Accounts> findById(int id);
 
-    @Query("Select a from Accounts a WHERE a.user.role_id.name=?1")
-    List<Accounts> findByRoleName(String roleName);
+    @Query("Select a from Accounts a WHERE a.user.role='MENTOR'")
+    List<Accounts> findByRole();
 
-    @Query("SELECT a FROM Accounts a WHERE a.id=?1 and a.user.role_id.name='Mentor'")
+    @Query("SELECT a FROM Accounts a WHERE a.id=?1 and a.user.role='MENTOR'")
     Optional<Accounts> findById(Integer integer);
 }
+

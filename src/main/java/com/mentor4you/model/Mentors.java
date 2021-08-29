@@ -24,7 +24,7 @@ public class Mentors {
 
     private boolean is_online;
     private boolean is_offline_in;
-    private boolean is_ofline_out;
+    private boolean is_offline_out;
 
     public Mentors() {
     }
@@ -35,7 +35,7 @@ public class Mentors {
                    GroupServices group_services,
                    boolean is_online,
                    boolean is_offline_in,
-                   boolean is_ofline_out
+                   boolean is_offline_out
     ) {
         this.accounts = accounts;
         this.description = description;
@@ -43,13 +43,20 @@ public class Mentors {
         this.group_services = group_services;
         this.is_online = is_online;
         this.is_offline_in = is_offline_in;
-        this.is_ofline_out = is_ofline_out;
+        this.is_offline_out = is_offline_out;
     }
 
     public int getId() {
         return id;
     }
 
+    public Accounts getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(Accounts accounts) {
+        this.accounts = accounts;
+    }
 
     public String getDescription() {
         return description;
@@ -91,12 +98,12 @@ public class Mentors {
         this.is_offline_in = is_offline_in;
     }
 
-    public boolean isIs_ofline_out() {
-        return is_ofline_out;
+    public boolean isIs_offline_out() {
+        return is_offline_out;
     }
 
-    public void setIs_ofline_out(boolean is_ofline_out) {
-        this.is_ofline_out = is_ofline_out;
+    public void setIs_offline_out(boolean is_offline_out) {
+        this.is_offline_out = is_offline_out;
     }
 
     @Override
@@ -108,7 +115,7 @@ public class Mentors {
                 && showable_status == mentors.showable_status
                 && is_online == mentors.is_online
                 && is_offline_in == mentors.is_offline_in
-                && is_ofline_out == mentors.is_ofline_out;
+                && is_offline_out == mentors.is_offline_out;
     }
 
     @Override
@@ -120,7 +127,7 @@ public class Mentors {
                 group_services,
                 is_online,
                 is_offline_in,
-                is_ofline_out);
+                is_offline_out);
     }
 
     @Override
@@ -132,7 +139,7 @@ public class Mentors {
                 ", group_services=" + group_services +
                 ", is_online=" + is_online +
                 ", is_offline_in=" + is_offline_in +
-                ", is_ofline_out=" + is_ofline_out +
+                ", is_offline_out=" + is_offline_out +
                 '}';
     }
 }
