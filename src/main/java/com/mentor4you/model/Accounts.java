@@ -3,6 +3,8 @@ package com.mentor4you.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -27,6 +29,13 @@ public class Accounts {
     @OneToOne (mappedBy = "accounts")
     private Mentors mentors;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "languages_to_accounts",
+            joinColumns = @JoinColumn(name = "account_id"),
+            inverseJoinColumns = @JoinColumn(name = "languages_id")
+    )
+    private List<Languages> languagesList;
 
     public Accounts(User user,
                     String phoneNumber,
@@ -66,6 +75,16 @@ public class Accounts {
         this.last_visit = last_visit;
     }
 
+    public List<Languages> getLanguagesList() {
+        return languagesList;
+    }
+
+    public void addLanguages(Languages languages) {
+        if(languagesList.isEmpty()) languagesList = new ArrayList<>();
+        this.languagesList.add(languages);
+        languages.addAccounts(this);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -73,14 +92,16 @@ public class Accounts {
         Accounts accounts = (Accounts) o;
         return id == accounts.id
                 && Objects.equals(phoneNumber, accounts.phoneNumber)
-                && Objects.equals(last_visit, accounts.last_visit)
-                && Objects.equals(user, accounts.user)
-                && Objects.equals(mentors, accounts.mentors);
+                && Objects.equals(last_visit, accounts.last_visit);
+//                && Objects.equals(user, accounts.user)
+//                && Objects.equals(mentors, accounts.mentors);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, phoneNumber, last_visit, user, mentors);
+        return Objects.hash(id, phoneNumber, last_visit
+//                , user, mentors
+                );
     }
 
     @Override
@@ -89,8 +110,8 @@ public class Accounts {
                 "id=" + id +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", last_visit=" + last_visit +
-                ", user id=" + user.getId() +
-                ", mentors=" + mentors.getId() +
+//                ", user id=" + user.getId() +
+//                ", mentors=" + mentors.getId() +
                 '}';
     }
 }
