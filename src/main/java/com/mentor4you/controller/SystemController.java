@@ -1,16 +1,19 @@
 package com.mentor4you.controller;
 
-import com.mentor4you.model.*;
-import com.mentor4you.repository.*;
+import com.mentor4you.model.Accounts;
+import com.mentor4you.model.GroupServices;
+import com.mentor4you.model.Role;
+import com.mentor4you.model.User;
+import com.mentor4you.repository.AccountRepository;
+import com.mentor4you.repository.GroupServicesRepository;
+import com.mentor4you.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Properties;
 
 
 @RestController
@@ -18,33 +21,22 @@ import java.util.Properties;
 public class SystemController {
 
     @Autowired
-    private RoleRepository roleRepository;
-    private GroupServicesRepository groupServicesRepository;
-    private UserRepository userRepository;
-    private AccountRepository accountRepository;
-    private MentorRepository mentorRepository;
+    private final GroupServicesRepository groupServicesRepository;
+    private final UserRepository userRepository;
+    private final AccountRepository accountRepository;
 
-    public SystemController(RoleRepository roleRepository,
-                            GroupServicesRepository groupServicesRepository,
+    public SystemController(GroupServicesRepository groupServicesRepository,
                             UserRepository userRepository,
-                            AccountRepository accountRepository,
-                            MentorRepository mentorRepository) {
-        this.roleRepository = roleRepository;
+                            AccountRepository accountRepository) {
         this.groupServicesRepository = groupServicesRepository;
         this.userRepository = userRepository;
         this.accountRepository = accountRepository;
-        this.mentorRepository = mentorRepository;
     }
 
     @GetMapping("/add")
     //TODO delete after tests
 
     public String registerRoles() {
-        roleRepository.save(new Roles("admin"));
-        roleRepository.save(new Roles("moderator"));
-        roleRepository.save(new Roles("mentor"));
-        roleRepository.save(new Roles("mentee"));
-
         groupServicesRepository.save(new GroupServices("No"));
         groupServicesRepository.save(new GroupServices("Yes"));
         groupServicesRepository.save(new GroupServices("Mix"));
@@ -56,9 +48,9 @@ public class SystemController {
 
         createAdmin(NUMBER_ADMINS);
         creatModerators(NUMBER_MODERATORS);
-        createUsers(NUMBER_USERS, 3);  // 3 -> Mentors Role
+        createUsers(NUMBER_USERS);
         createAccounts(numberAllUsers);
-        writeMentorsInTable(numberAllUsers);
+//        writeMentorsInTable(numberAllUsers);
         return "tables added";
     }
 
@@ -70,11 +62,10 @@ public class SystemController {
 
     //Create admin
     private void createAdmin(int numberAdmins) {
-        int ROLES_ID = 1; // admin
         for (int i = 1; i <= numberAdmins; i++) {
             userRepository.save(
                     new User(
-                            roleRepository.findById(ROLES_ID).get(),
+                            Role.ADMIN,
                             i + "_admin@email",
                             i + "_Adminpassword",
                             i + "_AdminFN",
@@ -89,11 +80,10 @@ public class SystemController {
 
     //Create moderators
     private void creatModerators(int numberModerators) {
-        int ROLES_ID = 2; //moderator
         for (int i = 1; i <= numberModerators; i++) {
             userRepository.save(
                     new User(
-                            roleRepository.findById(ROLES_ID).get(),
+                            Role.MODERATOR,
                             i + "_moderator@email",
                             i + "_moderatorpassword",
                             i + "_moderatorFN",
@@ -108,13 +98,13 @@ public class SystemController {
     }
 
     //Create mentors
-    private void createUsers(int numberUsers, int roles) {
+    private void createUsers(int numberUsers) {
 
         for (int i = 1; i <= numberUsers; i++) {
             userRepository.save(
                     new User(
 
-                            roleRepository.findById(roles).get(),
+                            Role.MENTEE,
                             i + "_mentor@email",
                             i + "_mentorpassword",
                             i + "_mentorFN",
@@ -143,32 +133,32 @@ public class SystemController {
     }
 
     //CreateMentors
-    private void writeMentorsInTable(int numberAllusers) {
-        System.out.println("inside WriteMentors");
-        int GROUP_SERVICES = 1;
-        int MENTORS_ROLE = 3;
-        GroupServices groupService =
-                groupServicesRepository.findById(GROUP_SERVICES).get();
-
-        for (int i = 1; i < numberAllusers; i++) {
-            Accounts account = accountRepository.findById(i).get();
-            int rr = account.getUser().getRole_id().getId();
-
-            //check to ROLE in account
-            //if is it "Mentor" > creat
-            if (MENTORS_ROLE == (account.getUser().getRole_id().getId())) {
-                mentorRepository.save(
-                        new Mentors(
-                                account,
-                                "description",
-                                true,
-                                groupService,
-                                true,
-                                true,
-                                false
-                        )
-                );
-            }
-        }
-    }
+//    private void writeMentorsInTable(int numberAllusers) {
+//        System.out.println("inside WriteMentors");
+//        int GROUP_SERVICES = 1;
+//        int MENTORS_ROLE = 3;
+//        GroupServices groupService =
+//                groupServicesRepository.findById(GROUP_SERVICES).get();
+//
+//        for (int i = 1; i < numberAllusers; i++) {
+//            Accounts account = accountRepository.findById(i).get();
+//            int rr = account.getUser().getRole_id().getId();
+//
+//            //check to ROLE in account
+//            //if is it "Mentor" > creat
+//            if (MENTORS_ROLE == (account.getUser().getRole_id().getId())) {
+//                mentorRepository.save(
+//                        new Mentors(
+//                                account,
+//                                "description",
+//                                true,
+//                                groupService,
+//                                true,
+//                                true,
+//                                false
+//                        )
+//                );
+//            }
+//        }
+//    }
 }
