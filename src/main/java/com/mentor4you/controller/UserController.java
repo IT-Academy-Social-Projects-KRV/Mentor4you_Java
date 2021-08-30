@@ -4,7 +4,9 @@ import com.mentor4you.model.User;
 import com.mentor4you.service.UserService;
 import com.mentor4you.model.DTO.RegisterRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -26,10 +28,5 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    //create new account /w user data /w role
-    @PostMapping("/register")
-    String register(@RequestBody RegisterRequest request){
-        return userService.register(request);
-    }
 
 }
