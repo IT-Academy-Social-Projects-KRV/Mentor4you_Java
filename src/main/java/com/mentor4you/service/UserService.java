@@ -23,5 +23,4 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    //create new account /w user data /w role
 }
