@@ -3,6 +3,7 @@ package com.mentor4you.controller;
 import com.mentor4you.model.*;
 import com.mentor4you.repository.AccountRepository;
 import com.mentor4you.repository.GroupServicesRepository;
+import com.mentor4you.repository.LanguagesRepository;
 import com.mentor4you.repository.MentorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.Random;
 
 
@@ -21,24 +21,12 @@ import java.util.Random;
 public class SystemController {
 
     @Autowired
-    private RoleRepository roleRepository;
-    private GroupServicesRepository groupServicesRepository;
-    private UserRepository userRepository;
-    private AccountRepository accountRepository;
-    private MentorRepository mentorRepository;
-    private LanguagesRepository languagesRepository;
     private final GroupServicesRepository groupServicesRepository;
     private final AccountRepository accountRepository;
     private final MentorRepository mentorRepository;
+    private final LanguagesRepository languagesRepository;
 
-    public SystemController(RoleRepository roleRepository,
-                            GroupServicesRepository groupServicesRepository,
-                            UserRepository userRepository,
-                            AccountRepository accountRepository,
-                            MentorRepository mentorRepository,
-                            LanguagesRepository languagesRepository) {
-        this.roleRepository = roleRepository;
-    public SystemController(GroupServicesRepository groupServicesRepository,AccountRepository accountRepository, MentorRepository mentorRepository) {
+    public SystemController(GroupServicesRepository groupServicesRepository, AccountRepository accountRepository, MentorRepository mentorRepository, LanguagesRepository languagesRepository) {
         this.groupServicesRepository = groupServicesRepository;
         this.accountRepository = accountRepository;
         this.mentorRepository = mentorRepository;
