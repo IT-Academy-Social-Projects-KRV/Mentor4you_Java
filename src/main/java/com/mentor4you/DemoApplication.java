@@ -24,4 +24,9 @@ public class DemoApplication {
 		return String.format("Wake up, %s.\n The Mentor4you has you...", name);
 	}
 
+	@Operation(summary = "Test security method")
+	@GetMapping("/testSecurity")
+	public String testSecurity() {
+		return String.format("Security work");
+	}
 }
