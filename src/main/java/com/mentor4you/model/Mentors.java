@@ -82,7 +82,7 @@ public class Mentors {
         this.group_services = group_services;
     }
 
-    public boolean isIs_online() {
+    public boolean isIs_online(boolean b) {
         return is_online;
     }
 
@@ -90,7 +90,7 @@ public class Mentors {
         this.is_online = is_online;
     }
 
-    public boolean isIs_offline_in() {
+    public boolean isIs_offline_in(boolean b) {
         return is_offline_in;
     }
 
@@ -98,7 +98,7 @@ public class Mentors {
         this.is_offline_in = is_offline_in;
     }
 
-    public boolean isIs_offline_out() {
+    public boolean isIs_offline_out(boolean b) {
         return is_offline_out;
     }
 
