@@ -6,7 +6,7 @@ import com.mentor4you.model.User;
 import com.mentor4you.repository.AccountRepository;
 import com.mentor4you.repository.RoleRepository;
 import com.mentor4you.repository.UserRepository;
-import com.mentor4you.service.requests.RegisterRequest;
+import com.mentor4you.model.DTO.RegisterRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

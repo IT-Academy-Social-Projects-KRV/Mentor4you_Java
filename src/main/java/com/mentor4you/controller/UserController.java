@@ -2,7 +2,7 @@ package com.mentor4you.controller;
 
 import com.mentor4you.model.User;
 import com.mentor4you.service.UserService;
-import com.mentor4you.service.requests.RegisterRequest;
+import com.mentor4you.model.DTO.RegisterRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

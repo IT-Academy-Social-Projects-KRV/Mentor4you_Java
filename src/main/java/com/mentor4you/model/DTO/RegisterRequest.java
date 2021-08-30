@@ -1,4 +1,4 @@
-package com.mentor4you.service.requests;
+package com.mentor4you.model.DTO;
 
 public class RegisterRequest {
 
