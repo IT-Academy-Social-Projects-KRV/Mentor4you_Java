@@ -11,9 +11,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne
-    @JoinColumn (name = "role_id")
-    private Roles role_id;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     private String email;
     private String password;
@@ -29,7 +28,7 @@ public class User {
     public User() {
     }
 
-    public User(Roles role_id,
+    public User(Role role,
                 String email,
                 String password,
                 String first_name,
@@ -37,7 +36,7 @@ public class User {
                 String avatar,
                 LocalDateTime registration_date,
                 Boolean status) {
-        this.role_id = role_id;
+        this.role = role;
         this.email = email;
         this.password = password;
         this.first_name = first_name;
@@ -53,13 +52,12 @@ public class User {
     }
 
 
-
-    public Roles getRole_id() {
-        return role_id;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRole_id(Roles role_id) {
-        this.role_id = role_id;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getEmail() {
@@ -135,9 +133,14 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
+                ", role=" + role +
                 ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
                 ", first_name='" + first_name + '\'' +
                 ", last_name='" + last_name + '\'' +
+                ", registration_date=" + registration_date +
+                ", status=" + status +
+                ", accounts=" + accounts +
                 '}';
     }
 }
