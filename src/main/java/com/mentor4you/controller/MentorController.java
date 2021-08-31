@@ -4,6 +4,7 @@ import com.mentor4you.exception.ErrorObject;
 import com.mentor4you.exception.MentorNotFoundException;
 import com.mentor4you.model.Accounts;
 import com.mentor4you.service.MentorService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,12 +25,14 @@ public class MentorController {
     }
 
     //select all mentor
+    @Operation(summary = "select all mentors from db")
     @GetMapping
     List<Accounts> getAllMentor(){
         return mentorService.getAllMentors();
     }
 
     //select mentor by id
+    @Operation(summary = "select mentor by id")
     @GetMapping("/{id}")
     Optional<Accounts> getMentorById(@PathVariable(value = "id") Integer id){
         return mentorService.getMentorById(id);

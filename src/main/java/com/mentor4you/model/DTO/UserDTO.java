@@ -13,9 +13,11 @@ public class UserDTO{
     @NotEmpty
     private final String password;
 
-    private final boolean role;
+    @NotNull
+    @NotEmpty
+    private final String role;
 
-    public UserDTO(String email, String password, boolean role) {
+    public UserDTO(String email, String password, String role) {
         this.email = email;
         this.password = password;
         this.role = role;
@@ -29,7 +31,7 @@ public class UserDTO{
         return password;
     }
 
-    public boolean isRole() {
+    public String getRole() {
         return role;
     }
 }

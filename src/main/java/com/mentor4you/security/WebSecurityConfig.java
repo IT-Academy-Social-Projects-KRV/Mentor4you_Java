@@ -16,8 +16,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests().antMatchers("/testSecurity")
-                .authenticated()
+                //виключив csrf захист щоб можна було надсилати POST запити
+                .csrf().disable()
+                .authorizeRequests().antMatchers("/testSecurity").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()

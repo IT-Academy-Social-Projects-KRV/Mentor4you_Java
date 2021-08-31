@@ -5,6 +5,7 @@ import com.mentor4you.repository.AccountRepository;
 import com.mentor4you.repository.GroupServicesRepository;
 import com.mentor4you.repository.LanguagesRepository;
 import com.mentor4you.repository.MentorRepository;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,9 +34,9 @@ public class SystemController {
         this.languagesRepository = languagesRepository;
     }
 
-    @GetMapping("/add")
-    //TODO delete after tests
 
+    @Operation(summary = "method add 1 admin, 3 moderators and 15 Mentors on you DB")
+    @GetMapping("/add")
     public String registerRoles() {
         groupServicesRepository.save(new GroupServices("No"));
         groupServicesRepository.save(new GroupServices("Yes"));
@@ -138,6 +139,9 @@ public class SystemController {
             mentorRepository.save(m);
         }
     }
+
+
+    @Operation(summary = "method add languages for your users in db")
     @GetMapping("/addLanguages")
     private String addLanguages(){
         Random random = new Random();

@@ -1,5 +1,7 @@
 package com.mentor4you.model;
 
+import org.springframework.data.mongodb.core.index.Indexed;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -14,7 +16,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Indexed(unique = true)
     private String email;
+
     private String password;
     private String first_name;
     private String last_name;
