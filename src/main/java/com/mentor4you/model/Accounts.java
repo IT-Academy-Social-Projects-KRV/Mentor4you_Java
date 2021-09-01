@@ -88,7 +88,7 @@ public class Accounts {
         languages.addAccounts(this);
     }
 
-    @Override
+    /*@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -98,7 +98,7 @@ public class Accounts {
                 && Objects.equals(last_visit, accounts.last_visit)
                 && Objects.equals(user, accounts.user)
                 && Objects.equals(mentors, accounts.mentors);
-    }
+    }*/
 
     @Override
     public int hashCode() {

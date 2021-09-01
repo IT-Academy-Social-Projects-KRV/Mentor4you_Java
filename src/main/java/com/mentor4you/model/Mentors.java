@@ -118,7 +118,7 @@ public class Mentors {
                 && is_offline_out == mentors.is_offline_out;
     }
 
-    @Override
+   /* @Override
     public int hashCode() {
         return Objects.hash(id,
                 description,
@@ -128,7 +128,7 @@ public class Mentors {
                 is_online,
                 is_offline_in,
                 is_offline_out);
-    }
+    }*/
 
     @Override
     public String toString() {

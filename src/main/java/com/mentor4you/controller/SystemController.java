@@ -93,14 +93,13 @@ public class SystemController {
     }
     //CreateLanguages
     private void createLanguages(){
-        List<Languages> languagesList = new ArrayList<>();
-        languagesList.add(new Languages("ukraine"));
-        languagesList.add(new Languages("english"));
-        languagesList.add(new Languages("russian"));
-        languagesList.add(new Languages("polish"));
-        languagesList.add(new Languages("сzech"));
 
-        languagesList.forEach(ln -> languagesRepository.saveAndFlush(ln));
+        languagesRepository.save(new Languages("ukrainian"));
+        languagesRepository.save(new Languages("english"));
+        languagesRepository.save(new Languages("russian"));
+        languagesRepository.save(new Languages("polish"));
+        languagesRepository.save(new Languages("сzech"));
+
     }
 
     private void createMentors(int numberOfMentors) {
