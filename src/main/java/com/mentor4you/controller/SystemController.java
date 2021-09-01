@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 @RestController
@@ -21,15 +23,18 @@ public class SystemController {
     private final MentorRepository mentorRepository;
     private final SocialNetworksRepository socialNetworksRepository;
     private final Links_to_accountsRepository links_to_accountsRepository;
+    private final LanguagesRepository languagesRepository;
 
     public SystemController(GroupServicesRepository groupServicesRepository,
                             AccountRepository accountRepository,
                             MentorRepository mentorRepository,
                             SocialNetworksRepository socialNetworksRepository,
-                            Links_to_accountsRepository links_to_accountsRepository) {
+                            Links_to_accountsRepository links_to_accountsRepository,
+                            LanguagesRepository languagesRepository) {
         this.groupServicesRepository = groupServicesRepository;
         this.accountRepository = accountRepository;
         this.mentorRepository = mentorRepository;
+        this.languagesRepository = languagesRepository;
         this.socialNetworksRepository = socialNetworksRepository;
         this.links_to_accountsRepository = links_to_accountsRepository;
     }
@@ -85,6 +90,17 @@ public class SystemController {
             accountRepository.save(createOneAccount(user, i));
         }
 
+    }
+    //CreateLanguages
+    private void createLanguages(){
+        List<Languages> languagesList = new ArrayList<>();
+        languagesList.add(new Languages("ukraine"));
+        languagesList.add(new Languages("english"));
+        languagesList.add(new Languages("russian"));
+        languagesList.add(new Languages("polish"));
+        languagesList.add(new Languages("сzech"));
+
+        languagesList.forEach(ln -> languagesRepository.saveAndFlush(ln));
     }
 
     private void createMentors(int numberOfMentors) {
@@ -168,4 +184,20 @@ public class SystemController {
         }
     }
 
+
+    //added languages into Account
+    @GetMapping("/addLanguages")
+    private String addLanguages(){
+        Random random = new Random();
+        Languages languages = languagesRepository.getById(1);
+
+        List<Accounts> list = accountRepository.findAll();
+        list.forEach(a -> {
+                    a.addLanguages(languages);
+                    a.addLanguages(languagesRepository.getById(random.nextInt(4)+2));
+                    accountRepository.saveAndFlush(a);
+                }
+        );
+        return "languages added";
+    }
 }

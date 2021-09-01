@@ -3,6 +3,8 @@ package com.mentor4you.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -28,6 +30,13 @@ public class Accounts {
     @OneToOne (mappedBy = "accounts")
     private Mentors mentors;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "languages_to_accounts",
+            joinColumns = @JoinColumn(name = "account_id"),
+            inverseJoinColumns = @JoinColumn(name = "languages_id")
+    )
+    private List<Languages> languagesList;
     @OneToMany(mappedBy = "accounts")
     private Set<Links_to_accounts> links_to_accounts;
 
@@ -67,6 +76,16 @@ public class Accounts {
 
     public void setLast_visit(LocalDateTime last_visit) {
         this.last_visit = last_visit;
+    }
+
+    public List<Languages> getLanguagesList() {
+        return languagesList;
+    }
+
+    public void addLanguages(Languages languages) {
+        if(languagesList.isEmpty()) languagesList = new ArrayList<>();
+        this.languagesList.add(languages);
+        languages.addAccounts(this);
     }
 
     @Override
