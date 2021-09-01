@@ -7,11 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.Random;
 
 
@@ -20,22 +18,14 @@ import java.util.Random;
 public class SystemController {
 
     @Autowired
-    private RoleRepository roleRepository;
-    private GroupServicesRepository groupServicesRepository;
-    private UserRepository userRepository;
-    private AccountRepository accountRepository;
-    private MentorRepository mentorRepository;
-    private LanguagesRepository languagesRepository;
+    private final GroupServicesRepository groupServicesRepository;
+    private final AccountRepository accountRepository;
+    private final MentorRepository mentorRepository;
+    private final LanguagesRepository languagesRepository;
 
-    public SystemController(RoleRepository roleRepository,
-                            GroupServicesRepository groupServicesRepository,
-                            UserRepository userRepository,
-                            AccountRepository accountRepository,
-                            MentorRepository mentorRepository,
+    public SystemController(GroupServicesRepository groupServicesRepository,AccountRepository accountRepository, MentorRepository mentorRepository,
                             LanguagesRepository languagesRepository) {
-        this.roleRepository = roleRepository;
         this.groupServicesRepository = groupServicesRepository;
-        this.userRepository = userRepository;
         this.accountRepository = accountRepository;
         this.mentorRepository = mentorRepository;
         this.languagesRepository = languagesRepository;
@@ -45,11 +35,6 @@ public class SystemController {
     //TODO delete after tests
 
     public String registerRoles() {
-        roleRepository.save(new Roles("admin"));
-        roleRepository.save(new Roles("moderator"));
-        roleRepository.save(new Roles("mentor"));
-        roleRepository.save(new Roles("mentee"));
-
         groupServicesRepository.save(new GroupServices("No"));
         groupServicesRepository.save(new GroupServices("Yes"));
         groupServicesRepository.save(new GroupServices("Mix"));
@@ -57,80 +42,59 @@ public class SystemController {
         int NUMBER_ADMINS = 1;
         int NUMBER_MODERATORS = 3;
         int NUMBER_USERS = 15;
-        int numberAllUsers = 1 + NUMBER_ADMINS + NUMBER_MODERATORS + NUMBER_USERS;
 
         createLanguages();
         createAdmin(NUMBER_ADMINS);
-        creatModerators(NUMBER_MODERATORS);
-        createUsers(NUMBER_USERS, 3);  // 3 -> Mentors Role
-        createAccounts(numberAllUsers);
-        writeMentorsInTable(numberAllUsers);
+        createModerators(NUMBER_MODERATORS);
+        createMentors(NUMBER_USERS);
         return "tables added";
-    }
-
-    @GetMapping("/getMentorsAll")
-    public List<User> getMentorsAll() {
-        return userRepository.findAll();
     }
 
 
     //Create admin
     private void createAdmin(int numberAdmins) {
-        int ROLES_ID = 1; // admin
         for (int i = 1; i <= numberAdmins; i++) {
-            userRepository.save(
-                    new User(
-                            roleRepository.findById(ROLES_ID).get(),
-                            i + "_admin@email",
-                            i + "_Adminpassword",
-                            i + "_AdminFN",
-                            i + "_AdminLN",
-                            "",
-                            LocalDateTime.now(),
-                            true
-                    )
-            );
+
+            User n = new User();
+            n.setEmail(i + "_admin@email");
+            n.setPassword(i + "_Adminpassword");
+            n.setFirst_name(i + "_AdminFN");
+            n.setLast_name(i + "_AdminLN");
+            n.setRegistration_date(LocalDateTime.now());
+            n.setStatus(true);
+            n.setRole(Role.ADMIN);
+
+            Accounts a = new Accounts();
+            a.setUser(n);
+            a.setPhoneNumber( "(" + i + ")" + i + i + i + i + i + "");
+            a.setLast_visit(LocalDateTime.now());
+
+            accountRepository.save(a);
         }
     }
 
     //Create moderators
-    private void creatModerators(int numberModerators) {
-        int ROLES_ID = 2; //moderator
+    private void createModerators(int numberModerators) {
         for (int i = 1; i <= numberModerators; i++) {
-            userRepository.save(
-                    new User(
-                            roleRepository.findById(ROLES_ID).get(),
-                            i + "_moderator@email",
-                            i + "_moderatorpassword",
-                            i + "_moderatorFN",
-                            i + "_moderatorLN",
-                            "",
-                            LocalDateTime.now(),
-                            true
-                    )
-            );
+
+            User n = new User();
+            n.setEmail(i + "_moderator@email");
+            n.setPassword(i + "_moderatorpassword");
+            n.setFirst_name(i + "_moderatorFN");
+            n.setLast_name(i + "_moderatorLN");
+            n.setRegistration_date(LocalDateTime.now());
+            n.setStatus(true);
+            n.setRole(Role.MODERATOR);
+
+            Accounts a = new Accounts();
+            a.setUser(n);
+            a.setPhoneNumber( "(" + i + ")" + i + i + i + i + i + "");
+            a.setLast_visit(LocalDateTime.now());
+
+            accountRepository.save(a);
+
         }
 
-    }
-
-    //Create mentors
-    private void createUsers(int numberUsers, int roles) {
-
-        for (int i = 1; i <= numberUsers; i++) {
-            userRepository.save(
-                    new User(
-
-                            roleRepository.findById(roles).get(),
-                            i + "_mentor@email",
-                            i + "_mentorpassword",
-                            i + "_mentorFN",
-                            i + "_mentorLN",
-                            "",
-                            LocalDateTime.now(),
-                            true
-                    )
-            );
-        }
     }
     //CreateLanguages
     private void createLanguages(){
@@ -144,19 +108,33 @@ public class SystemController {
         languagesList.forEach(ln -> languagesRepository.saveAndFlush(ln));
     }
 
-    //CreateAccounts
-    private void createAccounts(int numberAllUsers) {
-        for (int i = 1; i < numberAllUsers; i++) {
-            User user = userRepository.findById(i).get();
-            accountRepository.save(
-                    new Accounts(
-                            user,
-                            "(" + i + ")" + i + i + i + i + i + "",
-                            LocalDateTime.now()
-                    )
-            );
+    private void createMentors(int numberOfMentor){
+        for (int i = 1; i <= numberOfMentor; i++) {
+
+            User n = new User();
+            n.setEmail(i + "_mentor@email");
+            n.setPassword(i + "_mentorpassword");
+            n.setFirst_name(i + "_mentorFN");
+            n.setLast_name(i + "_mentorLN");
+            n.setRegistration_date(LocalDateTime.now());
+            n.setStatus(true);
+            n.setRole(Role.MENTOR);
+
+            Accounts a = new Accounts();
+            a.setUser(n);
+            a.setPhoneNumber( "(" + i + ")" + i + i + i + i + i + "");
+            a.setLast_visit(LocalDateTime.now());
+
+            Mentors m = new Mentors();
+            m.setAccounts(a);
+            m.setDescription("description");
+            m.setShowable_status(true);
+            m.isIs_online(true);
+            m.isIs_offline_in(true);
+            m.isIs_offline_out(true);
+
+            mentorRepository.save(m);
         }
-        System.out.println("accounts add");
     }
 
     //added languages into Account
@@ -173,36 +151,5 @@ public class SystemController {
                 }
         );
         return "languages added";
-    }
-
-
-    //CreateMentors
-    private void writeMentorsInTable(int numberAllusers) {
-        System.out.println("inside WriteMentors");
-        int GROUP_SERVICES = 1;
-        int MENTORS_ROLE = 3;
-        GroupServices groupService =
-                groupServicesRepository.findById(GROUP_SERVICES).get();
-
-        for (int i = 1; i < numberAllusers; i++) {
-            Accounts account = accountRepository.findById(i).get();
-            int rr = account.getUser().getRole_id().getId();
-
-            //check to ROLE in account
-            //if is it "Mentor" > creat
-            if (MENTORS_ROLE == (account.getUser().getRole_id().getId())) {
-                mentorRepository.save(
-                        new Mentors(
-                                account,
-                                "description",
-                                true,
-                                groupService,
-                                true,
-                                true,
-                                false
-                        )
-                );
-            }
-        }
     }
 }

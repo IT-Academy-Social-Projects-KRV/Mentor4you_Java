@@ -2,6 +2,7 @@ package com.mentor4you.service;
 
 import com.mentor4you.exception.MentorNotFoundException;
 import com.mentor4you.model.Accounts;
+import com.mentor4you.model.Role;
 import com.mentor4you.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,9 +22,9 @@ public class MentorService {
 
     //select all mentor
     public List<Accounts> getAllMentors(){
-        int theMentors = accountRepository.findByRoleName("Mentor").size();
+        int theMentors = accountRepository.findByRole().size();
         if(theMentors!=0){
-            return accountRepository.findByRoleName("Mentor");
+            return accountRepository.findByRole();
         }
         throw new MentorNotFoundException("Mentors not found");
 
