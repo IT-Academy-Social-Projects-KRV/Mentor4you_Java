@@ -56,7 +56,7 @@ public class SystemController {
             createAdmin(NUMBER_ADMINS);
             createModerators(NUMBER_MODERATORS);
             createMentors(NUMBER_MENTORS);
-
+            createLanguages();
             createSocialNetworks();
 
             //connects mentors with social networks
