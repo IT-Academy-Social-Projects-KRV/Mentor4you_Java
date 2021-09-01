@@ -1,12 +1,13 @@
-GET 
-
+GET
 http://localhost:8080/system/add 
 
 localhost:8080/system/add
+#Insert data into Roles GroupServices Accounts Users Mentors
+#result  -->>  1 admin \\ 3 moderators \\ 15 mentors
 
-Insert data into Roles GroupServices Accounts Users Mentors
-* result  -->>  1 admin \\ 3 moderators \\ 15 mentors
 
+# Project launch:Linc to swagger
+http://localhost:8080/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config/
 
 # Project launch:
 ## Presets: :desktop_computer::electric_plug::floppy_disk:

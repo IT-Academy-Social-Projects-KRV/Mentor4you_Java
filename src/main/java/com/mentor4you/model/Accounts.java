@@ -4,6 +4,7 @@ package com.mentor4you.model;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name="Accounts")
@@ -27,6 +28,8 @@ public class Accounts {
     @OneToOne (mappedBy = "accounts")
     private Mentors mentors;
 
+    @OneToMany(mappedBy = "accounts")
+    private Set<Links_to_accounts> links_to_accounts;
 
     public Accounts(User user,
                     String phoneNumber,
