@@ -1,15 +1,16 @@
 package com.mentor4you.controller;
 
 import com.mentor4you.model.*;
-import com.mentor4you.repository.AccountRepository;
-import com.mentor4you.repository.GroupServicesRepository;
-import com.mentor4you.repository.MentorRepository;
+import com.mentor4you.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 
 @RestController
@@ -20,11 +21,14 @@ public class SystemController {
     private final GroupServicesRepository groupServicesRepository;
     private final AccountRepository accountRepository;
     private final MentorRepository mentorRepository;
+    private final LanguagesRepository languagesRepository;
 
-    public SystemController(GroupServicesRepository groupServicesRepository,AccountRepository accountRepository, MentorRepository mentorRepository) {
+    public SystemController(GroupServicesRepository groupServicesRepository,AccountRepository accountRepository, MentorRepository mentorRepository,
+                            LanguagesRepository languagesRepository) {
         this.groupServicesRepository = groupServicesRepository;
         this.accountRepository = accountRepository;
         this.mentorRepository = mentorRepository;
+        this.languagesRepository = languagesRepository;
     }
 
     @GetMapping("/add")
@@ -39,6 +43,7 @@ public class SystemController {
         int NUMBER_MODERATORS = 3;
         int NUMBER_USERS = 15;
 
+        createLanguages();
         createAdmin(NUMBER_ADMINS);
         createModerators(NUMBER_MODERATORS);
         createMentors(NUMBER_USERS);
@@ -91,6 +96,17 @@ public class SystemController {
         }
 
     }
+    //CreateLanguages
+    private void createLanguages(){
+        List<Languages> languagesList = new ArrayList<>();
+        languagesList.add(new Languages("ukraine"));
+        languagesList.add(new Languages("english"));
+        languagesList.add(new Languages("russian"));
+        languagesList.add(new Languages("polish"));
+        languagesList.add(new Languages("сzech"));
+
+        languagesList.forEach(ln -> languagesRepository.saveAndFlush(ln));
+    }
 
     private void createMentors(int numberOfMentor){
         for (int i = 1; i <= numberOfMentor; i++) {
@@ -119,5 +135,21 @@ public class SystemController {
 
             mentorRepository.save(m);
         }
+    }
+
+    //added languages into Account
+    @GetMapping("/addLanguages")
+    private String addLanguages(){
+        Random random = new Random();
+        Languages languages = languagesRepository.getById(1);
+
+        List<Accounts> list = accountRepository.findAll();
+        list.forEach(a -> {
+                    a.addLanguages(languages);
+                    a.addLanguages(languagesRepository.getById(random.nextInt(4)+2));
+                    accountRepository.saveAndFlush(a);
+                }
+        );
+        return "languages added";
     }
 }
