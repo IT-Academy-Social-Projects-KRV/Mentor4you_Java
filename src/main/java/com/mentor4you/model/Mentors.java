@@ -1,7 +1,9 @@
 package com.mentor4you.model;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "Mentors")
@@ -21,6 +23,11 @@ public class Mentors {
     @ManyToOne
     @JoinColumn(name = "group_services")
     private GroupServices group_services;
+
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name="education")
+    private List<Educations> educations;
 
     private boolean is_online;
     private boolean is_offline_in;
@@ -44,6 +51,7 @@ public class Mentors {
         this.is_online = is_online;
         this.is_offline_in = is_offline_in;
         this.is_offline_out = is_offline_out;
+
     }
 
     public int getId() {
@@ -106,6 +114,18 @@ public class Mentors {
         this.is_offline_out = is_offline_out;
     }
 
+    public List<Educations> getEducations() {
+        return educations;
+    }
+
+    public void setEducations(List<Educations> educations) {
+        this.educations = educations;
+    }
+
+    public void addEducation(Educations educations) {
+        this.educations.add(educations);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -137,6 +157,7 @@ public class Mentors {
                 ", description='" + description + '\'' +
                 ", showable_status=" + showable_status +
                 ", group_services=" + group_services +
+                ", educations=" + educations +
                 ", is_online=" + is_online +
                 ", is_offline_in=" + is_offline_in +
                 ", is_offline_out=" + is_offline_out +
