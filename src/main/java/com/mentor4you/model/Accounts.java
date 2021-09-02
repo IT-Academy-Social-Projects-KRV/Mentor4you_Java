@@ -3,10 +3,7 @@ package com.mentor4you.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name="Accounts")
@@ -30,13 +27,14 @@ public class Accounts {
     @OneToOne (mappedBy = "accounts")
     private Mentors mentors;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
     @JoinTable(
             name = "languages_to_accounts",
             joinColumns = @JoinColumn(name = "account_id"),
             inverseJoinColumns = @JoinColumn(name = "languages_id")
     )
-    private List<Languages> languagesList;
+    private Set<Languages> languagesList;
+
     @OneToMany(mappedBy = "accounts")
     private Set<Links_to_accounts> links_to_accounts;
 
@@ -78,27 +76,35 @@ public class Accounts {
         this.last_visit = last_visit;
     }
 
-    public List<Languages> getLanguagesList() {
+    public Set<Languages> getLanguagesList() {
         return languagesList;
     }
 
     public void addLanguages(Languages languages) {
-        if(languagesList.isEmpty()) languagesList = new ArrayList<>();
+        if(languagesList.isEmpty()) languagesList = new HashSet<>();
         this.languagesList.add(languages);
         languages.addAccounts(this);
     }
 
-    /*@Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Accounts accounts = (Accounts) o;
-        return id == accounts.id
-                && Objects.equals(phoneNumber, accounts.phoneNumber)
-                && Objects.equals(last_visit, accounts.last_visit)
-                && Objects.equals(user, accounts.user)
-                && Objects.equals(mentors, accounts.mentors);
-    }*/
+    public void removeLanguages(Languages languages) {
+        if(!languagesList.isEmpty()) {
+            languagesList.remove(languages);
+            languages.getAccountsList().remove(this);
+        }
+
+    }
+
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        Accounts accounts = (Accounts) o;
+//        return id == accounts.id
+//                && Objects.equals(phoneNumber, accounts.phoneNumber)
+//                && Objects.equals(last_visit, accounts.last_visit);
+//                && Objects.equals(user, accounts.user)
+//                && Objects.equals(mentors, accounts.mentors);
+//    }
 
     @Override
     public int hashCode() {
