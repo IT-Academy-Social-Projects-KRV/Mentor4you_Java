@@ -3,8 +3,8 @@ package com.mentor4you.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Educations")
-public class Educations{
+@Table(name = "Certificats")
+public class Certificats {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,17 +14,20 @@ public class Educations{
 
     private String description;
 
+    private String link;
 
 
-    public Educations(){}
 
-    public Educations(String name) {
+    public Certificats(){}
+
+    public Certificats(String name) {
         this.name = name;
     }
 
-    public Educations(String name,String description) {
+    public Certificats(String name, String description,String link) {
         this.name = name;
         this.description =description;
+        this.link=link;
     }
     public String getDescription() {
         return description;
@@ -42,11 +45,21 @@ public class Educations{
         this.name = name;
     }
 
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+
     @Override
     public String toString() {
-        return "Educations{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+        return "Certificats{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", link='" + link + '\'' +
                 '}';
     }
 }

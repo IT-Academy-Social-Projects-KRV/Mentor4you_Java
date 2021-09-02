@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -118,6 +119,8 @@ public class SystemController {
             m.isIs_offline_in(true);
             m.isIs_offline_out(true);
 
+            m.setEducations(Arrays.asList(new Educations(i+"edu"),new Educations(i+"edu_other")));
+            m.setCertificats(Arrays.asList(new Certificats(i+"cert"),new Certificats(i+"cert_other")));
             mentorRepository.save(m);
         }
     }

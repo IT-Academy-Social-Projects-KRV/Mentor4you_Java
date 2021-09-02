@@ -25,9 +25,14 @@ public class Mentors {
     private GroupServices group_services;
 
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="education")
     private List<Educations> educations;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="certificats")
+    private List<Certificats> certificats;
+
 
     private boolean is_online;
     private boolean is_offline_in;
@@ -119,11 +124,19 @@ public class Mentors {
     }
 
     public void setEducations(List<Educations> educations) {
+
         this.educations = educations;
     }
 
-    public void addEducation(Educations educations) {
-        this.educations.add(educations);
+
+
+    public List<Certificats> getCertificats() {
+        return certificats;
+    }
+
+
+    public void setCertificats(List<Certificats> certificats) {
+        this.certificats = certificats;
     }
 
     @Override
@@ -153,9 +166,9 @@ public class Mentors {
     @Override
     public String toString() {
         return "Mentors{" +
-                "id=" + id +
-                ", description='" + description + '\'' +
+                "description='" + description + '\'' +
                 ", showable_status=" + showable_status +
+                ", accounts=" + accounts +
                 ", group_services=" + group_services +
                 ", educations=" + educations +
                 ", is_online=" + is_online +
