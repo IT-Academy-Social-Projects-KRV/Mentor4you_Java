@@ -3,9 +3,7 @@ package com.mentor4you.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "languages")
@@ -18,16 +16,24 @@ public class Languages {
     private String name;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "languagesList")
-    private List<Accounts> accountsList;
+    @ManyToMany(mappedBy = "languagesList",
+            cascade = {CascadeType.MERGE,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    private Set<Accounts> accountsList;
 
-    public List<Accounts> getAccountsList() {
+    public Set<Accounts> getAccountsList() {
         return accountsList;
     }
 
     public void addAccounts(Accounts accounts) {
-        if(accountsList.isEmpty()) accountsList = new ArrayList<>();
+        if(accountsList.isEmpty()) accountsList = new HashSet<>();
         this.accountsList.add(accounts);
+    }
+
+    public void removeAccounts(Accounts accounts) {
+        if(!accountsList.isEmpty()) {
+            accountsList.remove(accounts);
+            accounts.getLanguagesList().remove(this);
+        }
     }
 
     public Languages() {
