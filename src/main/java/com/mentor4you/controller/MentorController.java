@@ -53,9 +53,9 @@ public class MentorController {
     }
 
     @GetMapping("/{account_id}/removelanguages/{languages_id}")
-    public Accounts removeLanguagesForMentor(@PathVariable(value = "account_id") Integer account_id,
+    public int removeLanguagesForMentor(@PathVariable(value = "account_id") Integer account_id,
                                        @PathVariable(value = "languages_id") Integer languages_id){
-        return mentorService.removeLanguages(account_id,languages_id);
-//        return languages_id;
+        mentorService.removeLanguages(account_id,languages_id);
+        return languages_id;
     }
 }
