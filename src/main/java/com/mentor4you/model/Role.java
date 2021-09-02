@@ -1,8 +1,15 @@
 package com.mentor4you.model;
 
-public enum Role {
+import org.springframework.security.core.GrantedAuthority;
+
+public enum Role implements GrantedAuthority {
     ADMIN,
     MODERATOR,
     MENTOR,
-    MENTEE
+    MENTEE;
+
+    @Override
+    public String getAuthority() {
+        return name();
+    }
 }

@@ -1,14 +1,17 @@
 package com.mentor4you.model;
 
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
 @Table(name="Users")
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -72,8 +75,38 @@ public class User {
         this.email = email;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return status;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return status;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return status;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return status;
     }
 
     public void setPassword(String password) {
