@@ -55,12 +55,11 @@ public class MentorService {
         accountRepository.saveAndFlush(accounts);
     }
 
-    public Accounts removeLanguages(int account_id, int languages_id){
+    public void removeLanguages(int account_id, int languages_id){
         Accounts accounts = getMentorById(account_id).get();
         accounts.removeLanguages(languagesRepository.getById(languages_id));
 
         //update account in database
         accountRepository.saveAndFlush(accounts);
-        return accountRepository.getById(account_id);
     }
 }
