@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 
 @RestController
@@ -116,7 +117,9 @@ public class SystemController {
             m.isIs_online(true);
             m.isIs_offline_in(true);
             m.isIs_offline_out(true);
-
+            m.setEducations(new ArrayList<Educations>());
+            m.addEducation(new Educations(i+"edu"));
+            m.addEducation(new Educations(i+10+"edu"));
             mentorRepository.save(m);
         }
     }
