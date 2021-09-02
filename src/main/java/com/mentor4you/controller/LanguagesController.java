@@ -1,24 +1,24 @@
 package com.mentor4you.controller;
 
-import com.mentor4you.model.Accounts;
 import com.mentor4you.model.Languages;
-import com.mentor4you.repository.LanguagesRepository;
+import com.mentor4you.service.LanguagesService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.util.Set;
+
 @RestController
 @RequestMapping("/api/languages")
 public class LanguagesController {
-    private final LanguagesRepository languagesRepository;
+    private final LanguagesService languagesService;
 
-    public LanguagesController(LanguagesRepository languagesRepository) {
-        this.languagesRepository = languagesRepository;
+    public LanguagesController(LanguagesService languagesService) {
+        this.languagesService = languagesService;
     }
 
     @GetMapping("/")
-    public List<Languages> getAllLanguages(){
-        return languagesRepository.findAll();
+    public Set<Languages> getAllLanguages(){
+        return languagesService.getAllLanguages();
     }
 }
