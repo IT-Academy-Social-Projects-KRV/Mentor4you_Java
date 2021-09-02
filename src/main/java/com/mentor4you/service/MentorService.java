@@ -2,8 +2,10 @@ package com.mentor4you.service;
 
 import com.mentor4you.exception.MentorNotFoundException;
 import com.mentor4you.model.Accounts;
+import com.mentor4you.model.Languages;
 import com.mentor4you.model.Role;
 import com.mentor4you.repository.AccountRepository;
+import com.mentor4you.repository.LanguagesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +15,13 @@ import java.util.Optional;
 public class MentorService {
 
     @Autowired
-    AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
+    private final LanguagesRepository languagesRepository;
 
 
-    public MentorService(AccountRepository accountRepository) {
+    public MentorService(AccountRepository accountRepository, LanguagesRepository languagesRepository) {
         this.accountRepository = accountRepository;
+        this.languagesRepository = languagesRepository;
     }
 
     //select all mentor
@@ -41,5 +45,22 @@ public class MentorService {
 
         throw new MentorNotFoundException("Mentor with id = "+ id +" not found");
 
+    }
+
+    public void addLanguages(int account_id, int languages_id){
+        Accounts accounts = getMentorById(account_id).get();
+        accounts.addLanguages(languagesRepository.getById(languages_id));
+
+        //update account in database
+        accountRepository.saveAndFlush(accounts);
+    }
+
+    public Accounts removeLanguages(int account_id, int languages_id){
+        Accounts accounts = getMentorById(account_id).get();
+        accounts.removeLanguages(languagesRepository.getById(languages_id));
+
+        //update account in database
+        accountRepository.saveAndFlush(accounts);
+        return accountRepository.getById(account_id);
     }
 }
