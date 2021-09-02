@@ -17,21 +17,21 @@ import java.util.Optional;
 public class MentorController {
 
     @Autowired
-    MentorService mentorService;
+    private final MentorService mentorService;
 
     public MentorController(MentorService mentorService) {
         this.mentorService = mentorService;
     }
 
     //select all mentor
-    @GetMapping
-    List<Accounts> getAllMentor(){
+    @GetMapping("/")
+    public List<Accounts> getAllMentor(){
         return mentorService.getAllMentors();
     }
 
     //select mentor by id
     @GetMapping("/{id}")
-    Optional<Accounts> getMentorById(@PathVariable(value = "id") Integer id){
+    public Optional<Accounts> getMentorById(@PathVariable(value = "id") Integer id){
         return mentorService.getMentorById(id);
     }
 
@@ -44,4 +44,18 @@ public class MentorController {
         return new ResponseEntity<>(eObject, HttpStatus.NOT_FOUND);
     }
 
+    //select mentor by id
+    @GetMapping("/{account_id}/addlanguages/{languages_id}")
+    public int addLanguagesForMentor(@PathVariable(value = "account_id") Integer account_id,
+                                       @PathVariable(value = "languages_id") Integer languages_id){
+        mentorService.addLanguages(account_id,languages_id);
+        return languages_id;
+    }
+
+    @GetMapping("/{account_id}/removelanguages/{languages_id}")
+    public Accounts removeLanguagesForMentor(@PathVariable(value = "account_id") Integer account_id,
+                                       @PathVariable(value = "languages_id") Integer languages_id){
+        return mentorService.removeLanguages(account_id,languages_id);
+//        return languages_id;
+    }
 }
