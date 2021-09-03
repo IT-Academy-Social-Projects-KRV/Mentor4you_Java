@@ -1,6 +1,7 @@
 package com.mentor4you.model;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -21,6 +22,18 @@ public class Mentors {
     @ManyToOne
     @JoinColumn(name = "group_services")
     private GroupServices group_services;
+
+    @OneToOne (mappedBy = "mentors")
+    private Mentors_to_categories mentors_to_categories;
+
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "mentors_to_categories",
+            joinColumns = @JoinColumn(name = "mentors_id"),
+            inverseJoinColumns = @JoinColumn(name = "mentors_to_categories_id")
+    )
+    private List<Mentors> mentors;
 
     private boolean is_online;
     private boolean is_offline_in;
