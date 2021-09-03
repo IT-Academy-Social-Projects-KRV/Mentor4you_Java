@@ -25,14 +25,6 @@ public class MentorService {
     }
 
     //select all mentor
-    public List<Accounts> getAllMentors(){
-        int theMentors = accountRepository.findByRole(Role.MENTOR).size();
-        if(theMentors!=0){
-            return accountRepository.findByRole(Role.MENTOR);
-        }
-        throw new MentorNotFoundException("Mentors not found");
-
-    }
     public List<Mentors> getFullInfoAllMentors(){
         int theMentors = accountRepository.findByRole(Role.MENTOR).size();
         if(theMentors!=0){
@@ -45,9 +37,9 @@ public class MentorService {
 
 
     //    select mentor by id
-    public Optional<Accounts> getMentorById(int id){
+    public Optional<Mentors> getMentorById(int id){
 
-        Optional<Accounts> theMentor = accountRepository.findMentorById(id).stream().filter(e->e.getId()==id).findFirst();
+        Optional<Mentors> theMentor = mentorRepository.findById(id).stream().filter(e->e.getId()==id).findFirst();
         if(theMentor.isPresent()) {
             return theMentor;
         }

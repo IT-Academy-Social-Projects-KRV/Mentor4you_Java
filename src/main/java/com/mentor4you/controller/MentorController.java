@@ -25,20 +25,16 @@ public class MentorController {
         this.mentorService = mentorService;
     }
 
-    //select all mentor
-    @GetMapping
-    List<Accounts> getAllMentor(){
-        return mentorService.getAllMentors();
-    }
+
 
     //select mentor by id
     @GetMapping("/{id}")
-    Optional<Accounts> getMentorById(@PathVariable(value = "id") Integer id){
+    Optional<Mentors> getMentorById(@PathVariable(value = "id") Integer id){
         return mentorService.getMentorById(id);
     }
     @Operation(summary = "Full info about mentors", description = "This method provides the most complete information about existing mentors")
-    @GetMapping("/check")
-    List<Mentors> AllMentor(){
+    @GetMapping
+    List<Mentors> getAllMentor(){
         return mentorService.getFullInfoAllMentors();
     }
 
