@@ -167,11 +167,12 @@ public class Mentors {
     public String toString() {
         return "Mentors{" +
                 "id=" + id +
-                "description='" + description + '\'' +
+                ", description='" + description + '\'' +
                 ", showable_status=" + showable_status +
                 ", accounts=" + accounts +
                 ", group_services=" + group_services +
                 ", educations=" + educations +
+                ", certificats=" + certificats +
                 ", is_online=" + is_online +
                 ", is_offline_in=" + is_offline_in +
                 ", is_offline_out=" + is_offline_out +
