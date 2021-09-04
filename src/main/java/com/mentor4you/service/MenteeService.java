@@ -8,10 +8,11 @@ import com.mentor4you.repository.AccountRepository;
 import com.mentor4you.repository.MenteeRepository;
 import com.mentor4you.repository.MentorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
+@Service
 public class MenteeService {
     @Autowired
     AccountRepository accountRepository;

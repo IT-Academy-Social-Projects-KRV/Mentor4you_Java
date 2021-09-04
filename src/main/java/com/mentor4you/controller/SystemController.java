@@ -127,7 +127,7 @@ public class SystemController {
     private void createMentees(int numberOfMentees) {
         for (int i = 1; i <= numberOfMentees; i++) {
 
-            User user = createOneUser(i, Role.MENTOR);
+            User user = createOneUser(i, Role.MENTEE);
 
             Mentees m = new Mentees();
             m.setAccounts(createOneAccount(user, i));
