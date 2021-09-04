@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -25,19 +24,21 @@ public class SystemController {
     private final SocialNetworksRepository socialNetworksRepository;
     private final Links_to_accountsRepository links_to_accountsRepository;
     private final LanguagesRepository languagesRepository;
+    private final MenteeRepository menteeRepository;
 
     public SystemController(GroupServicesRepository groupServicesRepository,
                             AccountRepository accountRepository,
                             MentorRepository mentorRepository,
                             SocialNetworksRepository socialNetworksRepository,
                             Links_to_accountsRepository links_to_accountsRepository,
-                            LanguagesRepository languagesRepository) {
+                            LanguagesRepository languagesRepository, MenteeRepository menteeRepository) {
         this.groupServicesRepository = groupServicesRepository;
         this.accountRepository = accountRepository;
         this.mentorRepository = mentorRepository;
         this.languagesRepository = languagesRepository;
         this.socialNetworksRepository = socialNetworksRepository;
         this.links_to_accountsRepository = links_to_accountsRepository;
+        this.menteeRepository = menteeRepository;
     }
 
     @GetMapping("/add")
@@ -53,10 +54,12 @@ public class SystemController {
             int NUMBER_ADMINS = 1;
             int NUMBER_MODERATORS = 3;
             int NUMBER_MENTORS = 15;
+            int NUMBER_MENTEES = 15;
 
             createAdmin(NUMBER_ADMINS);
             createModerators(NUMBER_MODERATORS);
             createMentors(NUMBER_MENTORS);
+            createMentees(NUMBER_MENTEES);
             createLanguages();
             createSocialNetworks();
 
@@ -119,6 +122,18 @@ public class SystemController {
             m.setCertificats(Arrays.asList(new Certificats(i+"cert"),new Certificats(i+"cert_other")));
 
             mentorRepository.save(m);
+        }
+    }
+    private void createMentees(int numberOfMentees) {
+        for (int i = 1; i <= numberOfMentees; i++) {
+
+            User user = createOneUser(i, Role.MENTOR);
+
+            Mentees m = new Mentees();
+            m.setAccounts(createOneAccount(user, i));
+
+
+            menteeRepository.save(m);
         }
     }
 

@@ -35,6 +35,14 @@ public class Mentors {
     )
     private List<Mentors> mentors;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="education")
+    private List<Educations> educations;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="certificats")
+    private List<Certificats> certificats;
+
     private boolean is_online;
     private boolean is_offline_in;
     private boolean is_offline_out;
@@ -165,7 +173,12 @@ public class Mentors {
                 "id=" + id +
                 ", description='" + description + '\'' +
                 ", showable_status=" + showable_status +
+                ", accounts=" + accounts +
                 ", group_services=" + group_services +
+                ", mentors_to_categories=" + mentors_to_categories +
+                ", mentors=" + mentors +
+                ", educations=" + educations +
+                ", certificats=" + certificats +
                 ", is_online=" + is_online +
                 ", is_offline_in=" + is_offline_in +
                 ", is_offline_out=" + is_offline_out +
