@@ -1,7 +1,9 @@
 package com.mentor4you.model;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "Mentors")
@@ -21,6 +23,16 @@ public class Mentors {
     @ManyToOne
     @JoinColumn(name = "group_services")
     private GroupServices group_services;
+
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="education")
+    private List<Educations> educations;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="certificats")
+    private List<Certificats> certificats;
+
 
     private boolean is_online;
     private boolean is_offline_in;
@@ -44,6 +56,7 @@ public class Mentors {
         this.is_online = is_online;
         this.is_offline_in = is_offline_in;
         this.is_offline_out = is_offline_out;
+
     }
 
     public int getId() {
@@ -106,6 +119,26 @@ public class Mentors {
         this.is_offline_out = is_offline_out;
     }
 
+    public List<Educations> getEducations() {
+        return educations;
+    }
+
+    public void setEducations(List<Educations> educations) {
+
+        this.educations = educations;
+    }
+
+
+
+    public List<Certificats> getCertificats() {
+        return certificats;
+    }
+
+
+    public void setCertificats(List<Certificats> certificats) {
+        this.certificats = certificats;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -136,7 +169,10 @@ public class Mentors {
                 "id=" + id +
                 ", description='" + description + '\'' +
                 ", showable_status=" + showable_status +
+                ", accounts=" + accounts +
                 ", group_services=" + group_services +
+                ", educations=" + educations +
+                ", certificats=" + certificats +
                 ", is_online=" + is_online +
                 ", is_offline_in=" + is_offline_in +
                 ", is_offline_out=" + is_offline_out +
