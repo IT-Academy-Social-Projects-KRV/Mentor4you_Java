@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "mentees")
+@Table(name = "Mentees")
 public class Mentees {
     @Id
     private int id;
@@ -25,8 +25,17 @@ public class Mentees {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
+    public Accounts getAccounts() {
+        return accounts;
+    }
 
+    public void setAccounts(Accounts accounts) {
+        this.accounts = accounts;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -39,6 +48,8 @@ public class Mentees {
     @Override
     public String toString() {
         return "Mentees{" +
-                "id=" + id;
+                "id=" + id +
+                ", accounts=" + accounts +
+                '}';
     }
 }
