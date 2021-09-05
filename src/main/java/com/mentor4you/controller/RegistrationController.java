@@ -1,8 +1,7 @@
 package com.mentor4you.controller;
 
 import com.mentor4you.exception.ErrorObject;
-import com.mentor4you.exception.MentorNotFoundException;
-import com.mentor4you.exception.UserAlreadyExistException;
+import com.mentor4you.exception.RegistrationException;
 import com.mentor4you.model.DTO.UserDTO;
 import com.mentor4you.service.RegistrationService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,7 +31,7 @@ public class RegistrationController {
 
 
     @ExceptionHandler
-    public ResponseEntity<ErrorObject> handleException(UserAlreadyExistException ex) {
+    public ResponseEntity<ErrorObject> handleException(RegistrationException ex) {
         ErrorObject eObject = new ErrorObject();
         eObject.setStatus(HttpStatus.BAD_REQUEST.value());
         eObject.setMessage(ex.getMessage());
