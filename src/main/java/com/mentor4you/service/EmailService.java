@@ -14,6 +14,7 @@ public class EmailService {
         this.userRepository = userRepository;
     }
 
+    //check user email is existing in database
     public boolean emailExist(String email){
         return userRepository.findByEmail(email).isPresent();
     }

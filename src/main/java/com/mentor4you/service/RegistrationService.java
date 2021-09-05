@@ -31,6 +31,7 @@ public class RegistrationService{
 
     public String registration(UserDTO userDTO) throws RegistrationException{
 
+        //checking email user is existing in database
         String email = userDTO.getEmail();
         if(emailService.emailExist(email)){
             throw new RegistrationException("User with email = "+ email + " already exist");
@@ -41,10 +42,12 @@ public class RegistrationService{
 
         user.setEmail(email);
 
+        //checking user password is valid
         String password = userDTO.getPassword();
         if(!isValidPassword(password)){
             throw new RegistrationException("Password is not valid");
         }
+        //encode password
         String encodePass = new BCryptPasswordEncoder().encode(userDTO.getPassword());
 
         user.setPassword(encodePass);
@@ -55,7 +58,8 @@ public class RegistrationService{
 
         accounts.setUser(user);
 
-        if(userDTO.getRole().equals("mentor")){ //true
+        //add role and create record
+        if(userDTO.getRole().equals("mentor")){
             //role Mentor
             Mentors mentor = new Mentors();
             user.setRole(Role.MENTOR);
@@ -72,6 +76,7 @@ public class RegistrationService{
         return "User created";
     }
 
+    //check is valid password
     private boolean isValidPassword(String password){
         String reqExp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$";
         return password.matches(reqExp);
