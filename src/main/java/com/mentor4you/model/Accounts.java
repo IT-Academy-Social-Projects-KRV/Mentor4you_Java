@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name="Accounts")
@@ -29,6 +30,10 @@ public class Accounts {
     @OneToOne (mappedBy = "accounts")
     private Mentors mentors;
 
+    @OneToOne (mappedBy = "accounts")
+    private Mentees mentees;
+
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "languages_to_accounts",
@@ -36,6 +41,8 @@ public class Accounts {
             inverseJoinColumns = @JoinColumn(name = "languages_id")
     )
     private List<Languages> languagesList;
+    @OneToMany(mappedBy = "accounts")
+    private Set<Links_to_accounts> links_to_accounts;
 
     public Accounts(User user,
                     String phoneNumber,
@@ -85,23 +92,21 @@ public class Accounts {
         languages.addAccounts(this);
     }
 
-    @Override
+    /*@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Accounts accounts = (Accounts) o;
         return id == accounts.id
                 && Objects.equals(phoneNumber, accounts.phoneNumber)
-                && Objects.equals(last_visit, accounts.last_visit);
-//                && Objects.equals(user, accounts.user)
-//                && Objects.equals(mentors, accounts.mentors);
-    }
+                && Objects.equals(last_visit, accounts.last_visit)
+                && Objects.equals(user, accounts.user)
+                && Objects.equals(mentors, accounts.mentors);
+    }*/
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, phoneNumber, last_visit
-//                , user, mentors
-                );
+        return Objects.hash(id, phoneNumber, last_visit, user, mentors);
     }
 
     @Override
@@ -110,8 +115,8 @@ public class Accounts {
                 "id=" + id +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", last_visit=" + last_visit +
-//                ", user id=" + user.getId() +
-//                ", mentors=" + mentors.getId() +
+                ", user id=" + user.getId() +
+                ", mentors=" + mentors.getId() +
                 '}';
     }
 }

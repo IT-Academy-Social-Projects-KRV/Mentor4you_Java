@@ -1,8 +1,5 @@
 package com.mentor4you.model;
 
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,7 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name="Users")
-public class User{
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -19,7 +16,7 @@ public class User{
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Indexed(unique = true)
+    @Column(unique=true)
     private String email;
 
     private String password;
