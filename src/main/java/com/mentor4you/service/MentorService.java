@@ -1,11 +1,11 @@
 package com.mentor4you.service;
 
 import com.mentor4you.exception.MentorNotFoundException;
-import com.mentor4you.model.Accounts;
 import com.mentor4you.model.Mentors;
 import com.mentor4you.model.Role;
 import com.mentor4you.repository.AccountRepository;
 import com.mentor4you.repository.MentorRepository;
+import com.mentor4you.service.requests.UpdateMentorRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,5 +46,14 @@ public class MentorService {
 
         throw new MentorNotFoundException("Mentor with id = "+ id +" not found");
 
+    }
+    public Mentors updateGeneralDataMentors(int id ,UpdateMentorRequest up){
+        if(mentorRepository.getById(id)!=null){
+            Mentors mentor =mentorRepository.getById(id);
+            mentor.UpdateMentorReq(up);
+            mentorRepository.save(mentor);
+            return mentor;
+        }
+        throw new MentorNotFoundException("Mentor with id = "+ id +" not found");
     }
 }

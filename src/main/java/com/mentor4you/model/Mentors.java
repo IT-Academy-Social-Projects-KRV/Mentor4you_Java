@@ -1,10 +1,14 @@
 package com.mentor4you.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mentor4you.service.requests.UpdateMentorRequest;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Entity
 @Table(name = "Mentors")
 public class Mentors {
@@ -127,7 +131,13 @@ public class Mentors {
 
         this.educations = educations;
     }
-
+    public void UpdateMentorReq(UpdateMentorRequest update){
+         description=update.getDescription();
+         showable_status = update.isShowable_status();
+         is_online = update.isIs_online();
+         is_offline_in =update.isIs_offline_in();
+         is_offline_out =update.isIs_offline_out();
+    }
 
 
     public List<Certificats> getCertificats() {
