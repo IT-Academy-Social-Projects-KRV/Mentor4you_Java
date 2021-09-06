@@ -28,6 +28,17 @@ public class Mentors {
     @JoinColumn(name = "group_services")
     private GroupServices group_services;
 
+    @OneToOne (mappedBy = "mentors")
+    private Mentors_to_categories mentors_to_categories;
+
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "mentors_to_categories",
+            joinColumns = @JoinColumn(name = "mentors_id"),
+            inverseJoinColumns = @JoinColumn(name = "mentors_to_categories_id")
+    )
+    private List<Mentors> mentors;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="education")
@@ -41,6 +52,22 @@ public class Mentors {
     private boolean is_online;
     private boolean is_offline_in;
     private boolean is_offline_out;
+
+    public void setEducations(List<Educations> educations) {
+
+        this.educations = educations;
+    }
+
+
+
+    public List<Certificats> getCertificats() {
+        return certificats;
+    }
+
+
+    public void setCertificats(List<Certificats> certificats) {
+        this.certificats = certificats;
+    }
 
     public Mentors() {
     }
@@ -184,6 +211,8 @@ public class Mentors {
                 ", showable_status=" + showable_status +
                 ", accounts=" + accounts +
                 ", group_services=" + group_services +
+                ", mentors_to_categories=" + mentors_to_categories +
+                ", mentors=" + mentors +
                 ", educations=" + educations +
                 ", certificats=" + certificats +
                 ", is_online=" + is_online +

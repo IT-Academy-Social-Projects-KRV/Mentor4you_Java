@@ -33,6 +33,10 @@ public class Accounts {
     @OneToOne (mappedBy = "accounts")
     private Mentors mentors;
 
+    @OneToOne (mappedBy = "accounts")
+    private Mentees mentees;
+
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "languages_to_accounts",
