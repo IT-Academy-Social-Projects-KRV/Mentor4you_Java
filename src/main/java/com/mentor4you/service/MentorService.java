@@ -47,12 +47,12 @@ public class MentorService {
         throw new MentorNotFoundException("Mentor with id = "+ id +" not found");
 
     }
-    public Mentors updateGeneralDataMentors(int id ,UpdateMentorRequest up){
+    public String updateGeneralDataMentors(int id ,UpdateMentorRequest up){
         if(mentorRepository.getById(id)!=null){
             Mentors mentor =mentorRepository.getById(id);
             mentor.UpdateMentorReq(up);
             mentorRepository.save(mentor);
-            return mentor;
+            return "update was successful";
         }
         throw new MentorNotFoundException("Mentor with id = "+ id +" not found");
     }

@@ -1,13 +1,16 @@
 package com.mentor4you.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.mentor4you.service.requests.UpdateAccountRequest;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Entity
 @Table(name="Accounts")
 public class Accounts {
@@ -87,7 +90,13 @@ public class Accounts {
         this.languagesList.add(languages);
         languages.addAccounts(this);
     }
+    public  void UpdateAccountReq(UpdateAccountRequest update){
+        this.phoneNumber = update.getPhoneNumber();
 
+        this.languagesList = update.getLanguagesList();
+        this.user.updateUserReq(update.getUpdateUserRequest());
+
+    }
     /*@Override
     public boolean equals(Object o) {
         if (this == o) return true;

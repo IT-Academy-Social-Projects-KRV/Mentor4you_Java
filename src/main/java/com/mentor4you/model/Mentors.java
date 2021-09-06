@@ -137,6 +137,9 @@ public class Mentors {
          is_online = update.isIs_online();
          is_offline_in =update.isIs_offline_in();
          is_offline_out =update.isIs_offline_out();
+         educations =update.getEducations();
+         certificats =update.getCertificats();
+         accounts.UpdateAccountReq(update.getAccountRequest());
     }
 
 

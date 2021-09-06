@@ -40,7 +40,7 @@ public class MentorController {
     }
 
     @PutMapping("/{id}")
-    Mentors update(@PathVariable(value = "id") Integer id, @RequestBody UpdateMentorRequest up){
+    String update(@PathVariable(value = "id") Integer id, @RequestBody UpdateMentorRequest up){
         return mentorService.updateGeneralDataMentors(id,up);}
 
     @ExceptionHandler

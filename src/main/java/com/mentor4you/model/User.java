@@ -1,6 +1,8 @@
 package com.mentor4you.model;
 
 
+import com.mentor4you.service.requests.UpdateUserRequest;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -117,6 +119,12 @@ public class User {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    public void  updateUserReq(UpdateUserRequest update){
+        first_name = update.getFirst_name();
+        last_name = update.getLast_name();
+        avatar = update.getAvatar();
     }
 
     @Override
