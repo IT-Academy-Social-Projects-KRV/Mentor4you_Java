@@ -3,7 +3,6 @@ package com.mentor4you.model;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "Mentors")
@@ -24,6 +23,17 @@ public class Mentors {
     @JoinColumn(name = "group_services")
     private GroupServices group_services;
 
+    @OneToOne (mappedBy = "mentors")
+    private Mentors_to_categories mentors_to_categories;
+
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "mentors_to_categories",
+            joinColumns = @JoinColumn(name = "mentors_id"),
+            inverseJoinColumns = @JoinColumn(name = "mentors_to_categories_id")
+    )
+    private List<Mentors> mentors;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="education")
@@ -33,10 +43,25 @@ public class Mentors {
     @JoinColumn(name="certificats")
     private List<Certificats> certificats;
 
-
     private boolean is_online;
     private boolean is_offline_in;
     private boolean is_offline_out;
+
+    public void setEducations(List<Educations> educations) {
+
+        this.educations = educations;
+    }
+
+
+
+    public List<Certificats> getCertificats() {
+        return certificats;
+    }
+
+
+    public void setCertificats(List<Certificats> certificats) {
+        this.certificats = certificats;
+    }
 
     public Mentors() {
     }
@@ -56,7 +81,6 @@ public class Mentors {
         this.is_online = is_online;
         this.is_offline_in = is_offline_in;
         this.is_offline_out = is_offline_out;
-
     }
 
     public int getId() {
@@ -119,26 +143,6 @@ public class Mentors {
         this.is_offline_out = is_offline_out;
     }
 
-    public List<Educations> getEducations() {
-        return educations;
-    }
-
-    public void setEducations(List<Educations> educations) {
-
-        this.educations = educations;
-    }
-
-
-
-    public List<Certificats> getCertificats() {
-        return certificats;
-    }
-
-
-    public void setCertificats(List<Certificats> certificats) {
-        this.certificats = certificats;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -171,6 +175,8 @@ public class Mentors {
                 ", showable_status=" + showable_status +
                 ", accounts=" + accounts +
                 ", group_services=" + group_services +
+                ", mentors_to_categories=" + mentors_to_categories +
+                ", mentors=" + mentors +
                 ", educations=" + educations +
                 ", certificats=" + certificats +
                 ", is_online=" + is_online +
