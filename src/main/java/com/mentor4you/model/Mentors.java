@@ -53,21 +53,6 @@ public class Mentors {
     private boolean is_offline_in;
     private boolean is_offline_out;
 
-    public void setEducations(List<Educations> educations) {
-
-        this.educations = educations;
-    }
-
-
-
-    public List<Certificats> getCertificats() {
-        return certificats;
-    }
-
-
-    public void setCertificats(List<Certificats> certificats) {
-        this.certificats = certificats;
-    }
 
     public Mentors() {
     }
