@@ -17,7 +17,7 @@ public class RegistrationService{
 
     @Autowired
     EmailService emailService;
-
+    PasswordService passwordService;
     @Autowired
     MentorRepository mentorRepository;
     UserRepository userRepository;
@@ -44,13 +44,12 @@ public class RegistrationService{
 
         //checking user password is valid
         String password = userDTO.getPassword();
-        if(!isValidPassword(password)){
+        if(!passwordService.isValidPassword(password)){
             throw new RegistrationException("Password is not valid");
         }
-        //encode password
-        String encodePass = new BCryptPasswordEncoder().encode(userDTO.getPassword());
 
-        user.setPassword(encodePass);
+        //encode password
+        user.setPassword(passwordService.encodePassword(userDTO.getPassword()));
 
         user.setRegistration_date(LocalDateTime.now());
 
@@ -74,12 +73,6 @@ public class RegistrationService{
             menteeRepository.save(mentee);
         }
         return "User created";
-    }
-
-    //check is valid password
-    private boolean isValidPassword(String password){
-        String reqExp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$";
-        return password.matches(reqExp);
     }
 
 }
