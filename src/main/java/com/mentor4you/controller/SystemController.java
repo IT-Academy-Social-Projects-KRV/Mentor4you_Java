@@ -2,6 +2,7 @@ package com.mentor4you.controller;
 
 import com.mentor4you.model.*;
 import com.mentor4you.repository.*;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+
 
 
 @RestController
@@ -41,9 +43,9 @@ public class SystemController {
         this.menteeRepository = menteeRepository;
     }
 
-    @GetMapping("/add")
-    //TODO delete after tests
 
+    @Operation(summary = "method add 1 admin, 3 moderators and 15 Mentors on you DB")
+    @GetMapping("/add")
     public String registerRoles() {
 
         try {
