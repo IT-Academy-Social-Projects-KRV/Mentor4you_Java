@@ -1,26 +1,21 @@
 package com.mentor4you.service;
 
-import com.mentor4you.model.User;
 import com.mentor4you.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-public class UserService {
+public class EmailService {
 
     @Autowired
     UserRepository userRepository;
 
-    public UserService(UserRepository userRepository){
+    public EmailService(UserRepository userRepository) {
         this.userRepository = userRepository;
-
     }
 
-    //select all users
-    public List<User> getAllUsers(){
-        return userRepository.findAll();
+    //check user email is existing in database
+    public boolean emailExist(String email){
+        return userRepository.findByEmail(email).isPresent();
     }
-
 }
