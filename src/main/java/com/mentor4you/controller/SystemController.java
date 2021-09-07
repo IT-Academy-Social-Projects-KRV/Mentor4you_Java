@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 
@@ -27,13 +28,24 @@ public class SystemController {
     private final Links_to_accountsRepository links_to_accountsRepository;
     private final LanguagesRepository languagesRepository;
     private final MenteeRepository menteeRepository;
+    private final AddressesRepository addressesRepository;
+    private final CitiesRepository citiesRepository;
+    private final CountriesRepository countriesRepository;
+    private final Mentors_to_microdistrictsRepository mentors_to_microdistrictsRepository;
+    private final MicrodistrictsRepository microdistrictsRepository;
 
     public SystemController(GroupServicesRepository groupServicesRepository,
                             AccountRepository accountRepository,
                             MentorRepository mentorRepository,
                             SocialNetworksRepository socialNetworksRepository,
                             Links_to_accountsRepository links_to_accountsRepository,
-                            LanguagesRepository languagesRepository, MenteeRepository menteeRepository) {
+                            LanguagesRepository languagesRepository,
+                            MenteeRepository menteeRepository,
+                            AddressesRepository addressesRepository,
+                            CitiesRepository citiesRepository,
+                            CountriesRepository countriesRepository,
+                            Mentors_to_microdistrictsRepository mentors_to_microdistrictsRepository,
+                            MicrodistrictsRepository microdistrictsRepository) {
         this.groupServicesRepository = groupServicesRepository;
         this.accountRepository = accountRepository;
         this.mentorRepository = mentorRepository;
@@ -41,6 +53,11 @@ public class SystemController {
         this.socialNetworksRepository = socialNetworksRepository;
         this.links_to_accountsRepository = links_to_accountsRepository;
         this.menteeRepository = menteeRepository;
+        this.addressesRepository = addressesRepository;
+        this.citiesRepository = citiesRepository;
+        this.countriesRepository = countriesRepository;
+        this.mentors_to_microdistrictsRepository = mentors_to_microdistrictsRepository;
+        this.microdistrictsRepository = microdistrictsRepository;
     }
 
 
@@ -60,10 +77,12 @@ public class SystemController {
 
             createAdmin(NUMBER_ADMINS);
             createModerators(NUMBER_MODERATORS);
-            createMentors(NUMBER_MENTORS);
+            createMentors(NUMBER_MENTORS); // В мене викливає цей фрагмент помилку
             createMentees(NUMBER_MENTEES);
             createLanguages();
             createSocialNetworks();
+            createCountries();
+
 
             //connects mentors with social networks
             setSocNetworkToMentor_Test();
@@ -219,4 +238,37 @@ public class SystemController {
         );
         return "languages added";
     }
+
+    //CreateCountries
+    private void createCountries() {
+        String[] arrCountry = new String[]{"Ukraine", "USA", "Great Britain", "Russia",
+                "Poland", "Germany", "France"};
+
+        for (String cName : arrCountry) {
+
+            Countries countries = new Countries();
+            countries.setName(cName);
+
+            countriesRepository.save(countries);
+        }
+    }
+
+    //CreateCities
+    private void createCities() {
+        String[] arrCity = new String[]{"Kiev", "Kharkiv", "Odessa", "Dnipro",
+                "Donetsk", "Zaporizhzhia", "Lviv", "Krivoy Rog",
+                "Lugansk", "Vinnytsia", "Kherson", "Chernihiv", "Poltava", "Khmelnytsky",
+                "Cherkasy", "Chernivtsi", "Zhytomyr", "Sumy", "Rivne", "Ivano-Frankivsk",
+                "Ternopil", "Lutsk"};
+
+        Optional<Countries> c = countriesRepository.findById(1);
+        for (String ciName : arrCity) {
+            Cities cities = new Cities();
+            cities.setName(ciName);
+            cities.setCountry_id(1);
+            citiesRepository.save(cities);
+
+        }
+    }
+
 }

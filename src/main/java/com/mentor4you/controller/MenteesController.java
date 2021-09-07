@@ -21,8 +21,6 @@ import java.util.Optional;
 @RequestMapping("/api/mentees")
 public class MenteesController {
 
-
-
         @Autowired
         MenteeService menteesService;
 
