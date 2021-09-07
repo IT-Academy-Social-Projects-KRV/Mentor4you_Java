@@ -23,9 +23,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                //виключив csrf захист щоб можна було надсилати POST запити
                 .csrf().disable()
-                .authorizeRequests().antMatchers("/testSecurity")
-                .authenticated()
+                .authorizeRequests().antMatchers("/testSecurity").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()
@@ -53,4 +53,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
 
         return new InMemoryUserDetailsManager(user);
     }
+
+
 }

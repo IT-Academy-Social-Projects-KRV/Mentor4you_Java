@@ -1,7 +1,9 @@
 package com.mentor4you.model;
 
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -14,7 +16,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Column(unique=true)
     private String email;
+
     private String password;
     private String first_name;
     private String last_name;
