@@ -20,9 +20,13 @@ import java.util.Optional;
 public class CategoriesController {
 
 
+    @Autowired
+    private CategoriesService categoriesService;
 
-
-
+    @GetMapping
+    public List<Categories> getFullInfoAllCategories(){
+        return categoriesService.getFullInfoAllCategories();
+    }
 
 
 }

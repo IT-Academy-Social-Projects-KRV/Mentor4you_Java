@@ -1,6 +1,7 @@
 package com.mentor4you.controller;
 
 import com.mentor4you.model.*;
+import com.mentor4you.model.Categories;
 import com.mentor4you.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 
@@ -25,13 +27,14 @@ public class SystemController {
     private final Links_to_accountsRepository links_to_accountsRepository;
     private final LanguagesRepository languagesRepository;
     private final MenteeRepository menteeRepository;
+    private final CategoriesRepository categoriesRepository;
 
     public SystemController(GroupServicesRepository groupServicesRepository,
                             AccountRepository accountRepository,
                             MentorRepository mentorRepository,
                             SocialNetworksRepository socialNetworksRepository,
                             Links_to_accountsRepository links_to_accountsRepository,
-                            LanguagesRepository languagesRepository, MenteeRepository menteeRepository) {
+                            LanguagesRepository languagesRepository, MenteeRepository menteeRepository, CategoriesRepository categoriesRepository) {
         this.groupServicesRepository = groupServicesRepository;
         this.accountRepository = accountRepository;
         this.mentorRepository = mentorRepository;
@@ -39,6 +42,7 @@ public class SystemController {
         this.socialNetworksRepository = socialNetworksRepository;
         this.links_to_accountsRepository = links_to_accountsRepository;
         this.menteeRepository = menteeRepository;
+        this.categoriesRepository = categoriesRepository;
     }
 
     @GetMapping("/add")
@@ -62,6 +66,8 @@ public class SystemController {
             createMentees(NUMBER_MENTEES);
             createLanguages();
             createSocialNetworks();
+            createCategories();
+
 
             //connects mentors with social networks
             setSocNetworkToMentor_Test();
@@ -105,6 +111,14 @@ public class SystemController {
         languagesRepository.save(new Languages("сzech"));
 
     }
+    private void createCategories(){
+
+        categoriesRepository.save(new Categories("dhtm"));
+
+
+    }
+
+
 
     private void createMentors(int numberOfMentors) {
         for (int i = 1; i <= numberOfMentors; i++) {
