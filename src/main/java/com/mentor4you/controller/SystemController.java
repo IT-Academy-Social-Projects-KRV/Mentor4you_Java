@@ -2,11 +2,14 @@ package com.mentor4you.controller;
 
 import com.mentor4you.model.*;
 import com.mentor4you.repository.*;
+import com.mentor4you.security.jwt.JwtAuthenticationException;
 import com.mentor4you.security.jwt.JwtProvider;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.AuthenticationException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -224,10 +227,17 @@ public class SystemController {
     }
 
     @PostMapping("/auth")
-    public AuthResponse auth(@RequestBody AuthRequest request) {
+    public Object auth(@RequestBody AuthRequest request) {
         User user = userRepository.findByEmail(request.getLogin()).get();
-        String token = jwtProvider.generateToken(user.getEmail(),user.getRole());
-        return new AuthResponse(token);
+        try{
+            if(new BCryptPasswordEncoder().matches(request.getPassword(),user.getPassword())){
+                String token = jwtProvider.generateToken(user.getEmail(),user.getRole());
+                return new AuthResponse(token);
+            }
+            throw new Exception("Bad Credential");
+        }catch (Exception ex){
+              return ex.getMessage();
+        }
     }
 
     @GetMapping("/testAuth")
