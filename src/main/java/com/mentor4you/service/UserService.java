@@ -5,6 +5,7 @@ import com.mentor4you.model.User;
 import com.mentor4you.repository.UserRepository;
 import com.mentor4you.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,16 +32,25 @@ public class UserService {
 
     public String changePassword(String token, String password) {
 
-        if(!passwordService.isValidPassword(password)){
-            throw new RegistrationException("Password is not valid");
+        try {
+            User user = userRepository.findUserByEmail(jwtProvider.getLoginFromToken(token));
+            if (user == null) {
+                throw new UsernameNotFoundException("User not found ");
+            }
+
+            if(!passwordService.isValidPassword(password)){
+                throw new RegistrationException("Password is not valid");
+            }
+
+            user.setPassword(passwordService.encodePassword(password));
+
+            userRepository.save(user);
+            return "Password changed";
+
+        }catch (RegistrationException | UsernameNotFoundException ex){
+            return ex.getMessage();
         }
 
-        User user = userRepository.findUserByEmail(jwtProvider.getLoginFromToken(token));
 
-        user.setPassword(passwordService.encodePassword(password));
-
-        userRepository.save(user);
-
-        return "Password changed";
     }
 }

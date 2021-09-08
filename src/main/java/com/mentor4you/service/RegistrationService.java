@@ -65,8 +65,6 @@ public class RegistrationService{
             mentor.setAccounts(accounts);
             mentorRepository.save(mentor);
         }else{
-            //role mentee
-            //TODO: add table Mentees and menteeRepository
             Mentees mentee = new Mentees();
             user.setRole(Role.MENTEE);
             mentee.setAccounts(accounts);
