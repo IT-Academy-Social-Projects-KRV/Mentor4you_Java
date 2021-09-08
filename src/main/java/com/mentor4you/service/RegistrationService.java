@@ -23,7 +23,9 @@ public class RegistrationService{
     UserRepository userRepository;
     MenteeRepository menteeRepository;
 
-    public RegistrationService(MentorRepository mentorRepository, UserRepository userRepository, MenteeRepository menteeRepository) {
+    public RegistrationService(EmailService emailService, PasswordService passwordService, MentorRepository mentorRepository, UserRepository userRepository, MenteeRepository menteeRepository) {
+        this.emailService = emailService;
+        this.passwordService = passwordService;
         this.mentorRepository = mentorRepository;
         this.userRepository = userRepository;
         this.menteeRepository = menteeRepository;
