@@ -229,10 +229,15 @@ public class SystemController {
     @PostMapping("/auth")
     public Object auth(@RequestBody AuthRequest request) {
         User user = userRepository.findByEmail(request.getLogin()).get();
-        String token = jwtProvider.generateToken(user.getEmail(),user.getRole());
-        return new AuthResponse(token);
-//            throw new Exception("Bad Credential");
-
+        try{
+            if(new BCryptPasswordEncoder().matches(request.getPassword(),user.getPassword())){
+                String token = jwtProvider.generateToken(user.getEmail(),user.getRole());
+                return new AuthResponse(token);
+            }
+            throw new Exception("Bad Credential");
+        }catch (Exception ex){
+              return ex.getMessage();
+        }
     }
 
     @GetMapping("/testAuth")
