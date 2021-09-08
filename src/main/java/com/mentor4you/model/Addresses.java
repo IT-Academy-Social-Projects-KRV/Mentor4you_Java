@@ -12,20 +12,19 @@ public class Addresses {
     @Column(name="name")
     private String name;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "id")
     @MapsId
     private Mentors_to_microdistricts mentors_to_microdistricts;
 
-    private int mentors_to_microdistricts_id;
     public Addresses() {
 
     }
 
-    public Addresses(String name, int mentors_to_microdistricts_id) {
+    public Addresses(Mentors_to_microdistricts mentors_to_microdistricts,String name) {
 
         this.name = name;
-        this.mentors_to_microdistricts_id =  mentors_to_microdistricts_id;
+        this.mentors_to_microdistricts =  mentors_to_microdistricts;
     }
 
     public int getId() {return id;}
@@ -35,12 +34,12 @@ public class Addresses {
     }
     public void setName(String name){this.name = name;}
 
-    public int getMentors_to_microdistricts_id() {
-        return mentors_to_microdistricts_id;
+    public Mentors_to_microdistricts getMentors_to_microdistricts() {
+        return mentors_to_microdistricts;
     }
 
-    public void setMentors_to_microdistricts_id(int mentors_to_microdistricts_id) {
-        this.mentors_to_microdistricts_id = mentors_to_microdistricts_id;
+    public void setMentors_to_microdistricts(Mentors_to_microdistricts mentors_to_microdistricts) {
+        this.mentors_to_microdistricts = mentors_to_microdistricts;
     }
 
 
@@ -51,7 +50,7 @@ public class Addresses {
         Addresses addresses = (Addresses) o;
         return id == addresses.id
                 && Objects.equals(name, addresses.name)
-                && Objects.equals(mentors_to_microdistricts_id, addresses.mentors_to_microdistricts_id);
+                && Objects.equals(mentors_to_microdistricts, addresses.mentors_to_microdistricts);
     }
 
     @Override
@@ -63,8 +62,7 @@ public class Addresses {
     public String toString() {
         return "Addresses{" +
                 "id=" + id +
-                ", name=" + name +
-                ", mentors_to_microdistricts_id=" + mentors_to_microdistricts_id +
+                ", name=" + name+
                 '}';
     }
 

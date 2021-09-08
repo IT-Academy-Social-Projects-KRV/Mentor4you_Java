@@ -11,23 +11,21 @@ public class Microdistricts {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "id")
-    @MapsId
+    @JoinColumn(name = "city_id")
     private Cities cities;
 
     @Column(name="name")
     private String name;
 
-    private int city_id;
 
     public Microdistricts() {
 
     }
 
-    public Microdistricts(String name, int city_id) {
+    public Microdistricts(String name, Cities cities) {
 
         this.name = name;
-        this.city_id = city_id;
+        this.cities = cities;
     }
 
     public int getId() {return id;}
@@ -37,12 +35,12 @@ public class Microdistricts {
     }
     public void setName(String name){this.name = name;}
 
-    public int getCity_id() {
-        return city_id;
+    public Cities getCity() {
+        return cities;
     }
 
-    public void setCity_id(int city_id) {
-        this.city_id = city_id;
+    public void setCities(int city_id) {
+        this.cities = cities;
     }
 
 
@@ -65,6 +63,7 @@ public class Microdistricts {
         return "Microdistricts{" +
                 "id=" + id +
                 ", name=" + name +
+                ", city_id=" + cities +
                 '}';
     }
 

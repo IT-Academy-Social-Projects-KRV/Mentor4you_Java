@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface AddressesRepository extends JpaRepository<Addresses, Integer> {
     Optional<Addresses> findById(int id);
 
+
 }

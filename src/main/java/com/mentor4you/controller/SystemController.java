@@ -77,11 +77,12 @@ public class SystemController {
 
             createAdmin(NUMBER_ADMINS);
             createModerators(NUMBER_MODERATORS);
-            createMentors(NUMBER_MENTORS); // В мене викливає цей фрагмент помилку
+              createMentors(NUMBER_MENTORS); // В мене викливає цей фрагмент помилку
             createMentees(NUMBER_MENTEES);
             createLanguages();
             createSocialNetworks();
             createCountries();
+            createCities();
 
 
             //connects mentors with social networks
@@ -261,11 +262,12 @@ public class SystemController {
                 "Cherkasy", "Chernivtsi", "Zhytomyr", "Sumy", "Rivne", "Ivano-Frankivsk",
                 "Ternopil", "Lutsk"};
 
+        int UKId = 1;
         Optional<Countries> c = countriesRepository.findById(1);
         for (String ciName : arrCity) {
             Cities cities = new Cities();
             cities.setName(ciName);
-            cities.setCountry_id(1);
+           cities.setCountry(countriesRepository.getById(1));
             citiesRepository.save(cities);
 
         }

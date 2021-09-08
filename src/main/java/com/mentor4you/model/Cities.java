@@ -12,24 +12,22 @@ public class Cities {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "id")
-    @MapsId
+    @JoinColumn(name = "country_id")
     private Countries countries;
 
     @Column(name="name")
     private String name;
 
-    private int country_id;
 
 
     public Cities() {
 
     }
 
-    public Cities(String name, int country_id) {
+    public Cities(String name, Countries countries) {
 
         this.name = name;
-        this.country_id = country_id;
+        this.countries = countries;
     }
 
     public int getId() {return id;}
@@ -39,12 +37,12 @@ public class Cities {
     }
     public void setName(String name){this.name = name;}
 
-    public int getCountry_id() {
-        return country_id;
+    public Countries getCountry() {
+        return countries;
     }
 
-    public void setCountry_id(int country_id) {
-        this.country_id = country_id;
+    public void setCountry(Countries countries) {
+        this.countries = countries;
     }
 
 
@@ -67,7 +65,7 @@ public class Cities {
         return "Cities{" +
                 "id=" + id +
                 ", name=" + name +
-                ", country_id=" + country_id +
+                ", country_id=" + countries +
                 '}';
     }
 

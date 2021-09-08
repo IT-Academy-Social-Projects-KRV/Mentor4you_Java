@@ -10,7 +10,5 @@ public interface Mentors_to_microdistrictsRepository extends JpaRepository<Mento
 
 
     Optional<Mentors_to_microdistricts> findById(int id);
-//
-//    @Query("Select mm from Mentors_to_microdistricts a WHERE mm.mentor_id =?1")
-//    Mentors_to_microdistricts findByMentorId(int id);
+
 }

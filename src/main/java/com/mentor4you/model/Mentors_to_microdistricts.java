@@ -15,7 +15,7 @@ public class Mentors_to_microdistricts {
     private Microdistricts microdistrict;
 
     @ManyToOne
-    @JoinColumn(name = "accounts_id")
+    @JoinColumn(name = "mentors_id")
     private Mentors mentor;
 
 
