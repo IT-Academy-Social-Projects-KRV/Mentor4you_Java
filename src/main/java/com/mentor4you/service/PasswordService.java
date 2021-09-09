@@ -15,4 +15,8 @@ public class PasswordService {
      public String encodePassword(String password){
          return new BCryptPasswordEncoder().encode(password);
      }
+
+     public boolean equalsPassword(String password,String userPassword){
+         return new BCryptPasswordEncoder().matches(password,userPassword);
+     }
 }
