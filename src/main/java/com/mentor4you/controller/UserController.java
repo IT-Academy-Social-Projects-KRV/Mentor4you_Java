@@ -1,5 +1,6 @@
 package com.mentor4you.controller;
 
+import com.mentor4you.model.DTO.PasswordDTO;
 import com.mentor4you.model.User;
 import com.mentor4you.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,4 +28,9 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    @Operation(summary = "change password")
+    @PutMapping("/changePassword")
+    String changePassword(@RequestHeader("Authorization") String token, @RequestBody PasswordDTO request){
+        return userService.changePassword(token, request.getPassword());
+    }
 }

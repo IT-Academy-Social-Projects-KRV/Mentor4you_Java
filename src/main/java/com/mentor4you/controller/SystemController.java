@@ -2,12 +2,14 @@ package com.mentor4you.controller;
 
 import com.mentor4you.model.*;
 import com.mentor4you.repository.*;
+import com.mentor4you.security.jwt.JwtAuthenticationException;
+import com.mentor4you.security.jwt.JwtProvider;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
+import javax.naming.AuthenticationException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -27,13 +29,15 @@ public class SystemController {
     private final Links_to_accountsRepository links_to_accountsRepository;
     private final LanguagesRepository languagesRepository;
     private final MenteeRepository menteeRepository;
+    private final JwtProvider jwtProvider;
+    private final UserRepository userRepository;
 
     public SystemController(GroupServicesRepository groupServicesRepository,
                             AccountRepository accountRepository,
                             MentorRepository mentorRepository,
                             SocialNetworksRepository socialNetworksRepository,
                             Links_to_accountsRepository links_to_accountsRepository,
-                            LanguagesRepository languagesRepository, MenteeRepository menteeRepository) {
+                            LanguagesRepository languagesRepository, MenteeRepository menteeRepository, JwtProvider jwtProvider, UserRepository userRepository) {
         this.groupServicesRepository = groupServicesRepository;
         this.accountRepository = accountRepository;
         this.mentorRepository = mentorRepository;
@@ -41,6 +45,8 @@ public class SystemController {
         this.socialNetworksRepository = socialNetworksRepository;
         this.links_to_accountsRepository = links_to_accountsRepository;
         this.menteeRepository = menteeRepository;
+        this.jwtProvider = jwtProvider;
+        this.userRepository = userRepository;
     }
 
 
@@ -219,4 +225,24 @@ public class SystemController {
         );
         return "languages added";
     }
+
+    @PostMapping("/auth")
+    public Object auth(@RequestBody AuthRequest request) {
+        User user = userRepository.findByEmail(request.getLogin()).get();
+        try{
+            if(new BCryptPasswordEncoder().matches(request.getPassword(),user.getPassword())){
+                String token = jwtProvider.generateToken(user.getEmail(),user.getRole());
+                return new AuthResponse(token);
+            }
+            throw new Exception("Bad Credential");
+        }catch (Exception ex){
+              return ex.getMessage();
+        }
+    }
+
+    @GetMapping("/testAuth")
+    public String getUser(){
+        return "hi authentificaters";
+    }
+
 }
