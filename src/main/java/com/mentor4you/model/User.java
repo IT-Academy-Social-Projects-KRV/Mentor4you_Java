@@ -5,6 +5,7 @@ import com.mentor4you.service.requests.UpdateUserRequest;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
