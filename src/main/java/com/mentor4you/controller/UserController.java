@@ -1,5 +1,6 @@
 package com.mentor4you.controller;
 
+import com.mentor4you.exception.RegistrationException;
 import com.mentor4you.model.DTO.EmailRequest;
 import com.mentor4you.model.DTO.PasswordDTO;
 import com.mentor4you.model.User;
@@ -8,9 +9,13 @@ import com.mentor4you.service.EmailService;
 import com.mentor4you.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -37,9 +42,18 @@ public class UserController {
 
     @Operation(summary = "change password")
     @PutMapping("/changePassword")
-    String changePassword(@RequestHeader("Authorization") String token, @RequestBody PasswordDTO request){
-        return userService.changePassword(token, request.getPassword());
+    ResponseEntity<?> changePassword(@RequestHeader("Authorization") String token, @RequestBody PasswordDTO request){
+        Map<String, String> res = new HashMap<>();
+        try{
+            String result = userService.changePassword(token, request.getOldPassword(), request.getNewPassword());
+            res.put("message",result);
+            return ResponseEntity.ok(res);
+        }catch (RegistrationException | UsernameNotFoundException e){
+            res.put("message",e.getMessage());
+            return ResponseEntity.badRequest().body(res);
+        }
     }
+
 
     @PostMapping("/updateEmail")
     public String updateEmail(@RequestBody EmailRequest request){

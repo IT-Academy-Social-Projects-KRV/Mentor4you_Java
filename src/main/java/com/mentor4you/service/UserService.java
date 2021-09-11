@@ -30,27 +30,24 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public String changePassword(String token, String password) {
+    public String changePassword(String token, String oldPassword, String newPassword) {
+        String email =jwtProvider.getLoginFromToken(token);
 
-        try {
-            User user = userRepository.findUserByEmail(jwtProvider.getLoginFromToken(token));
-            if (user == null) {
-                throw new UsernameNotFoundException("User not found ");
-            }
-
-            if(!passwordService.isValidPassword(password)){
+        User user = userRepository.findUserByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found ");
+        }
+        if(passwordService.equalsPassword(oldPassword, user.getPassword())){
+            if(!passwordService.isValidPassword(newPassword)){
                 throw new RegistrationException("Password is not valid");
             }
 
-            user.setPassword(passwordService.encodePassword(password));
+            user.setPassword(passwordService.encodePassword(newPassword));
 
             userRepository.save(user);
             return "Password changed";
-
-        }catch (RegistrationException | UsernameNotFoundException ex){
-            return ex.getMessage();
+        }else{
+            throw new RegistrationException("The old password is incorrect");
         }
-
-
     }
 }
