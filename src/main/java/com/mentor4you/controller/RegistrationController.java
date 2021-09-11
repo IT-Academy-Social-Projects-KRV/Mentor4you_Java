@@ -36,7 +36,7 @@ public class RegistrationController {
         try{
             String result = registrationService.registration(userDTO);
             res.put("message", result);
-            return ResponseEntity.ok(res);
+            return ResponseEntity.status(201).body(res);
         }
         catch(RegistrationException e){
             res.put("message",e.getMessage());
