@@ -4,6 +4,7 @@ import com.mentor4you.model.*;
 import com.mentor4you.repository.*;
 import com.mentor4you.security.jwt.JwtAuthenticationException;
 import com.mentor4you.security.jwt.JwtProvider;
+import com.mentor4you.service.PasswordService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -31,13 +32,19 @@ public class SystemController {
     private final MenteeRepository menteeRepository;
     private final JwtProvider jwtProvider;
     private final UserRepository userRepository;
+    private final PasswordService passwordService;
 
     public SystemController(GroupServicesRepository groupServicesRepository,
                             AccountRepository accountRepository,
                             MentorRepository mentorRepository,
                             SocialNetworksRepository socialNetworksRepository,
                             Links_to_accountsRepository links_to_accountsRepository,
-                            LanguagesRepository languagesRepository, MenteeRepository menteeRepository, JwtProvider jwtProvider, UserRepository userRepository) {
+                            LanguagesRepository languagesRepository,
+                            MenteeRepository menteeRepository,
+                            JwtProvider jwtProvider,
+                            UserRepository userRepository,
+                            PasswordService passwordService
+    ) {
         this.groupServicesRepository = groupServicesRepository;
         this.accountRepository = accountRepository;
         this.mentorRepository = mentorRepository;
@@ -47,6 +54,7 @@ public class SystemController {
         this.menteeRepository = menteeRepository;
         this.jwtProvider = jwtProvider;
         this.userRepository = userRepository;
+        this.passwordService = passwordService;
     }
 
 
@@ -160,7 +168,7 @@ public class SystemController {
 
         User n = new User();
         n.setEmail(i + "_" + role.name() + "@email");
-        n.setPassword(i + "_" + role.name() + "password");
+        n.setPassword(passwordService.encodePassword(i + "_" + role.name() + "password"));
         n.setFirst_name(i + "_" + role.name() + "FN");
         n.setLast_name(i + "_" + role.name() + "LN");
         n.setRegistration_date(LocalDateTime.now());

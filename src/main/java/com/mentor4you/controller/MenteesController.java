@@ -1,6 +1,7 @@
 package com.mentor4you.controller;
 
 import com.mentor4you.exception.ErrorObject;
+import com.mentor4you.exception.MenteeNotFoundException;
 import com.mentor4you.exception.MentorNotFoundException;
 import com.mentor4you.model.Mentees;
 import com.mentor4you.model.Mentors;
@@ -32,15 +33,27 @@ public class MenteesController {
 
         //select mentees by id
         @GetMapping("/{id}")
-        Optional<Mentees> getMentorById(@PathVariable(value = "id") Integer id){
-            return menteesService.getMentorById(id);
-        }
-        @Operation(summary = "info about mentees")
-        @GetMapping
-        List<Mentees> getAllMentor(){
-            return menteesService.getFullInfoAllMentees();
+        Optional<Mentees> getMenteeById(@PathVariable(value = "id") Integer id)
+        {
+            return menteesService.getMenteeById(id);
         }
 
+        @Operation(summary = "info about mentees")
+        @GetMapping
+        List<Mentees> getAllMentee(){
+                return menteesService.getFullInfoAllMentees();
+        }
+
+
+
+        @ExceptionHandler
+        public ResponseEntity<ErrorObject> handleException(MenteeNotFoundException ex) {
+                ErrorObject eObject = new ErrorObject();
+                eObject.setStatus(HttpStatus.NOT_FOUND.value());
+                eObject.setMessage(ex.getMessage());
+                eObject.setTimestamp(System.currentTimeMillis());
+                return new ResponseEntity<>(eObject, HttpStatus.NOT_FOUND);
+        }
 
 
 
