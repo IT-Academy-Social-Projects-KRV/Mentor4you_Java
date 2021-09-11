@@ -45,7 +45,6 @@ public class MenteesController {
         }
 
 
-
         @ExceptionHandler
         public ResponseEntity<ErrorObject> handleException(MenteeNotFoundException ex) {
                 ErrorObject eObject = new ErrorObject();
