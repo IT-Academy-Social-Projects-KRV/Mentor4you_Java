@@ -44,7 +44,6 @@ public class MenteesController {
                 return menteesService.getFullInfoAllMentees();
         }
 
-
         @ExceptionHandler
         public ResponseEntity<ErrorObject> handleException(MenteeNotFoundException ex) {
                 ErrorObject eObject = new ErrorObject();
