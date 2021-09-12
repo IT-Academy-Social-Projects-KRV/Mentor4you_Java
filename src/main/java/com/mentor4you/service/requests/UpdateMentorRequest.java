@@ -27,6 +27,9 @@ public class UpdateMentorRequest {
 
     private UpdateAccountRequest account;
 
+    public UpdateMentorRequest() {
+    }
+
     public UpdateMentorRequest(String description, boolean showable_status, boolean is_online, boolean is_offline_in, boolean is_offline_out, GroupServices group_services, List<Educations> educations, List<Certificats> certificats, UpdateAccountRequest accountRequest) {
         this.description = description;
         this.showable_status = showable_status;

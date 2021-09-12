@@ -6,6 +6,9 @@ public class UpdateUserRequest {
     private String last_name;
     private String avatar;
 
+    public UpdateUserRequest() {
+    }
+
     public UpdateUserRequest(String first_name, String last_name, String avatar) {
         this.first_name = first_name;
         this.last_name = last_name;

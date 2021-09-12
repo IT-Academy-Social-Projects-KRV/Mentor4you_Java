@@ -6,10 +6,8 @@ import com.mentor4you.service.requests.UpdateAccountRequest;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Entity
 @Table(name="Accounts")
@@ -89,17 +87,23 @@ public class Accounts {
         return languagesList;
     }
 
+    public void setLanguagesList(List<Languages> languagesList) {
+        this.languagesList = languagesList;
+    }
+
     public void addLanguages(Languages languages) {
         if(languagesList.isEmpty()) languagesList = new ArrayList<>();
         this.languagesList.add(languages);
         languages.addAccounts(this);
     }
-    public  void UpdateAccountReq(UpdateAccountRequest update){
-        this.phoneNumber = update.getPhoneNumber();
 
-        this.languagesList = update.getLanguagesList();
-        this.user.updateUserReq(update.getUpdateUserRequest());
+    public Set<Links_to_accounts> getLinks_to_accounts() {
+        return links_to_accounts;
+    }
 
+
+    public void setLinks_to_accounts(Set<Links_to_accounts> links_to_accounts) {
+        this.links_to_accounts = links_to_accounts;
     }
     /*@Override
     public boolean equals(Object o) {
@@ -124,8 +128,11 @@ public class Accounts {
                 "id=" + id +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", last_visit=" + last_visit +
-                ", user id=" + user.getId() +
-                ", mentors=" + mentors.getId() +
+                ", user=" + user +
+                ", mentors=" + mentors +
+                ", mentees=" + mentees +
+                ", languagesList=" + languagesList +
+                ", links_to_accounts=" + links_to_accounts +
                 '}';
     }
 }

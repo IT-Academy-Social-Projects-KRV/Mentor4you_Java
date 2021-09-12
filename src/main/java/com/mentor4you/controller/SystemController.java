@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.naming.AuthenticationException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
@@ -129,6 +130,7 @@ public class SystemController {
             m.setEducations(Arrays.asList(new Educations(i+"edu"),new Educations(i+"edu_other")));
             m.setCertificats(Arrays.asList(new Certificats(i+"cert"),new Certificats(i+"cert_other")));
 
+
             mentorRepository.save(m);
         }
     }
@@ -152,6 +154,7 @@ public class SystemController {
         a.setUser(user);
         a.setPhoneNumber("(" + i + ")" + i + i + i + i + i + "");
         a.setLast_visit(LocalDateTime.now());
+
 
         return a;
     }
