@@ -22,11 +22,6 @@ public class Mentors_to_categories {
     @JoinColumn(name = "mentors_id")
     private Mentors mentors;
 
-
-
-
-
-
     @Id
     private int id;
 
