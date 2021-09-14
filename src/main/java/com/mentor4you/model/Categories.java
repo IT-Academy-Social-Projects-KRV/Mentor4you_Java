@@ -1,6 +1,7 @@
 package com.mentor4you.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name="Categories")
@@ -13,8 +14,8 @@ public class Categories {
    @OneToOne (mappedBy = "categories")
     private Cooperation cooperation;
 
-   @OneToOne (mappedBy = "categories")
-   private Mentors_to_categories mentors_to_categories;
+   @OneToMany (mappedBy = "categories")
+   private Set<Mentors_to_categories> mentors_to_categories;
 
 
     @Id

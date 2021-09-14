@@ -8,7 +8,7 @@ import com.mentor4you.model.GroupServices;
 
 import java.util.List;
 
-public class UpdateMentorRequest {
+public class MentorGeneralDTO {
 
     private String description;
     private boolean showable_status;
@@ -22,15 +22,14 @@ public class UpdateMentorRequest {
     private List<Educations> educations;
     
 
-
     private List<Certificats> certificats;
 
-    private UpdateAccountRequest account;
 
-    public UpdateMentorRequest() {
+
+    public MentorGeneralDTO() {
     }
 
-    public UpdateMentorRequest(String description, boolean showable_status, boolean is_online, boolean is_offline_in, boolean is_offline_out, GroupServices group_services, List<Educations> educations, List<Certificats> certificats, UpdateAccountRequest accountRequest) {
+    public MentorGeneralDTO(String description, boolean showable_status, boolean is_online, boolean is_offline_in, boolean is_offline_out, GroupServices group_services, List<Educations> educations, List<Certificats> certificats) {
         this.description = description;
         this.showable_status = showable_status;
         this.is_online = is_online;
@@ -39,7 +38,6 @@ public class UpdateMentorRequest {
         this.group_services = group_services;
         this.educations = educations;
         this.certificats = certificats;
-        this.account = accountRequest;
     }
 
     public String getDescription() {
@@ -106,11 +104,5 @@ public class UpdateMentorRequest {
         this.certificats = certificats;
     }
 
-    public UpdateAccountRequest getAccountRequest() {
-        return account;
-    }
 
-    public void setAccountRequest(UpdateAccountRequest accountRequest) {
-        this.account = accountRequest;
-    }
 }

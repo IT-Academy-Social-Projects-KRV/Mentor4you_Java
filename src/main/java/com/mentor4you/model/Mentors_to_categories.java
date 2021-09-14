@@ -13,27 +13,24 @@ import java.util.Objects;
 
 public class Mentors_to_categories {
 
-    @OneToOne
-    @JoinColumn(name = "id")
-    @MapsId
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @ManyToOne
+    @JoinColumn(name = "categories_id")
     private Categories categories;
 
     @ManyToOne
     @JoinColumn(name = "mentors_id")
     private Mentors mentors;
 
+    private int rate;
+
+    private String currency;
 
 
-
-
-
-    @Id
-    private int id;
-
-    public Mentors_to_categories(int id, int category_id, int mentor_id, int rate, String currency) {
-        this.id = id;
-        this.category_id = category_id;
-        this.mentor_id = mentor_id;
+    public Mentors_to_categories(int rate, String currency) {
         this.rate = rate;
         this.currency = currency;
     }
@@ -42,41 +39,6 @@ public class Mentors_to_categories {
 
     }
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Mentors_to_categories that = (Mentors_to_categories) o;
-        return id == that.id && category_id == that.category_id && mentor_id == that.mentor_id && rate == that.rate && Objects.equals(currency, that.currency);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, category_id, mentor_id, rate, currency);
-    }
-
-    private int category_id;
-    private int mentor_id;
-    private int rate;
-    private String currency;
-
-
-    public int getCategory_id() {
-        return category_id;
-    }
-
-    public void setCategory_id(int category_id) {
-        this.category_id = category_id;
-    }
-
-    public int getMentor_id() {
-        return mentor_id;
-    }
-
-    public void setMentor_id(int mentor_id) {
-        this.mentor_id = mentor_id;
-    }
 
     public int getRate() {
         return rate;
@@ -93,19 +55,5 @@ public class Mentors_to_categories {
     public void setCurrency(String currency) {
         this.currency = currency;
     }
-    @Override
-    public String toString() {
-        return "Mentors_to_categories{" +
-                "id=" + id +
-                ", category_id=" + category_id +
-                ", mentor_id=" + mentor_id +
-                ", rate=" + rate +
-                ", currency='" + currency + '\'' +
-                '}';
-    }
-
-
-
-
 
 }

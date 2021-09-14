@@ -1,11 +1,9 @@
 package com.mentor4you.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.mentor4you.service.requests.UpdateMentorRequest;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
@@ -32,9 +30,6 @@ public class Mentors {
     private Set<Mentors_to_categories> mentors_to_categories;
 
 
-
-
-
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="education")
     private List<Educations> educations;
@@ -47,21 +42,6 @@ public class Mentors {
     private boolean is_offline_in;
     private boolean is_offline_out;
 
-    public void setEducations(List<Educations> educations) {
-
-        this.educations = educations;
-    }
-
-
-
-    public List<Certificats> getCertificats() {
-        return certificats;
-    }
-
-
-    public void setCertificats(List<Certificats> certificats) {
-        this.certificats = certificats;
-    }
 
     public Mentors() {
     }

@@ -4,15 +4,10 @@ import com.mentor4you.exception.MentorNotFoundException;
 import com.mentor4you.model.*;
 import com.mentor4you.repository.AccountRepository;
 import com.mentor4you.repository.MentorRepository;
-import com.mentor4you.service.requests.UpdateAccountRequest;
-import com.mentor4you.service.requests.UpdateMentorRequest;
-import com.mentor4you.service.requests.UpdateUserRequest;
-import io.swagger.v3.oas.annotations.Operation;
+import com.mentor4you.service.requests.MentorGeneralDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 @Service
@@ -50,38 +45,18 @@ public class MentorService {
 
     }
     // не фінальна версія
-    public UpdateMentorRequest getById(int id){
+    public MentorGeneralDTO getById(int id){
 
 
         Mentors theMentor = mentorRepository.getById(id);
-        Accounts accounts =theMentor.getAccounts();
-        User user =accounts.getUser();
-        UpdateMentorRequest m =
-                new UpdateMentorRequest(
-                        theMentor.getDescription()
-                        , theMentor.isShowable_status(),
-                        false,
-                        false,
-                        false,
-                        theMentor.getGroup_services(),
-                        theMentor.getEducations(),
-                        theMentor.getCertificats(),
-                        new UpdateAccountRequest(
-                                accounts.getPhoneNumber(),
-                                accounts.getLanguagesList(),
-                                new HashSet<Links_to_accounts>(),
-                                new UpdateUserRequest(user.getFirst_name(),
-                                        user.getLast_name(),
-                                        user.getAvatar())
-                        ));
 
-            return m;
+            return new MentorGeneralDTO();
 
 
         //throw new MentorNotFoundException("Mentor with id = "+ id +" not found");
 
     }
-    public String updateGeneralDataMentors(int id ,UpdateMentorRequest up){
+    public String updateGeneralDataMentors(int id , MentorGeneralDTO up){
         if(mentorRepository.getById(id)!=null){
             Mentors mentor =mentorRepository.getById(id);
             mentor.setCertificats(up.getCertificats());
@@ -90,7 +65,7 @@ public class MentorService {
             mentor.setIs_offline_in(true);
             mentor.setIs_offline_out(true);
             mentor.setIs_online(true);
-            mentor.getAccounts().setLanguagesList(up.getAccountRequest().getLanguagesList());
+
 
 
 

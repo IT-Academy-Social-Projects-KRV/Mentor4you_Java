@@ -2,9 +2,9 @@ package com.mentor4you.controller;
 
 import com.mentor4you.exception.ErrorObject;
 import com.mentor4you.exception.MentorNotFoundException;
-import com.mentor4you.model.Accounts;
 import com.mentor4you.model.Mentors;
 import com.mentor4you.service.MentorService;
+import com.mentor4you.service.requests.MentorGeneralDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,7 +41,7 @@ public class MentorController {
     }
 
     @PutMapping("/{id}")
-    String update(@PathVariable(value = "id") Integer id, @RequestBody UpdateMentorRequest up){
+    String update(@PathVariable(value = "id") Integer id, @RequestBody MentorGeneralDTO up){
         return mentorService.updateGeneralDataMentors(id,up);}
 
     @ExceptionHandler
