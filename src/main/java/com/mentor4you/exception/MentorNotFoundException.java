@@ -8,4 +8,6 @@ public class MentorNotFoundException extends RuntimeException{
         super(message);
     }
 
+    public static class UnkownIdentifierException {
+    }
 }

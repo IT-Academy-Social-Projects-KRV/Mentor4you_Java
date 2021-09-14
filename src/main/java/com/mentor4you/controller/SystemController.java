@@ -3,11 +3,15 @@ package com.mentor4you.controller;
 import com.mentor4you.model.*;
 import com.mentor4you.model.Categories;
 import com.mentor4you.repository.*;
+import com.mentor4you.security.jwt.JwtAuthenticationException;
+import com.mentor4you.security.jwt.JwtProvider;
+import com.mentor4you.service.PasswordService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
+import javax.naming.AuthenticationException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -28,13 +32,22 @@ public class SystemController {
     private final LanguagesRepository languagesRepository;
     private final MenteeRepository menteeRepository;
     private final CategoriesRepository categoriesRepository;
+    private final JwtProvider jwtProvider;
+    private final UserRepository userRepository;
+    private final PasswordService passwordService;
 
     public SystemController(GroupServicesRepository groupServicesRepository,
                             AccountRepository accountRepository,
                             MentorRepository mentorRepository,
                             SocialNetworksRepository socialNetworksRepository,
                             Links_to_accountsRepository links_to_accountsRepository,
-                            LanguagesRepository languagesRepository, MenteeRepository menteeRepository, CategoriesRepository categoriesRepository) {
+                            LanguagesRepository languagesRepository,
+                            MenteeRepository menteeRepository,
+                            JwtProvider jwtProvider,
+                            UserRepository userRepository,
+                            PasswordService passwordService,
+                            CategoriesRepository categoriesRepository
+    ) {
         this.groupServicesRepository = groupServicesRepository;
         this.accountRepository = accountRepository;
         this.mentorRepository = mentorRepository;
@@ -43,8 +56,13 @@ public class SystemController {
         this.links_to_accountsRepository = links_to_accountsRepository;
         this.menteeRepository = menteeRepository;
         this.categoriesRepository = categoriesRepository;
+        this.jwtProvider = jwtProvider;
+        this.userRepository = userRepository;
+        this.passwordService = passwordService;
     }
 
+
+    @Operation(summary = "method add 1 admin, 3 moderators and 15 Mentors on you DB")
     @GetMapping("/add")
     //TODO delete after tests
 
@@ -166,7 +184,7 @@ public class SystemController {
 
         User n = new User();
         n.setEmail(i + "_" + role.name() + "@email");
-        n.setPassword(i + "_" + role.name() + "password");
+        n.setPassword(passwordService.encodePassword(i + "_" + role.name() + "password"));
         n.setFirst_name(i + "_" + role.name() + "FN");
         n.setLast_name(i + "_" + role.name() + "LN");
         n.setRegistration_date(LocalDateTime.now());
@@ -231,4 +249,24 @@ public class SystemController {
         );
         return "languages added";
     }
+
+    @PostMapping("/auth")
+    public Object auth(@RequestBody AuthRequest request) {
+        User user = userRepository.findByEmail(request.getLogin()).get();
+        try{
+            if(new BCryptPasswordEncoder().matches(request.getPassword(),user.getPassword())){
+                String token = jwtProvider.generateToken(user.getEmail(),user.getRole());
+                return new AuthResponse(token);
+            }
+            throw new Exception("Bad Credential");
+        }catch (Exception ex){
+              return ex.getMessage();
+        }
+    }
+
+    @GetMapping("/testAuth")
+    public String getUser(){
+        return "hi authentificaters";
+    }
+
 }

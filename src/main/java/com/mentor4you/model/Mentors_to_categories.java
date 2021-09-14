@@ -18,19 +18,14 @@ public class Mentors_to_categories {
     @MapsId
     private Categories categories;
 
-    @OneToOne
-    @JoinColumn(name = "id")
-    @MapsId
+    @ManyToOne
+    @JoinColumn(name = "mentors_id")
     private Mentors mentors;
 
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "mentors")
-    private List<Mentors> mentorslist;
 
-    public List<Mentors> getMentorsList() {
-        return mentorslist;
-    }
+
+
 
     @Id
     private int id;

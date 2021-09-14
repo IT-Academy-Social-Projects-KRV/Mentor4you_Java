@@ -3,6 +3,7 @@ package com.mentor4you.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
