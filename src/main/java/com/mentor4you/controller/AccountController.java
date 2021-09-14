@@ -25,6 +25,7 @@ public class AccountController {
         int id = request.getId();
         if (accountRepository.findByPhone(phoneNumber).isEmpty()){
             Accounts accounts = accountRepository.findById(id);
+            //Accounts accounts = accountRepository.findById(id);
             accounts.setPhoneNumber(phoneNumber);
             accountRepository.save(accounts);
             return  "Phone number to "+ accountRepository.findMentorById(id).get().getPhoneNumber();
