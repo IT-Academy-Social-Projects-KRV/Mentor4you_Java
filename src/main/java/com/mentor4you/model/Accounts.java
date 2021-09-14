@@ -50,7 +50,6 @@ public class Accounts {
     }
 
     public Accounts() {
-
     }
 
     public int getId() {return id;}
@@ -79,23 +78,6 @@ public class Accounts {
         if(languagesList.isEmpty()) languagesList = new ArrayList<>();
         this.languagesList.add(languages);
         languages.addAccounts(this);
-    }
-
-
-    public Mentors getMentors() {
-        return mentors;
-    }
-
-    public void setMentors(Mentors mentors) {
-        this.mentors = mentors;
-    }
-
-    public Mentees getMentees() {
-        return mentees;
-    }
-
-    public void setMentees(Mentees mentees) {
-        this.mentees = mentees;
     }
 
     public void setLanguagesList(List<Languages> languagesList) {

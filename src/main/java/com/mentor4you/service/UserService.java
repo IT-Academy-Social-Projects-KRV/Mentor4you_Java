@@ -15,8 +15,6 @@ public class UserService {
 
     @Autowired
     PasswordService passwordService;
-
-    @Autowired
     UserRepository userRepository;
     JwtProvider jwtProvider;
 
