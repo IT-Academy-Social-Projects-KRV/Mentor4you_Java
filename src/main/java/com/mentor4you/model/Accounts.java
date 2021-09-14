@@ -41,6 +41,8 @@ public class Accounts {
             inverseJoinColumns = @JoinColumn(name = "languages_id")
     )
     private List<Languages> languagesList;
+
+
     @OneToMany(mappedBy = "accounts")
     private Set<Links_to_accounts> links_to_accounts;
 

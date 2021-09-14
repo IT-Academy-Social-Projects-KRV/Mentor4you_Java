@@ -1,6 +1,7 @@
 package com.mentor4you.controller;
 
 import com.mentor4you.model.*;
+import com.mentor4you.model.Categories;
 import com.mentor4you.repository.*;
 import com.mentor4you.security.jwt.JwtAuthenticationException;
 import com.mentor4you.security.jwt.JwtProvider;
@@ -14,8 +15,8 @@ import javax.naming.AuthenticationException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
-
 
 
 @RestController
@@ -30,6 +31,7 @@ public class SystemController {
     private final Links_to_accountsRepository links_to_accountsRepository;
     private final LanguagesRepository languagesRepository;
     private final MenteeRepository menteeRepository;
+    private final CategoriesRepository categoriesRepository;
     private final JwtProvider jwtProvider;
     private final UserRepository userRepository;
     private final PasswordService passwordService;
@@ -43,7 +45,8 @@ public class SystemController {
                             MenteeRepository menteeRepository,
                             JwtProvider jwtProvider,
                             UserRepository userRepository,
-                            PasswordService passwordService
+                            PasswordService passwordService,
+                            CategoriesRepository categoriesRepository
     ) {
         this.groupServicesRepository = groupServicesRepository;
         this.accountRepository = accountRepository;
@@ -52,6 +55,7 @@ public class SystemController {
         this.socialNetworksRepository = socialNetworksRepository;
         this.links_to_accountsRepository = links_to_accountsRepository;
         this.menteeRepository = menteeRepository;
+        this.categoriesRepository = categoriesRepository;
         this.jwtProvider = jwtProvider;
         this.userRepository = userRepository;
         this.passwordService = passwordService;
@@ -60,6 +64,8 @@ public class SystemController {
 
     @Operation(summary = "method add 1 admin, 3 moderators and 15 Mentors on you DB")
     @GetMapping("/add")
+    //TODO delete after tests
+
     public String registerRoles() {
 
         try {
@@ -78,6 +84,8 @@ public class SystemController {
             createMentees(NUMBER_MENTEES);
             createLanguages();
             createSocialNetworks();
+            createCategories();
+
 
             //connects mentors with social networks
             setSocNetworkToMentor_Test();
@@ -121,6 +129,14 @@ public class SystemController {
         languagesRepository.save(new Languages("сzech"));
 
     }
+    private void createCategories(){
+
+        categoriesRepository.save(new Categories("dhtm"));
+
+
+    }
+
+
 
     private void createMentors(int numberOfMentors) {
         for (int i = 1; i <= numberOfMentors; i++) {
