@@ -22,7 +22,7 @@ public class DemoApplication {
 	}
 
 	@Operation(summary = "Test method", description = "Returns a Hello World")
-	@GetMapping("/")
+
 	public String hello(@RequestParam(value = "name", defaultValue = "Neo") String name) {
 		return String.format("Wake up, %s.\n The Mentor4you has you...", name);
 	}

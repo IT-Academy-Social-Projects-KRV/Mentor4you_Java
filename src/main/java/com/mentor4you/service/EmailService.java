@@ -4,6 +4,9 @@ import com.mentor4you.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @Service
 public class EmailService {
 
@@ -18,4 +21,16 @@ public class EmailService {
     public boolean emailExist(String email){
         return userRepository.findByEmail(email).isPresent();
     }
+
+    public boolean isEmailValidRegEx(String email) {
+        // get emails name length it must be not more 129
+        int length = email.length();
+
+        // simple pattern check @  .
+        Pattern pattern = Pattern.compile(".+@.+\\..+");
+        Matcher matcher = pattern.matcher(email);
+
+        return (matcher.matches() && length<130);
+    }
+
 }

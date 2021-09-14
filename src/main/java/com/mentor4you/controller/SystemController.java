@@ -1,9 +1,11 @@
 package com.mentor4you.controller;
 
 import com.mentor4you.model.*;
+import com.mentor4you.model.Categories;
 import com.mentor4you.repository.*;
 import com.mentor4you.security.jwt.JwtAuthenticationException;
 import com.mentor4you.security.jwt.JwtProvider;
+import com.mentor4you.service.PasswordService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -13,8 +15,8 @@ import javax.naming.AuthenticationException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
-
 
 
 @RestController
@@ -29,15 +31,23 @@ public class SystemController {
     private final Links_to_accountsRepository links_to_accountsRepository;
     private final LanguagesRepository languagesRepository;
     private final MenteeRepository menteeRepository;
+    private final CategoriesRepository categoriesRepository;
     private final JwtProvider jwtProvider;
     private final UserRepository userRepository;
+    private final PasswordService passwordService;
 
     public SystemController(GroupServicesRepository groupServicesRepository,
                             AccountRepository accountRepository,
                             MentorRepository mentorRepository,
                             SocialNetworksRepository socialNetworksRepository,
                             Links_to_accountsRepository links_to_accountsRepository,
-                            LanguagesRepository languagesRepository, MenteeRepository menteeRepository, JwtProvider jwtProvider, UserRepository userRepository) {
+                            LanguagesRepository languagesRepository,
+                            MenteeRepository menteeRepository,
+                            JwtProvider jwtProvider,
+                            UserRepository userRepository,
+                            PasswordService passwordService,
+                            CategoriesRepository categoriesRepository
+    ) {
         this.groupServicesRepository = groupServicesRepository;
         this.accountRepository = accountRepository;
         this.mentorRepository = mentorRepository;
@@ -45,13 +55,17 @@ public class SystemController {
         this.socialNetworksRepository = socialNetworksRepository;
         this.links_to_accountsRepository = links_to_accountsRepository;
         this.menteeRepository = menteeRepository;
+        this.categoriesRepository = categoriesRepository;
         this.jwtProvider = jwtProvider;
         this.userRepository = userRepository;
+        this.passwordService = passwordService;
     }
 
 
     @Operation(summary = "method add 1 admin, 3 moderators and 15 Mentors on you DB")
     @GetMapping("/add")
+    //TODO delete after tests
+
     public String registerRoles() {
 
         try {
@@ -70,6 +84,8 @@ public class SystemController {
             createMentees(NUMBER_MENTEES);
             createLanguages();
             createSocialNetworks();
+            createCategories();
+
 
             //connects mentors with social networks
             setSocNetworkToMentor_Test();
@@ -113,6 +129,14 @@ public class SystemController {
         languagesRepository.save(new Languages("сzech"));
 
     }
+    private void createCategories(){
+
+        categoriesRepository.save(new Categories("dhtm"));
+
+
+    }
+
+
 
     private void createMentors(int numberOfMentors) {
         for (int i = 1; i <= numberOfMentors; i++) {
@@ -160,7 +184,7 @@ public class SystemController {
 
         User n = new User();
         n.setEmail(i + "_" + role.name() + "@email");
-        n.setPassword(i + "_" + role.name() + "password");
+        n.setPassword(passwordService.encodePassword(i + "_" + role.name() + "password"));
         n.setFirst_name(i + "_" + role.name() + "FN");
         n.setLast_name(i + "_" + role.name() + "LN");
         n.setRegistration_date(LocalDateTime.now());

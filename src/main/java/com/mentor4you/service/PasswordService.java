@@ -16,7 +16,7 @@ public class PasswordService {
          return new BCryptPasswordEncoder().encode(password);
      }
 
-     public boolean equalsPassword(String password,String userPassword){
-         return new BCryptPasswordEncoder().matches(password,userPassword);
-     }
+    public boolean equalsPassword(String password,String userPassword){
+        return new BCryptPasswordEncoder().matches(password,userPassword);
+    }
 }

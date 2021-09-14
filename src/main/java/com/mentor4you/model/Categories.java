@@ -9,16 +9,16 @@ import javax.persistence.*;
 
 public class Categories {
 
-   @OneToOne
-   @JoinColumn(name = "id")
-   @MapsId
-   private Cooperation cooperation;
+
+   @OneToOne (mappedBy = "categories")
+    private Cooperation cooperation;
 
    @OneToOne (mappedBy = "categories")
    private Mentors_to_categories mentors_to_categories;
 
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     public Categories() {
