@@ -5,6 +5,13 @@ localhost:8080/system/add
 #Insert data into Roles GroupServices Accounts Users Mentors
 #result  -->>  1 admin \\ 3 moderators \\ 15 mentors
 
+## Initial accounts setting
+    Login: Mentor1@gmail.com      Password: Mentor4youPassword 
+    Login: Mentor2@gmail.com      Password: Mentor4youPassword 
+    Login: Mentor3@gmail.com      Password: Mentor4youPassword 
+    Login: Mentee1@gmail.com      Password: Mentor4youPassword 
+    Login: Mentee2@gmail.com      Password: Mentor4youPassword 
+    Login: Mentee3@gmail.com      Password: Mentor4youPassword
 
 # Project launch:Linc to swagger
 http://localhost:8080/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config/
