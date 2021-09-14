@@ -2,6 +2,7 @@ package com.mentor4you.repository;
 
 import com.mentor4you.model.Accounts;
 import com.mentor4you.model.Role;
+import com.mentor4you.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -13,7 +14,7 @@ import java.util.Optional;
 @Repository
 @Transactional(readOnly = true)
 public interface AccountRepository extends JpaRepository<Accounts, Integer> {
-    Optional<Accounts> findById(int id);
+    Accounts findById(int id);
 
     @Query("Select a from Accounts a WHERE a.user.role=?1")
     List<Accounts> findByRole(Role role);
@@ -23,5 +24,7 @@ public interface AccountRepository extends JpaRepository<Accounts, Integer> {
 
     @Query("SELECT a FROM Accounts a WHERE a.phoneNumber=?1")
     Optional<Accounts> findByPhone(String phoneNumber);
+
+
 }
 
