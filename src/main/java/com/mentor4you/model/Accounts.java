@@ -16,9 +16,6 @@ public class Accounts {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "phone_number")
-    private String phoneNumber;
-
     @Column(name = "last_visit")
     private LocalDateTime last_visit;
 
@@ -44,13 +41,11 @@ public class Accounts {
 
 
     @OneToMany(mappedBy = "accounts")
-    private Set<Links_to_accounts> links_to_accounts;
+    private Set<ContactsToAccounts> contactsToAccounts;
 
     public Accounts(User user,
-                    String phoneNumber,
                     LocalDateTime last_visit) {
         this.user = user;
-        this.phoneNumber = phoneNumber;
         this.last_visit = last_visit;
     }
 
@@ -66,14 +61,6 @@ public class Accounts {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 
     public LocalDateTime getLast_visit() {
@@ -94,31 +81,32 @@ public class Accounts {
         languages.addAccounts(this);
     }
 
-    /*@Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Accounts accounts = (Accounts) o;
-        return id == accounts.id
-                && Objects.equals(phoneNumber, accounts.phoneNumber)
-                && Objects.equals(last_visit, accounts.last_visit)
-                && Objects.equals(user, accounts.user)
-                && Objects.equals(mentors, accounts.mentors);
-    }*/
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, phoneNumber, last_visit, user, mentors);
+    public Mentors getMentors() {
+        return mentors;
     }
 
-    @Override
-    public String toString() {
-        return "Accounts{" +
-                "id=" + id +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", last_visit=" + last_visit +
-                ", user id=" + user.getId() +
-                ", mentors=" + mentors.getId() +
-                '}';
+    public void setMentors(Mentors mentors) {
+        this.mentors = mentors;
+    }
+
+    public Mentees getMentees() {
+        return mentees;
+    }
+
+    public void setMentees(Mentees mentees) {
+        this.mentees = mentees;
+    }
+
+    public void setLanguagesList(List<Languages> languagesList) {
+        this.languagesList = languagesList;
+    }
+
+    public Set<ContactsToAccounts> getContactsToAccounts() {
+        return contactsToAccounts;
+    }
+
+    public void setContactsToAccounts(Set<ContactsToAccounts> contactsToAccounts) {
+        this.contactsToAccounts = contactsToAccounts;
     }
 }
