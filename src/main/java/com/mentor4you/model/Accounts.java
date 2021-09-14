@@ -6,7 +6,10 @@ import com.mentor4you.service.requests.UpdateAccountRequest;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Entity
@@ -43,7 +46,7 @@ public class Accounts {
     )
     private List<Languages> languagesList;
     @OneToMany(mappedBy = "accounts")
-    private Set<Links_to_accounts> links_to_accounts;
+    private Set<ContactsToAccounts> contactsToAccounts;
 
     public Accounts(User user,
                     String phoneNumber,
@@ -87,52 +90,21 @@ public class Accounts {
         return languagesList;
     }
 
-    public void setLanguagesList(List<Languages> languagesList) {
-        this.languagesList = languagesList;
-    }
-
     public void addLanguages(Languages languages) {
         if(languagesList.isEmpty()) languagesList = new ArrayList<>();
         this.languagesList.add(languages);
         languages.addAccounts(this);
     }
 
-    public Set<Links_to_accounts> getLinks_to_accounts() {
-        return links_to_accounts;
+    public void setLanguagesList(List<Languages> languagesList) {
+        this.languagesList = languagesList;
     }
 
-
-    public void setLinks_to_accounts(Set<Links_to_accounts> links_to_accounts) {
-        this.links_to_accounts = links_to_accounts;
-    }
-    /*@Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Accounts accounts = (Accounts) o;
-        return id == accounts.id
-                && Objects.equals(phoneNumber, accounts.phoneNumber)
-                && Objects.equals(last_visit, accounts.last_visit)
-                && Objects.equals(user, accounts.user)
-                && Objects.equals(mentors, accounts.mentors);
-    }*/
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, phoneNumber, last_visit, user, mentors);
+    public Set<ContactsToAccounts> getContactsToAccounts() {
+        return contactsToAccounts;
     }
 
-    @Override
-    public String toString() {
-        return "Accounts{" +
-                "id=" + id +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", last_visit=" + last_visit +
-                ", user=" + user +
-                ", mentors=" + mentors +
-                ", mentees=" + mentees +
-                ", languagesList=" + languagesList +
-                ", links_to_accounts=" + links_to_accounts +
-                '}';
+    public void setContactsToAccounts(Set<ContactsToAccounts> contactsToAccounts) {
+        this.contactsToAccounts = contactsToAccounts;
     }
 }

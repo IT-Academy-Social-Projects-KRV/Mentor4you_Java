@@ -15,9 +15,6 @@ public class Mentees {
     @MapsId
     private Accounts accounts;
 
-
-
-
     public Mentees() {
     }
 

@@ -20,8 +20,10 @@ public class Cooperation {
     @MapsId
     private Mentors mentors;
 
-     @OneToOne (mappedBy = "cooperation")
-   private Categories categories;
+    @OneToOne
+    @JoinColumn(name = "id")
+    @MapsId
+    private Categories categories;
 
 
     private int mentee_id;
