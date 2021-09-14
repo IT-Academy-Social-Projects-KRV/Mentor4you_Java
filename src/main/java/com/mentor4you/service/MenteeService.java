@@ -1,5 +1,6 @@
 package com.mentor4you.service;
 
+import com.mentor4you.exception.MenteeNotFoundException;
 import com.mentor4you.exception.MentorNotFoundException;
 import com.mentor4you.model.Mentees;
 import com.mentor4you.model.Mentors;
@@ -31,11 +32,12 @@ public class MenteeService {
         throw new MentorNotFoundException("Mentees not found");
 
     }
-    public Optional<Mentees> getMentorById(int id){
-        Optional<Mentees> theMentor = menteeRepository.findById(id).stream().filter(e->e.getId()==id).findFirst();
-        if(theMentor.isPresent()) {
-            return theMentor;
+
+    public Optional<Mentees> getMenteeById(int id){
+        Optional<Mentees> theMentee = menteeRepository.findById(id).stream().filter(e->e.getId()==id).findFirst();
+        if(theMentee.isPresent()) {
+            return theMentee;
         }
-        throw new MentorNotFoundException("Mentees with id = "+ id +" not found");
+        throw new MenteeNotFoundException("Mentee with id = "+ id +" not found");
     }
 }
