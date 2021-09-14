@@ -20,5 +20,8 @@ public interface AccountRepository extends JpaRepository<Accounts, Integer> {
 
     @Query("SELECT a FROM Accounts a WHERE a.id=?1 and a.user.role='MENTOR'")
     Optional<Accounts> findMentorById(Integer integer);
+
+    @Query("SELECT a FROM Accounts a WHERE a.phoneNumber=?1")
+    Optional<Accounts> findByPhone(String phoneNumber);
 }
 
