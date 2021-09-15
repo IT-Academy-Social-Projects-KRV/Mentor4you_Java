@@ -47,10 +47,18 @@ public class MentorService {
     // не фінальна версія
     public MentorGeneralDTO getById(int id){
 
+        Mentors m = mentorRepository.getById(id);
+        MentorGeneralDTO dto =
+                new MentorGeneralDTO(m.getDescription(),
+                        false,
+                        false,
+                        false,
+                        false,
+                        null,
+                        m.getEducations(),
+                        m.getCertificats());
 
-        Mentors theMentor = mentorRepository.getById(id);
-
-            return new MentorGeneralDTO();
+            return  dto;
 
 
         //throw new MentorNotFoundException("Mentor with id = "+ id +" not found");

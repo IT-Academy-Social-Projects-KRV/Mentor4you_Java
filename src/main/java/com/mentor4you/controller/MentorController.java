@@ -28,11 +28,14 @@ public class MentorController {
 
 
     //select mentor by id
-    @Operation(summary = "select mentor by id")
+   /* @Operation(summary = "select mentor by id")
     @GetMapping("/{id}")
     Optional<Mentors> getMentorById(@PathVariable(value = "id") Integer id){
         return mentorService.getMentorById(id);
-    }
+    }*/
+    @GetMapping("/{id}")
+    MentorGeneralDTO getMentorById(@PathVariable(value = "id") Integer id){
+        return mentorService.getById(id);}
 
     @Operation(summary = "Full info about mentors", description = "This method provides the most complete information about existing mentors")
     @GetMapping
