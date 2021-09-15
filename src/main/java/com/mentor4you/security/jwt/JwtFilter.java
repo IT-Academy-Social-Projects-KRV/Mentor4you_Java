@@ -19,7 +19,6 @@ import static io.jsonwebtoken.lang.Strings.hasText;
 
 @Component
 public class JwtFilter extends GenericFilterBean {
-    public static final String AUTHORIZATION = "Authorization";
 
     @Autowired
     private JwtProvider jwtProvider;
@@ -30,7 +29,7 @@ public class JwtFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         logger.info("do filter...");
-        String token = getTokenFromRequest((HttpServletRequest) servletRequest);
+        String token = jwtProvider.getTokenFromRequest((HttpServletRequest) servletRequest);
         if (token != null && jwtProvider.validateToken(token)) {
                 String userLogin = jwtProvider.getLoginFromToken(token);
                 CustomUserDetails customUserDetails = customUserDetailsService.loadUserByUsername(userLogin);
@@ -40,11 +39,5 @@ public class JwtFilter extends GenericFilterBean {
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
-    private String getTokenFromRequest(HttpServletRequest request) {
-        String bearer = request.getHeader(AUTHORIZATION);
-        if (hasText(bearer) && bearer.startsWith("Bearer ")) {
-            return bearer.substring(7);
-        }
-        return null;
-    }
+
 }
