@@ -1,14 +1,12 @@
 package com.mentor4you.controller;
 
 import com.mentor4you.model.DTO.LoginDTO;
-import com.mentor4you.security.jwt.OnUserLogoutSuccessEvent;
+import com.mentor4you.security.jwt.CurrentUser;
+import com.mentor4you.security.jwt.CustomUserDetails;
 import com.mentor4you.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -29,8 +27,8 @@ public class AuthController {
         return ResponseEntity.ok(token);
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<?> logout(HttpServletRequest request){
-        return ResponseEntity.ok(authenticationService.logout(request));
+    @PutMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletRequest request, @CurrentUser CustomUserDetails user){
+        return ResponseEntity.ok(authenticationService.logout(request, user));
     }
 }

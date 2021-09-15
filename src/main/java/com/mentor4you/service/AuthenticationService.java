@@ -3,6 +3,7 @@ package com.mentor4you.service;
 import com.mentor4you.model.DTO.LoginDTO;
 import com.mentor4you.model.User;
 import com.mentor4you.repository.UserRepository;
+import com.mentor4you.security.jwt.CustomUserDetails;
 import com.mentor4you.security.jwt.JwtProvider;
 import com.mentor4you.security.jwt.OnUserLogoutSuccessEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,27 +40,27 @@ public class AuthenticationService {
         User user = userRepository.findUserByEmail(request.getEmail());
 
         if(user.getStatus() && new BCryptPasswordEncoder().matches(request.getPassword(),user.getPassword())){
-
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                    user.getEmail(),
-                    user.getPassword()
+                    request.getEmail(),
+                    request.getPassword()
             ));
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             String authToken = jwtProvider.generateAuthToken(authentication);
+//            String authToken = jwtProvider.generateToken(request.getEmail(), user.getRole());
             return authToken;
         }
 
         return "";
     }
 
-    public String logout(HttpServletRequest request) {
+    public String logout(HttpServletRequest request, CustomUserDetails user) {
         String token = jwtProvider.getTokenFromRequest(request);
         String email = jwtProvider.getLoginFromToken(token);
 
-        OnUserLogoutSuccessEvent logoutEventPublisher = new OnUserLogoutSuccessEvent(email,token);
+        OnUserLogoutSuccessEvent logoutEventPublisher = new OnUserLogoutSuccessEvent(user.getUsername(),token);
         applicationEventPublisher.publishEvent(logoutEventPublisher);
 
-        return email + " "+ token;
+        return "email + token";
     }
 }

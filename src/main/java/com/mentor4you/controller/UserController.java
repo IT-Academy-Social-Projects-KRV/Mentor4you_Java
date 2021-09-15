@@ -1,10 +1,13 @@
 package com.mentor4you.controller;
 
+import com.mentor4you.exception.MentorNotFoundException;
 import com.mentor4you.exception.RegistrationException;
 import com.mentor4you.model.DTO.EmailRequest;
 import com.mentor4you.model.DTO.PasswordDTO;
 import com.mentor4you.model.User;
 import com.mentor4you.repository.UserRepository;
+import com.mentor4you.security.jwt.CurrentUser;
+import com.mentor4you.security.jwt.CustomUserDetails;
 import com.mentor4you.service.EmailService;
 import com.mentor4you.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -43,6 +46,7 @@ public class UserController {
     @Operation(summary = "change password")
     @PutMapping("/changePassword")
     ResponseEntity<?> changePassword(@RequestHeader("Authorization") String token, @RequestBody PasswordDTO request){
+
         Map<String, String> res = new HashMap<>();
         try{
             String result = userService.changePassword(token, request.getOldPassword(), request.getNewPassword());
@@ -73,7 +77,25 @@ public class UserController {
             }
             else { return "email "+email+" is exist";}
         }
-        else {return "Something wrong with thr email ->  "+email;}
+        else {
+            return "Something wrong with thr email ->  "+email;
+        }
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> getCurrentUser(@CurrentUser CustomUserDetails userPrincipal) {
+
+        try{
+            User user = userRepository.findUserByEmail(userPrincipal.getUsername());
+            if(userRepository.findByEmail(userPrincipal.getUsername()).isPresent()){
+                return ResponseEntity.ok(user);
+            }
+                   throw new Exception("error");
+        } catch (Exception exception) {
+            return ResponseEntity.status(400).body(exception.getMessage());
+        }
+
+
     }
 
 
