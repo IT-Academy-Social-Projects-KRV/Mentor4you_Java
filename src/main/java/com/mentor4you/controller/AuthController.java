@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -23,12 +26,23 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO request){
-        String token = authenticationService.login(request);
-        return ResponseEntity.ok(token);
+        Map<String, String> res = new HashMap<>();
+        try {
+            String token = authenticationService.login(request);
+            res.put("message","You have successfully logged in");
+            res.put("token", token);
+            return ResponseEntity.ok(res);
+        }catch (AuthenticationException ex) {
+            res.put("message", ex.getMessage());
+            return ResponseEntity.badRequest().body(res);
+        }
     }
 
     @PutMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request, @CurrentUser CustomUserDetails user){
-        return ResponseEntity.ok(authenticationService.logout(request, user));
+        Map<String, String> res = new HashMap<>();
+        String message = authenticationService.logout(request, user);
+        res.put("message", message);
+        return ResponseEntity.ok(res);
     }
 }

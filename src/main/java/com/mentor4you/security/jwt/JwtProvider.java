@@ -1,6 +1,9 @@
 package com.mentor4you.security.jwt;
 
+import com.mentor4you.exception.InvalidTokenRequestException;
 import com.mentor4you.model.Role;
+import com.mentor4you.security.jwt.cache.event.OnUserLogoutSuccessEvent;
+import com.mentor4you.security.jwt.cache.TokenCache;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,35 +57,16 @@ public class JwtProvider {
                 .compact();
     }
 
-
-    public boolean validateToken(String token) {
+    public boolean validateToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
-            validateTokenIsNotForALoggedOutDevice(token);
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+            validateTokenIsNotForALoggedOutDevice(authToken);
             return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            throw new JwtAuthenticationException("JWT token is expired or invalid");
+        } catch (MalformedJwtException | ExpiredJwtException | UnsupportedJwtException | IllegalArgumentException e) {
+           logger.error(e.getMessage());
         }
-//        return false;
+        return false;
     }
-
-//    public boolean validateToken(String authToken) {
-//        try {
-//            Jwts.parser().setSigningKey("HelloWorld").parseClaimsJws(authToken);
-//            validateTokenIsNotForALoggedOutDevice(authToken);
-//            return true;
-//        } catch (MalformedJwtException e) {
-//            logger.error("Invalid JWT token -> Message: {}", e);
-//        } catch (ExpiredJwtException e) {
-//            logger.error("Expired JWT token -> Message: {}", e);
-//        } catch (UnsupportedJwtException e) {
-//            logger.error("Unsupported JWT token -> Message: {}", e);
-//        } catch (IllegalArgumentException e) {
-//            logger.error("JWT claims string is empty -> Message: {}", e);
-//        }
-//
-//        return false;
-//    }
 
     public String getLoginFromToken(String token) {
         Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
@@ -90,8 +74,7 @@ public class JwtProvider {
     }
 
     public String getTokenFromRequest(HttpServletRequest request) {
-        String token = request.getHeader(header);
-        return token;
+        return request.getHeader(header);
     }
 
     public Date getExpireDateFromToken(String token) {
@@ -101,10 +84,10 @@ public class JwtProvider {
     private void validateTokenIsNotForALoggedOutDevice(String authToken) {
         OnUserLogoutSuccessEvent previouslyLoggedOutEvent = tokenCache.getLogoutEventForToken(authToken);
         if (previouslyLoggedOutEvent != null) {
-            String userEmail = previouslyLoggedOutEvent.getEmail();
-            Date logoutEventDate = previouslyLoggedOutEvent.getTime();
-            String errorMessage = String.format("Token corresponds to an already logged out user [%s] at [%s]. Please login again", userEmail, logoutEventDate);
-            throw new InvalidTokenRequestException("JWT", authToken, errorMessage);
+                String userEmail = previouslyLoggedOutEvent.getEmail();
+                Date logoutEventDate = previouslyLoggedOutEvent.getTime();
+                String errorMessage = String.format("Token corresponds to an already logged out user [%s] at [%s]. Please login again", userEmail, logoutEventDate);
+                throw new InvalidTokenRequestException("JWT", authToken, errorMessage);
         }
     }
 

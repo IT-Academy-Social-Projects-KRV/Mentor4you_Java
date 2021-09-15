@@ -12,9 +12,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 
 @Service
@@ -36,8 +38,12 @@ public class AuthenticationService {
     }
 
 
-    public String login(LoginDTO request){
+    public String login(LoginDTO request) throws AuthenticationException {
         User user = userRepository.findUserByEmail(request.getEmail());
+
+        if(user==null){
+            throw new AuthenticationException("Email is incorrect");
+        }
 
         if(user.getStatus() && new BCryptPasswordEncoder().matches(request.getPassword(),user.getPassword())){
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
@@ -48,16 +54,14 @@ public class AuthenticationService {
             return jwtProvider.generateAuthToken(authentication);
         }
 
-        return "";
+        throw new AuthenticationException("Password is incorrect");
     }
 
     public String logout(HttpServletRequest request, CustomUserDetails user) {
         String token = jwtProvider.getTokenFromRequest(request);
-        String email = jwtProvider.getLoginFromToken(token);
-
         OnUserLogoutSuccessEvent logoutEventPublisher = new OnUserLogoutSuccessEvent(user.getUsername(),token);
         applicationEventPublisher.publishEvent(logoutEventPublisher);
 
-        return "email + token";
+        return "You have successfully logout";
     }
 }
