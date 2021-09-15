@@ -59,7 +59,6 @@ public class User {
         return id;
     }
 
-
     public Role getRole() {
         return role;
     }

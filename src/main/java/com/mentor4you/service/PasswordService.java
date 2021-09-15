@@ -23,4 +23,8 @@ public class PasswordService {
     public void forgottenPassword(String email) {
 
     }
+
+    public boolean equalsPassword(String password,String userPassword){
+        return new BCryptPasswordEncoder().matches(password,userPassword);
+    }
 }
