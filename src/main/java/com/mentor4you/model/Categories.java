@@ -5,25 +5,18 @@ import java.util.Set;
 
 @Entity
 @Table(name="Categories")
-
-
-
 public class Categories {
-
-
-   @OneToOne (mappedBy = "categories")
-    private Cooperation cooperation;
-
-   @OneToMany (mappedBy = "categories")
-   private Set<Mentors_to_categories> mentors_to_categories;
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    public Categories() {
+    @OneToOne (mappedBy = "categories")
+    private Cooperation cooperation;
 
+    @OneToOne (mappedBy = "categories")
+    private Mentors_to_categories mentors_to_categories;
+    public Categories() {
     }
 
     public void setName(String name) {
@@ -36,14 +29,11 @@ public class Categories {
 
     private String name;
 
-
-
     public int getId() {
         return id;
     }
-     public String getName() {
+    public String getName() {
         return name;
     }
-
 
 }
