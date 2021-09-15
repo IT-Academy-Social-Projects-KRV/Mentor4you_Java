@@ -33,6 +33,7 @@ public class MentorController {
     Optional<Mentors> getMentorById(@PathVariable(value = "id") Integer id){
         return mentorService.getMentorById(id);
     }
+
     @Operation(summary = "Full info about mentors", description = "This method provides the most complete information about existing mentors")
     @GetMapping
     List<Mentors> getAllMentor(){

@@ -10,6 +10,7 @@ import java.util.Optional;
 @Repository
 @Transactional(readOnly = true)
 public interface MentorRepository
+
         extends JpaRepository<Mentors, Integer> {
     Optional<Mentors> findById(int id);
 }
