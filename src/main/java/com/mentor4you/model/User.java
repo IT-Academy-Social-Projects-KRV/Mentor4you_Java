@@ -3,8 +3,8 @@ package com.mentor4you.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name="Users")
@@ -23,8 +23,12 @@ public class User {
     private String first_name;
     private String last_name;
     private String avatar;
+    private String token;
     private LocalDateTime registration_date;
     private Boolean status;
+
+    @OneToMany(mappedBy = "user")
+    private Set<SecureToken> tokens;
 
     @OneToOne (mappedBy = "user")
     private Accounts accounts;
@@ -96,6 +100,14 @@ public class User {
         this.last_name = last_name;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     public String getAvatar() {
         return avatar;
     }
@@ -118,6 +130,18 @@ public class User {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    public Set<SecureToken> getTokens() {
+        return tokens;
+    }
+
+    public void setTokens(Set<SecureToken> tokens) {
+        this.tokens = tokens;
+    }
+
+    public void addToken(final SecureToken token){
+        tokens.add(token);
     }
 
     @Override

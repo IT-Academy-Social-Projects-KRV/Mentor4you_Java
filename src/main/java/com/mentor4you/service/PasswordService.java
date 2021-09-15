@@ -15,4 +15,12 @@ public class PasswordService {
      public String encodePassword(String password){
          return new BCryptPasswordEncoder().encode(password);
      }
+
+    public void updatePassword(String password, String token) {
+
+    }
+
+    public void forgottenPassword(String email) {
+
+    }
 }

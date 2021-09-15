@@ -1,7 +1,5 @@
 package com.mentor4you.security.jwt;
 
-import com.mentor4you.model.User;
-import com.mentor4you.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
