@@ -5,7 +5,7 @@ import com.mentor4you.model.User;
 import com.mentor4you.repository.UserRepository;
 import com.mentor4you.security.jwt.CustomUserDetails;
 import com.mentor4you.security.jwt.JwtProvider;
-import com.mentor4you.security.jwt.OnUserLogoutSuccessEvent;
+import com.mentor4you.security.jwt.cache.event.OnUserLogoutSuccessEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -45,10 +45,7 @@ public class AuthenticationService {
                     request.getPassword()
             ));
             SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            String authToken = jwtProvider.generateAuthToken(authentication);
-//            String authToken = jwtProvider.generateToken(request.getEmail(), user.getRole());
-            return authToken;
+            return jwtProvider.generateAuthToken(authentication);
         }
 
         return "";

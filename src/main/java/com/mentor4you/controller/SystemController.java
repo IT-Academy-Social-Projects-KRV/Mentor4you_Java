@@ -3,19 +3,15 @@ package com.mentor4you.controller;
 import com.mentor4you.model.*;
 import com.mentor4you.model.Categories;
 import com.mentor4you.repository.*;
-import com.mentor4you.security.jwt.JwtAuthenticationException;
 import com.mentor4you.security.jwt.JwtProvider;
 import com.mentor4you.service.PasswordService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.naming.AuthenticationException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 
@@ -248,20 +244,6 @@ public class SystemController {
                 }
         );
         return "languages added";
-    }
-
-    @PostMapping("/auth")
-    public Object auth(@RequestBody AuthRequest request) {
-        User user = userRepository.findByEmail(request.getLogin()).get();
-        try{
-            if(new BCryptPasswordEncoder().matches(request.getPassword(),user.getPassword())){
-                String token = jwtProvider.generateToken(user.getEmail(),user.getRole());
-                return new AuthResponse(token);
-            }
-            throw new Exception("Bad Credential");
-        }catch (Exception ex){
-              return ex.getMessage();
-        }
     }
 
     @GetMapping("/testAuth")

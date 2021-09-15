@@ -1,4 +1,4 @@
-package com.mentor4you.security.jwt;
+package com.mentor4you.security.jwt.cache;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 

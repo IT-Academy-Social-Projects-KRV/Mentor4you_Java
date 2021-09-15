@@ -1,5 +1,7 @@
-package com.mentor4you.security.jwt;
+package com.mentor4you.security.jwt.cache.event;
 
+import com.mentor4you.security.jwt.cache.TokenCache;
+import com.mentor4you.security.jwt.cache.event.OnUserLogoutSuccessEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -16,8 +18,6 @@ public class OnUserLogoutSuccessEventListener implements ApplicationListener<OnU
 
     @Override
     public void onApplicationEvent(OnUserLogoutSuccessEvent event) {
-        if(null!=event){
             tokenCache.markLogoutEventForToken(event);
-        }
     }
 }

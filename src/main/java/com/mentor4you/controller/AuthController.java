@@ -1,7 +1,7 @@
 package com.mentor4you.controller;
 
 import com.mentor4you.model.DTO.LoginDTO;
-import com.mentor4you.security.jwt.CurrentUser;
+import com.mentor4you.security.jwt.cache.CurrentUser;
 import com.mentor4you.security.jwt.CustomUserDetails;
 import com.mentor4you.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
