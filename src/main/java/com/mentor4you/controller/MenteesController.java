@@ -168,6 +168,7 @@ public class MenteesController {
                         Map.Entry<String, String> entry = iter.next();
                         //если пусто "LinkedIn":"" удаляем пару из карты
                         //TODO add possibility delete row from table
+                        //TODO if "LinkedIn":"" и такого типа у юзера нету то не нужно добавлять, а если есть то обновить
                         /**
                          * добавить удаление из базы
                          * if ("".equalsIgnoreCase(entry.getValue())) {
