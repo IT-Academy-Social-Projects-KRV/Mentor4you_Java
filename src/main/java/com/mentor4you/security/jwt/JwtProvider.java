@@ -47,7 +47,7 @@ public class JwtProvider {
 
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
         Date now = new Date();
-        Date expireDate = new Date(now.getTime()+15000);
+        Date expireDate = new Date(now.getTime()+604800000);
 
         return Jwts.builder()
                 .setSubject(customUserDetails.getUsername())
