@@ -6,13 +6,14 @@ import java.util.Set;
 @Entity
 @Table(name="TypeContacts")
 public class TypeContacts {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+
     @Column(unique=true)
     private String name;
-
 
     @OneToMany(mappedBy = "typeContacts")
     private Set<ContactsToAccounts> links_to_accounts;
