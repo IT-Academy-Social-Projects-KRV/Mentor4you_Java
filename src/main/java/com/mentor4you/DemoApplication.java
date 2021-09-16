@@ -27,6 +27,16 @@ public class DemoApplication {
 		return String.format("Wake up, %s.\n The Mentor4you has you...", name);
 	}
 
+
+	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurer() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/**").allowedOrigins("http://localhost:4200/");
+			}
+		};
+	}
 	@Operation(summary = "Test security method")
 	@GetMapping("/testSecurity")
 	public String testSecurity() {

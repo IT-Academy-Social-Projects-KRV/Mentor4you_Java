@@ -1,8 +1,11 @@
 package com.mentor4you.security;
 
+import com.mentor4you.security.jwt.JwtConfigurer;
 import com.mentor4you.security.jwt.JwtFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -19,6 +22,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
 
     private final JwtFilter jwtFilter;
 
+    @Autowired
+    JwtConfigurer jwtConfigurer;
+
     public WebSecurityConfig(JwtFilter jwtFilter) {
         this.jwtFilter = jwtFilter;
     }
@@ -26,16 +32,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                //виключив csrf захист щоб можна було надсилати POST запити
                 .csrf().disable()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests().antMatchers("/testSecurity",
-                        "/system/testAuth")
-                .authenticated()
-                .anyRequest().permitAll()
+                .authorizeRequests().antMatchers("/api/auth/*","/","/api/registration","/api/users","/system/add").permitAll()
+                .anyRequest().authenticated()
+//                .authorizeRequests().antMatchers("/testSecurity","/system/testAuth").authenticated()
+//                .anyRequest().permitAll()
                 .and()
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                .apply(jwtConfigurer)
         ;
 
     }
@@ -53,4 +60,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
     }
 
 
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 }
