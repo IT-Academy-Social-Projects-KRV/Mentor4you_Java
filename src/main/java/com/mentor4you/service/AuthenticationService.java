@@ -7,6 +7,7 @@ import com.mentor4you.repository.UserRepository;
 import com.mentor4you.security.jwt.CustomUserDetails;
 import com.mentor4you.security.jwt.JwtProvider;
 import com.mentor4you.security.jwt.cache.event.OnUserLogoutSuccessEvent;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -70,11 +71,12 @@ public class AuthenticationService {
 
     public String checkExpiration(String token) {
         Date expireDateFromToken = jwtProvider.getExpireDateFromToken(token);
-        if(expireDateFromToken.after(Date.from(Instant.now()))){
+       try{
+           if(expireDateFromToken.after(Date.from(Instant.now()))){
             return "Token is valid";
-        }else{
-            throw new JwtAuthenticationException("Token is invalid");
-        }
-
+        }}catch (ExpiredJwtException e){
+           throw new JwtAuthenticationException("Token is invalid");
+       }
+        throw new JwtAuthenticationException("Token is invalid");
     }
 }
