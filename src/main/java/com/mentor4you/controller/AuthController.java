@@ -1,5 +1,7 @@
 package com.mentor4you.controller;
 
+import com.mentor4you.exception.InvalidTokenRequestException;
+import com.mentor4you.exception.JwtAuthenticationException;
 import com.mentor4you.model.DTO.LoginDTO;
 import com.mentor4you.security.jwt.cache.CurrentUser;
 import com.mentor4you.security.jwt.CustomUserDetails;
@@ -12,6 +14,7 @@ import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -44,5 +47,18 @@ public class AuthController {
         String message = authenticationService.logout(request, user);
         res.put("message", message);
         return ResponseEntity.ok(res);
+    }
+
+    @PostMapping("/check")
+    public ResponseEntity<?> checkTokenExpire(@RequestBody Map<String,String> request){
+        Map<String, String> res = new HashMap<>();
+        try{
+            String message = authenticationService.checkExpiration(request.get("token"));
+            res.put("message", message);
+            return ResponseEntity.ok(res);
+        }catch (JwtAuthenticationException e){
+            res.put("message",e.getMessage());
+            return ResponseEntity.status(401).body(res);
+        }
     }
 }
