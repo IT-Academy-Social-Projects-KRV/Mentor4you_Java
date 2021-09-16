@@ -4,21 +4,25 @@ import com.mentor4you.exception.MentorNotFoundException;
 import com.mentor4you.model.*;
 import com.mentor4you.repository.AccountRepository;
 import com.mentor4you.repository.MentorRepository;
+import com.mentor4you.repository.MentorsToCategory;
 import com.mentor4you.service.requests.MentorGeneralDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 @Service
+@Transactional
 public class MentorService {
 
     @Autowired
+    MentorsToCategory mentorsToCategory;
     AccountRepository accountRepository;
     MentorRepository mentorRepository;
 
-
-    public MentorService(AccountRepository accountRepository,MentorRepository mentorRepository) {
+    public MentorService(MentorsToCategory mentorsToCategory, AccountRepository accountRepository, MentorRepository mentorRepository) {
+        this.mentorsToCategory = mentorsToCategory;
         this.accountRepository = accountRepository;
         this.mentorRepository = mentorRepository;
     }
@@ -48,15 +52,17 @@ public class MentorService {
     public MentorGeneralDTO getById(int id){
 
         Mentors m = mentorRepository.getById(id);
+
         MentorGeneralDTO dto =
                 new MentorGeneralDTO(m.getDescription(),
                         false,
                         false,
                         false,
                         false,
-                        null,
                         m.getEducations(),
-                        m.getCertificats());
+                        m.getCertificats(),
+                        m.getMentors_to_categories()
+                  );
 
             return  dto;
 
@@ -73,13 +79,20 @@ public class MentorService {
             mentor.setIs_offline_in(true);
             mentor.setIs_offline_out(true);
             mentor.setIs_online(true);
-
-
+            remove(mentor);
+            for (Mentors_to_categories n : up.getCategories()) {
+                n.setMentors(mentor);
+            }
+            mentor.setMentors_to_categories(null);
+            mentor.setMentors_to_categories(up.getCategories());
 
 
             mentorRepository.save(mentor);
             return "update was successful";
         }
         throw new MentorNotFoundException("Mentor with id = "+ id +" not found");
+    }
+    public void remove(Mentors m){
+        mentorsToCategory.removeByMentors(m);
     }
 }

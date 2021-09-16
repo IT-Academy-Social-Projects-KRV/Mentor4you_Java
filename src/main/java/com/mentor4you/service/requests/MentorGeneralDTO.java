@@ -1,12 +1,13 @@
 package com.mentor4you.service.requests;
 
 
-import com.mentor4you.model.Accounts;
 import com.mentor4you.model.Certificats;
 import com.mentor4you.model.Educations;
 import com.mentor4you.model.GroupServices;
+import com.mentor4you.model.Mentors_to_categories;
 
 import java.util.List;
+import java.util.Set;
 
 public class MentorGeneralDTO {
 
@@ -16,28 +17,25 @@ public class MentorGeneralDTO {
     private boolean is_offline_in;
     private boolean is_offline_out;
 
-    private GroupServices group_services;
-
-
     private List<Educations> educations;
-    
 
     private List<Certificats> certificats;
 
+    private Set<Mentors_to_categories> categories;
 
 
     public MentorGeneralDTO() {
     }
 
-    public MentorGeneralDTO(String description, boolean showable_status, boolean is_online, boolean is_offline_in, boolean is_offline_out, GroupServices group_services, List<Educations> educations, List<Certificats> certificats) {
+    public MentorGeneralDTO(String description, boolean showable_status, boolean is_online, boolean is_offline_in, boolean is_offline_out, List<Educations> educations, List<Certificats> certificats, Set<Mentors_to_categories> mentors_to_categories) {
         this.description = description;
         this.showable_status = showable_status;
         this.is_online = is_online;
         this.is_offline_in = is_offline_in;
         this.is_offline_out = is_offline_out;
-        this.group_services = group_services;
         this.educations = educations;
         this.certificats = certificats;
+        this.categories = mentors_to_categories;
     }
 
     public String getDescription() {
@@ -80,14 +78,6 @@ public class MentorGeneralDTO {
         this.is_offline_out = is_offline_out;
     }
 
-    public GroupServices getGroup_services() {
-        return group_services;
-    }
-
-    public void setGroup_services(GroupServices group_services) {
-        this.group_services = group_services;
-    }
-
     public List<Educations> getEducations() {
         return educations;
     }
@@ -104,5 +94,11 @@ public class MentorGeneralDTO {
         this.certificats = certificats;
     }
 
+    public Set<Mentors_to_categories> getCategories() {
+        return categories;
+    }
 
+    public void setCategories(Set<Mentors_to_categories> categories) {
+        this.categories = categories;
+    }
 }

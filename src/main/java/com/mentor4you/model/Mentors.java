@@ -26,7 +26,7 @@ public class Mentors {
     @JoinColumn(name = "group_services")
     private GroupServices group_services;
 
-    @OneToMany(mappedBy = "mentors")
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "mentors")
     private Set<Mentors_to_categories> mentors_to_categories;
 
 
@@ -123,8 +123,6 @@ public class Mentors {
         this.is_offline_out = is_offline_out;
     }
 
-
-
     public List<Educations> getEducations() {
         return educations;
     }
@@ -134,8 +132,6 @@ public class Mentors {
         this.educations = educations;
     }
 
-
-
     public List<Certificats> getCertificats() {
         return certificats;
     }
@@ -143,6 +139,14 @@ public class Mentors {
 
     public void setCertificats(List<Certificats> certificats) {
         this.certificats = certificats;
+    }
+
+    public Set<Mentors_to_categories> getMentors_to_categories() {
+        return mentors_to_categories;
+    }
+
+    public void setMentors_to_categories(Set<Mentors_to_categories> mentors_to_categories) {
+        this.mentors_to_categories = mentors_to_categories;
     }
 
     @Override

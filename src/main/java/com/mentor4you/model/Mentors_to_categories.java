@@ -11,20 +11,21 @@ import java.util.Objects;
 @Table(name = "Mentors_to_categories")
 public class Mentors_to_categories {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-    @OneToOne
-    @JoinColumn(name = "id")
-    @MapsId
+    @ManyToOne
+    @JoinColumn(name = "categories_id")
     private Categories categories;
 
     @ManyToOne
     @JoinColumn(name = "mentors_id")
+    @JsonIgnore
     private Mentors mentors;
 
-    @Id
-    private int id;
-
     private int rate;
+
     private String currency;
 
 
@@ -55,6 +56,18 @@ public class Mentors_to_categories {
 
     public void setCurrency(String currency) {
         this.currency = currency;
+    }
+
+    public Categories getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Categories categories) {
+        this.categories = categories;
+    }
+
+    public void setMentors(Mentors mentors) {
+        this.mentors = mentors;
     }
 
     @Override

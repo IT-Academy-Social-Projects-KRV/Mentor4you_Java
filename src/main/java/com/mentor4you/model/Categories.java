@@ -1,6 +1,7 @@
 package com.mentor4you.model;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -14,8 +15,9 @@ public class Categories {
     @OneToOne (mappedBy = "categories")
     private Cooperation cooperation;
 
-    @OneToOne (mappedBy = "categories")
-    private Mentors_to_categories mentors_to_categories;
+    @OneToMany (cascade = CascadeType.ALL,mappedBy = "categories")
+    private List<Mentors_to_categories> mentors_to_categories;
+
     public Categories() {
     }
 
