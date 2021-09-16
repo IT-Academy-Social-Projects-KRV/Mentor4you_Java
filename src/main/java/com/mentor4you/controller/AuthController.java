@@ -6,6 +6,7 @@ import com.mentor4you.model.DTO.LoginDTO;
 import com.mentor4you.security.jwt.cache.CurrentUser;
 import com.mentor4you.security.jwt.CustomUserDetails;
 import com.mentor4you.service.AuthenticationService;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -56,7 +57,7 @@ public class AuthController {
             String message = authenticationService.checkExpiration(request.get("token"));
             res.put("message", message);
             return ResponseEntity.ok(res);
-        }catch (JwtAuthenticationException e){
+        }catch (JwtAuthenticationException | ExpiredJwtException e){
             res.put("message",e.getMessage());
             return ResponseEntity.status(401).body(res);
         }
