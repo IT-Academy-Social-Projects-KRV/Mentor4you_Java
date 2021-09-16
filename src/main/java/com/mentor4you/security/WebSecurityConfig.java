@@ -37,11 +37,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests().antMatchers("/api/auth/*","/","/api/registration","/api/users","/system/add",
-                        "localhost:8080/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config/**").permitAll()
-                .anyRequest().authenticated()
-//                .authorizeRequests().antMatchers("/testSecurity","/system/testAuth").authenticated()
-//                .anyRequest().permitAll()
+                .authorizeRequests().antMatchers("/api/auth/*","/api/registration","/api/users").permitAll()
+                .and()
+                .authorizeRequests().antMatchers("/api/**").authenticated()
+                .anyRequest().permitAll()
                 .and()
                 .apply(jwtConfigurer)
         ;
