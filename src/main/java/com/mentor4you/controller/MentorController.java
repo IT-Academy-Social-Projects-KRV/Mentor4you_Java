@@ -35,7 +35,7 @@ public class MentorController {
         return mentorService.getMentorById(id);
     }*/
     @GetMapping("/{id}")
-    MentorGeneralDTO getMentorById(@PathVariable(value = "id") Integer id){
+    ResponseEntity<MentorGeneralDTO> getMentorById(@PathVariable(value = "id") Integer id){
         return mentorService.getById(id);}
 
     @Operation(summary = "Full info about mentors", description = "This method provides the most complete information about existing mentors")

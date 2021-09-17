@@ -144,9 +144,9 @@ public class SystemController {
             m.setAccounts(createOneAccount(user, i));
             m.setDescription("description");
             m.setShowable_status(true);
-            m.isIs_online(true);
-            m.isIs_offline_in(true);
-            m.isIs_offline_out(true);
+            m.setOnline(true);
+            m.setOfflineIn( true);
+            m.setOfflineOut(true);
             m.setEducations(Arrays.asList(new Educations(i + "edu"), new Educations(i + "edu_other")));
             m.setCertificats(Arrays.asList(new Certificats(i + "cert"), new Certificats(i + "cert_other")));
 

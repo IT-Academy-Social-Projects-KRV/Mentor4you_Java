@@ -7,9 +7,12 @@ import com.mentor4you.repository.MentorRepository;
 import com.mentor4you.repository.MentorsToCategory;
 import com.mentor4you.service.requests.MentorGeneralDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 @Service
@@ -49,25 +52,28 @@ public class MentorService {
 
     }
     // не фінальна версія
-    public MentorGeneralDTO getById(int id){
-
-        Mentors m = mentorRepository.getById(id);
-
-        MentorGeneralDTO dto =
-                new MentorGeneralDTO(m.getDescription(),
-                        false,
-                        false,
-                        false,
-                        false,
-                        m.getEducations(),
-                        m.getCertificats(),
-                        m.getMentors_to_categories()
-                  );
-
-            return  dto;
+    public ResponseEntity<MentorGeneralDTO> getById(int id){
+        try {
+            Mentors m = mentorRepository.getById(id);
 
 
-        //throw new MentorNotFoundException("Mentor with id = "+ id +" not found");
+            MentorGeneralDTO dto =
+                    new MentorGeneralDTO(m.getDescription(),
+                            m.isShowable_status(),
+                            m.isOnline(),
+                            m.isOfflineIn(),
+                            m.isOfflineOut(),
+                            m.getEducations(),
+                            m.getCertificats(),
+                            m.getMentors_to_categories()
+                    );
+
+            return new ResponseEntity<MentorGeneralDTO>(dto, HttpStatus.OK);
+        }catch (EntityNotFoundException e){
+            return new ResponseEntity<MentorGeneralDTO>(HttpStatus.NOT_FOUND);
+        }
+
+
 
     }
     public String updateGeneralDataMentors(int id , MentorGeneralDTO up){
@@ -76,14 +82,14 @@ public class MentorService {
             mentor.setCertificats(up.getCertificats());
             mentor.setEducations(up.getEducations());
             mentor.setDescription(up.getDescription());
-            mentor.setIs_offline_in(true);
-            mentor.setIs_offline_out(true);
-            mentor.setIs_online(true);
+            mentor.setOnline(up.isOnline());
+            mentor.setOfflineIn(up.isOfflineIn());
+            mentor.setOfflineOut(up.isOfflineOut());
             remove(mentor);
             for (Mentors_to_categories n : up.getCategories()) {
                 n.setMentors(mentor);
             }
-            mentor.setMentors_to_categories(null);
+
             mentor.setMentors_to_categories(up.getCategories());
 
 

@@ -38,9 +38,14 @@ public class Mentors {
     @JoinColumn(name="certificats")
     private List<Certificats> certificats;
 
-    private boolean is_online;
-    private boolean is_offline_in;
-    private boolean is_offline_out;
+    @Column(name = "is_online")
+    private boolean isOnline;
+
+    @Column(name = "is_offline_in")
+    private boolean isOfflineIn;
+
+    @Column(name = "is_offline_out")
+    private boolean isOfflineOut;
 
 
     public Mentors() {
@@ -58,9 +63,9 @@ public class Mentors {
         this.description = description;
         this.showable_status = showable_status;
         this.group_services = group_services;
-        this.is_online = is_online;
-        this.is_offline_in = is_offline_in;
-        this.is_offline_out = is_offline_out;
+        this.isOnline = is_online;
+        this.isOfflineIn = is_offline_in;
+        this.isOfflineOut = is_offline_out;
     }
 
     public int getId() {
@@ -99,28 +104,28 @@ public class Mentors {
         this.group_services = group_services;
     }
 
-    public boolean isIs_online(boolean b) {
-        return is_online;
+    public boolean isOnline() {
+        return isOnline;
     }
 
-    public void setIs_online(boolean is_online) {
-        this.is_online = is_online;
+    public void setOnline(boolean online) {
+        isOnline = online;
     }
 
-    public boolean isIs_offline_in(boolean b) {
-        return is_offline_in;
+    public boolean isOfflineIn() {
+        return isOfflineIn;
     }
 
-    public void setIs_offline_in(boolean is_offline_in) {
-        this.is_offline_in = is_offline_in;
+    public void setOfflineIn(boolean offlineIn) {
+        isOfflineIn = offlineIn;
     }
 
-    public boolean isIs_offline_out(boolean b) {
-        return is_offline_out;
+    public boolean isOfflineOut() {
+        return isOfflineOut;
     }
 
-    public void setIs_offline_out(boolean is_offline_out) {
-        this.is_offline_out = is_offline_out;
+    public void setOfflineOut(boolean offlineOut) {
+        isOfflineOut = offlineOut;
     }
 
     public List<Educations> getEducations() {
@@ -155,10 +160,7 @@ public class Mentors {
         if (o == null || getClass() != o.getClass()) return false;
         Mentors mentors = (Mentors) o;
         return id == mentors.id
-                && showable_status == mentors.showable_status
-                && is_online == mentors.is_online
-                && is_offline_in == mentors.is_offline_in
-                && is_offline_out == mentors.is_offline_out;
+                && showable_status == mentors.showable_status;
     }
 
    /* @Override
@@ -184,9 +186,9 @@ public class Mentors {
                 ", mentors_to_categories=" + mentors_to_categories +
                 ", educations=" + educations +
                 ", certificats=" + certificats +
-                ", is_online=" + is_online +
-                ", is_offline_in=" + is_offline_in +
-                ", is_offline_out=" + is_offline_out +
+                ", isOnline=" + isOnline +
+                ", isOfflineIn=" + isOfflineIn +
+                ", isOfflineOut=" + isOfflineOut +
                 '}';
     }
 }

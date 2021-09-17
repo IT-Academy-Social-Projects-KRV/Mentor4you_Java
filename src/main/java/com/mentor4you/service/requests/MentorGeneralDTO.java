@@ -13,9 +13,9 @@ public class MentorGeneralDTO {
 
     private String description;
     private boolean showable_status;
-    private boolean is_online;
-    private boolean is_offline_in;
-    private boolean is_offline_out;
+    private boolean isOnline;
+    private boolean isOfflineIn;
+    private boolean isOfflineOut;
 
     private List<Educations> educations;
 
@@ -27,15 +27,22 @@ public class MentorGeneralDTO {
     public MentorGeneralDTO() {
     }
 
-    public MentorGeneralDTO(String description, boolean showable_status, boolean is_online, boolean is_offline_in, boolean is_offline_out, List<Educations> educations, List<Certificats> certificats, Set<Mentors_to_categories> mentors_to_categories) {
+    public MentorGeneralDTO(String description,
+                            boolean showable_status,
+                            boolean isOnline,
+                            boolean isOfflineIn,
+                            boolean isOfflineOut,
+                            List<Educations> educations,
+                            List<Certificats> certificats,
+                            Set<Mentors_to_categories> categories) {
         this.description = description;
         this.showable_status = showable_status;
-        this.is_online = is_online;
-        this.is_offline_in = is_offline_in;
-        this.is_offline_out = is_offline_out;
+        this.isOnline = isOnline;
+        this.isOfflineIn = isOfflineIn;
+        this.isOfflineOut = isOfflineOut;
         this.educations = educations;
         this.certificats = certificats;
-        this.categories = mentors_to_categories;
+        this.categories = categories;
     }
 
     public String getDescription() {
@@ -54,28 +61,28 @@ public class MentorGeneralDTO {
         this.showable_status = showable_status;
     }
 
-    public boolean isIs_online() {
-        return is_online;
+    public boolean isOnline() {
+        return isOnline;
     }
 
-    public void setIs_online(boolean is_online) {
-        this.is_online = is_online;
+    public void setOnline(boolean online) {
+        isOnline = online;
     }
 
-    public boolean isIs_offline_in() {
-        return is_offline_in;
+    public boolean isOfflineIn() {
+        return isOfflineIn;
     }
 
-    public void setIs_offline_in(boolean is_offline_in) {
-        this.is_offline_in = is_offline_in;
+    public void setOfflineIn(boolean offlineIn) {
+        isOfflineIn = offlineIn;
     }
 
-    public boolean isIs_offline_out() {
-        return is_offline_out;
+    public boolean isOfflineOut() {
+        return isOfflineOut;
     }
 
-    public void setIs_offline_out(boolean is_offline_out) {
-        this.is_offline_out = is_offline_out;
+    public void setOfflineOut(boolean offlineOut) {
+        isOfflineOut = offlineOut;
     }
 
     public List<Educations> getEducations() {
