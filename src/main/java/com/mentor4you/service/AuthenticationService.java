@@ -1,5 +1,6 @@
 package com.mentor4you.service;
 
+
 import com.mentor4you.exception.JwtAuthenticationException;
 import com.mentor4you.model.DTO.LoginDTO;
 import com.mentor4you.model.User;
@@ -22,6 +23,7 @@ import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 import java.time.Instant;
 import java.util.Date;
+
 
 @Service
 public class AuthenticationService {
@@ -68,7 +70,7 @@ public class AuthenticationService {
 
         return "You have successfully logout";
     }
-
+  
     public String checkExpiration(String token) {
         Date expireDateFromToken = jwtProvider.getExpireDateFromToken(token);
        try{
@@ -79,4 +81,5 @@ public class AuthenticationService {
        }
         throw new JwtAuthenticationException("Token is invalid");
     }
+
 }
