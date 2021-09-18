@@ -76,9 +76,9 @@ public class MentorService {
 
 
     }
-    public String updateGeneralDataMentors(int id , MentorGeneralDTO up){
-        if(mentorRepository.getById(id)!=null){
-            Mentors mentor =mentorRepository.getById(id);
+    public ResponseEntity<String> updateGeneralDataMentors(int id , MentorGeneralDTO up){
+        try {
+            Mentors mentor = mentorRepository.getById(id);
             mentor.setCertificats(up.getCertificats());
             mentor.setEducations(up.getEducations());
             mentor.setDescription(up.getDescription());
@@ -94,9 +94,10 @@ public class MentorService {
 
 
             mentorRepository.save(mentor);
-            return "update was successful";
-        }
-        throw new MentorNotFoundException("Mentor with id = "+ id +" not found");
+            return new ResponseEntity<String>("update was successful", HttpStatus.OK);
+        }catch (EntityNotFoundException e){}
+        return new ResponseEntity<String>("this mentor not found",HttpStatus.NOT_FOUND);
+
     }
     public void remove(Mentors m){
         mentorsToCategory.removeByMentors(m);

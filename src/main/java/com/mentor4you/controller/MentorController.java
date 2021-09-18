@@ -45,7 +45,7 @@ public class MentorController {
     }
 
     @PutMapping("/{id}")
-    String update(@PathVariable(value = "id") Integer id, @RequestBody MentorGeneralDTO up){
+    ResponseEntity<String> update(@PathVariable(value = "id") Integer id, @RequestBody MentorGeneralDTO up){
         return mentorService.updateGeneralDataMentors(id,up);}
 
 
