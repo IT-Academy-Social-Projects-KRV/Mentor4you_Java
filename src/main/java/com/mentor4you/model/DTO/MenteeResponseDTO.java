@@ -17,6 +17,8 @@ public class MenteeResponseDTO {
     @NotNull
     @NotEmpty
     private Map<String, String> socialMap;
+    //map(a->a.mapIncom)
+
 
     public MenteeResponseDTO() {
     }

@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +43,8 @@ public class UserController {
 
     @Operation(summary = "change password")
     @PutMapping("/changePassword")
-    ResponseEntity<?> changePassword(@RequestBody PasswordDTO dto, HttpServletRequest request){
+    ResponseEntity<?> changePassword(@RequestBody PasswordDTO dto,
+                                     HttpServletRequest request){
 
         Map<String, String> res = new HashMap<>();
         try{

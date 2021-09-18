@@ -8,6 +8,7 @@ import com.mentor4you.model.DTO.MenteeUpdateRequest;
 import com.mentor4you.repository.ContactsToAccountsRepository;
 import com.mentor4you.repository.TypeContactsRepository;
 import com.mentor4you.repository.UserRepository;
+import com.mentor4you.security.jwt.JwtProvider;
 import com.mentor4you.service.ContactsToAccountsService;
 import com.mentor4you.service.EmailService;
 import com.mentor4you.service.MenteeService;
@@ -37,6 +38,7 @@ public class MenteesController {
     TypeContactsRepository typeContactsRepository;
     ContactsToAccountsService contactsToAccountsService;
     TypeContactsService typeContactsService;
+    JwtProvider jwtProvider;
 
     public MenteesController(MenteeService menteesService,
                              UserRepository userRepository,
@@ -44,7 +46,8 @@ public class MenteesController {
                              EmailService emailService,
                              TypeContactsRepository typeContactsRepository,
                              ContactsToAccountsService contactsToAccountsService,
-                             TypeContactsService typeContactsService) {
+                             TypeContactsService typeContactsService,
+                             JwtProvider jwtProvider) {
         this.menteesService = menteesService;
         this.userRepository = userRepository;
         this.contactsToAccountsRepository = contactsToAccountsRepository;
@@ -52,6 +55,7 @@ public class MenteesController {
         this.typeContactsRepository = typeContactsRepository;
         this.contactsToAccountsService = contactsToAccountsService;
         this.typeContactsService = typeContactsService;
+        this.jwtProvider = jwtProvider;
     }
 
     //select mentees by id
@@ -77,11 +81,13 @@ public class MenteesController {
 
     //select mentee by email
     @Operation(summary = "select mentee by email")
-    @GetMapping("/getMenteeDTO/{email}")
+    @GetMapping("/getMenteeDTO/")
     ResponseEntity<MenteeResponseDTO> getOneMenteeByEmail
-    (@PathVariable(value = "email") String email) {
+    (HttpServletRequest req4) {
 
-        User user = userRepository.findUserByEmail(email);
+        String token = jwtProvider.getTokenFromRequest(req4);
+        String emailMy = jwtProvider.getLoginFromToken(token);
+        User user = userRepository.findUserByEmail(emailMy);
         int id = user.getId();
         if (user.getRole().name() == Role.MENTEE.name()) {
 
