@@ -1,7 +1,7 @@
 package com.mentor4you.security.jwt;
 
-import com.mentor4you.model.User;
-import com.mentor4you.service.UserService;
+
+import com.mentor4you.exception.InvalidTokenRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,11 +15,9 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-import static io.jsonwebtoken.lang.Strings.hasText;
 
 @Component
 public class JwtFilter extends GenericFilterBean {
-    public static final String AUTHORIZATION = "Authorization";
 
     @Autowired
     private JwtProvider jwtProvider;
@@ -29,22 +27,20 @@ public class JwtFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        logger.info("do filter...");
-        String token = getTokenFromRequest((HttpServletRequest) servletRequest);
-        if (token != null && jwtProvider.validateToken(token)) {
+        String token = jwtProvider.getTokenFromRequest((HttpServletRequest) servletRequest);
+        try{
+            if (token != null && jwtProvider.validateToken(token)) {
                 String userLogin = jwtProvider.getLoginFromToken(token);
                 CustomUserDetails customUserDetails = customUserDetailsService.loadUserByUsername(userLogin);
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(auth);
+            }
+        }catch (InvalidTokenRequestException e){
+            System.out.println(e.getMessage());
         }
+
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
-    private String getTokenFromRequest(HttpServletRequest request) {
-        String bearer = request.getHeader(AUTHORIZATION);
-        if (hasText(bearer) && bearer.startsWith("Bearer ")) {
-            return bearer.substring(7);
-        }
-        return null;
-    }
+
 }

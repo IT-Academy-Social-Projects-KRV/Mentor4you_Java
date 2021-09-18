@@ -5,9 +5,11 @@ import com.mentor4you.model.User;
 import com.mentor4you.repository.UserRepository;
 import com.mentor4you.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Service
@@ -28,7 +30,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public String changePassword(String token, String oldPassword, String newPassword) {
+    public String changePassword(HttpServletRequest request, String oldPassword, String newPassword) {
+        String token = jwtProvider.getTokenFromRequest(request);
         String email =jwtProvider.getLoginFromToken(token);
 
         User user = userRepository.findUserByEmail(email);
