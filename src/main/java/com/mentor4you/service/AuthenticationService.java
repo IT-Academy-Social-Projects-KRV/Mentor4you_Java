@@ -1,11 +1,14 @@
 package com.mentor4you.service;
 
+
+import com.mentor4you.exception.JwtAuthenticationException;
 import com.mentor4you.model.DTO.LoginDTO;
 import com.mentor4you.model.User;
 import com.mentor4you.repository.UserRepository;
 import com.mentor4you.security.jwt.CustomUserDetails;
 import com.mentor4you.security.jwt.JwtProvider;
 import com.mentor4you.security.jwt.cache.event.OnUserLogoutSuccessEvent;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +21,9 @@ import org.springframework.stereotype.Service;
 
 import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
+import java.time.Instant;
+import java.util.Date;
+
 
 @Service
 public class AuthenticationService {
@@ -64,4 +70,16 @@ public class AuthenticationService {
 
         return "You have successfully logout";
     }
+  
+    public String checkExpiration(String token) {
+        Date expireDateFromToken = jwtProvider.getExpireDateFromToken(token);
+       try{
+           if(expireDateFromToken.after(Date.from(Instant.now()))){
+            return "Token is valid";
+        }}catch (ExpiredJwtException e){
+           throw new JwtAuthenticationException("Token is invalid");
+       }
+        throw new JwtAuthenticationException("Token is invalid");
+    }
+
 }

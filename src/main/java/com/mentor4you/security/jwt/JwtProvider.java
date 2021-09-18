@@ -47,7 +47,8 @@ public class JwtProvider {
 
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
         Date now = new Date();
-        Date expireDate = new Date(now.getTime()+604800);
+        Date expireDate = new Date(now.getTime()+604800000);
+
 
         return Jwts.builder()
                 .setSubject(customUserDetails.getUsername())
@@ -63,9 +64,10 @@ public class JwtProvider {
             validateTokenIsNotForALoggedOutDevice(authToken);
             return true;
         } catch (MalformedJwtException | ExpiredJwtException | UnsupportedJwtException | IllegalArgumentException e) {
-           logger.error(e.getMessage());
+
+           return false;
         }
-        return false;
+
     }
 
     public String getLoginFromToken(String token) {
