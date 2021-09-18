@@ -3,8 +3,13 @@ package com.mentor4you.service;
 import com.mentor4you.model.User;
 import com.mentor4you.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.mail.SimpleMailMessage;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,9 +18,11 @@ public class EmailService {
 
     @Autowired
     UserRepository userRepository;
+    JavaMailSender emailSender;
 
-    public EmailService(UserRepository userRepository) {
+    public EmailService(UserRepository userRepository, JavaMailSender emailSender) {
         this.userRepository = userRepository;
+        this.emailSender = emailSender;
     }
 
     //check user email is existing in database
@@ -50,6 +57,39 @@ public class EmailService {
             else { return "email "+email+" is exist";}
         }
         else {return "Something wrong with thr email ->  "+email;}
+    }
+
+
+    public String sendEmailRandomCode(String sendTo, String messageText, String code) throws MessagingException {
+
+        // Create a Simple MailMessage.
+        //SimpleMailMessage message = new SimpleMailMessage();
+        //message.setTo(sendTo);
+        //message.setSubject("Test Simple Email");
+        //message.setText("Hello, Im testing Simple Email");
+
+        // Send Message!
+        //this.emailSender.send(message)
+
+
+        MimeMessage message = emailSender.createMimeMessage();
+        boolean multipart = true;
+
+        MimeMessageHelper helper = new MimeMessageHelper(message, multipart, "utf-8");
+
+        String htmlMsg = "<h3>Im testing send a HTML email</h3>"
+                +code;
+
+        message.setContent(htmlMsg, "text/html");
+
+        helper.setTo(sendTo);
+
+        helper.setSubject("Test send HTML email");
+
+
+        this.emailSender.send(message);
+
+        return "Email Sent!";
     }
 
 }

@@ -36,7 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests().antMatchers("/testSecurity",
-                        "/system/testAuth")
+                        "/system/testAuth", "/api/mentees/updateMenteeByEmail")
                 .authenticated()
                 .anyRequest().permitAll()
 //                .and()

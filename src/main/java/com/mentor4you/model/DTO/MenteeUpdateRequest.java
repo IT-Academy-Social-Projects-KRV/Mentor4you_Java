@@ -8,29 +8,26 @@ public class MenteeUpdateRequest {
     Map<String,Object> map = mapper.readValue(json, Map.class);
     */
 
-    private int id;
     private String firstName;
     private String lastName;
-    private String email;
+    private String emailLast;
+    private String emailNew;
 
     private Map<String, String> socialMap;
 
     public MenteeUpdateRequest() {
     }
 
-    public MenteeUpdateRequest(int id, String firstName,
+    public MenteeUpdateRequest(String firstName,
                                String lastName,
-                               String email,
+                               String emailLast,
+                               String emailNew,
                                Map<String, String> socialMap) {
-        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
+        this.emailLast = emailLast;
+        this.emailNew = emailNew;
         this.socialMap = socialMap;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getFirstName() {
@@ -41,8 +38,12 @@ public class MenteeUpdateRequest {
         return lastName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getEmailLast() {
+        return emailLast;
+    }
+
+    public String getEmailNew() {
+        return emailNew;
     }
 
     public Map<String, String> getSocialMap() {

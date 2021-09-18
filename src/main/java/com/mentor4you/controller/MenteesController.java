@@ -14,10 +14,13 @@ import com.mentor4you.service.MenteeService;
 import com.mentor4you.service.TypeContactsService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 
@@ -72,13 +75,14 @@ public class MenteesController {
         return new ResponseEntity<>(eObject, HttpStatus.NOT_FOUND);
     }
 
-    //select mentee by id
-    @Operation(summary = "select mentee by id")
-    @GetMapping("/getMenteeDTO/{id}")
-    ResponseEntity<MenteeResponseDTO> getOneMenteeById
-    (@PathVariable(value = "id") Integer id) {
+    //select mentee by email
+    @Operation(summary = "select mentee by email")
+    @GetMapping("/getMenteeDTO/{email}")
+    ResponseEntity<MenteeResponseDTO> getOneMenteeByEmail
+    (@PathVariable(value = "email") String email) {
 
-        User user = userRepository.findOneById(id);
+        User user = userRepository.findUserByEmail(email);
+        int id = user.getId();
         if (user.getRole().name() == Role.MENTEE.name()) {
 
             Map<String, String> socialMap = new HashMap<>();
@@ -101,7 +105,6 @@ public class MenteesController {
                 MenteeResponseDTO mDTO = new MenteeResponseDTO();
                 mDTO.setFirstName(user.getFirst_name());
                 mDTO.setLastName(user.getLast_name());
-                mDTO.setEmail(user.getEmail());
                 mDTO.setSocialMap(socialMap);
                 return new ResponseEntity<MenteeResponseDTO>(mDTO, HttpStatus.OK);
             }
@@ -110,12 +113,23 @@ public class MenteesController {
         throw new MenteeNotFoundException("Mentees with id = " + id + " not found");
     }
 
-    @Operation(summary = "update mentee by id")
-    @PostMapping("/updateMenteeById")
-    public ResponseEntity<String> updateMenteeById(@RequestBody MenteeUpdateRequest request) {
+    @Operation(summary = "update mentee by email")
+    @PostMapping("/updateMenteeByEmail")
+    public ResponseEntity<String> updateMenteeByEmail(@RequestBody MenteeUpdateRequest request,
 
-        int id = request.getId();
-        User userToUpdate = userRepository.findOneById(id);
+                                                      //HttpRequestHandler req3,
+                                                      HttpServletRequest req4) {
+
+
+        //HttpRequestHandler req32 = req3;
+        HttpServletRequest req42 = req4;
+
+        String token = req4.getHeader("Authorization");
+
+        String emailLast = request.getEmailLast();
+        User userToUpdate = userRepository.findUserByEmail(emailLast);
+        int id = userToUpdate.getId();
+
         if (userToUpdate != null) {
             if (userToUpdate.getRole().name() == Role.MENTEE.name()) {
 
@@ -124,9 +138,10 @@ public class MenteesController {
 
                 //update email using method from emailService
                 //if emails are equals do nothing
-                if (userToUpdate.getEmail().equals(request.getEmail())) {
+                if (userToUpdate.getEmail().equals(request.getEmailNew())) {
                 } else {
-                    String reportUpdate = emailService.updateEmail(request.getEmail(), id);
+                    //TODO create new token with new email
+                    String reportUpdate = emailService.updateEmail(request.getEmailNew(), id);
                 }
                 userRepository.save(userToUpdate);
 
@@ -142,8 +157,8 @@ public class MenteesController {
  *
  *          Если с фронта пришло что-то типа "LinkedIn":"" и в базе нет
  *          этого typeContact у юзера значит не добавляем
- *
  */
+
                 //создадим мапу для удобства поиска
                 Map<String, ContactsToAccounts> socialMapBD = new HashMap<>();
 
@@ -166,53 +181,50 @@ public class MenteesController {
                     Iterator<Map.Entry<String, String>> iter = socialMapWeb.entrySet().iterator();
                     while (iter.hasNext()) {
                         Map.Entry<String, String> entry = iter.next();
-                        //если пусто "LinkedIn":"" удаляем пару из карты
+                        /**
+                         * если значение пустое например "LinkedIn":"" удаляем пару из карты
+                         * но, может быть так что пользователь удалил специально свою ссылку на ресурс
+                         * и нужно удалить из базы
+                         */
                         //TODO add possibility delete row from table
                         //TODO if "LinkedIn":"" и такого типа у юзера нету то не нужно добавлять, а если есть то обновить
-                        /**
-                         * добавить удаление из базы
-                         * if ("".equalsIgnoreCase(entry.getValue())) {
-                         *  iter.remove();
-                         * }
-                         */
-                        //здесь происходит добавление в базу
-                        //Может быть так что данные пришли без изменений
-                        //чтоб не "терзать" базу ничего не делаем
-                        /** else {*/
-                        // значение контактных данных под текущую соцсеть (итерация по мапе)
-                        // если не находит значит это новая соцсеть для юзера
-                        /**
-                         * String contactDataFromDB = (socialMapBD.get(entry.getKey()).getContactData());
-                         * если не находит значит это новая соцсеть для юзера
-                         * прилетает ошибка
-                         */
-                        if (socialMapBD.containsKey(entry.getKey())) {
-                            String contactDataFromDB = (socialMapBD.get(entry.getKey()).getContactData());
-                            String contactDataFromWEB = entry.getValue();
-                            // имена соцсетей
-                            String contactTypeFromDB = (socialMapBD.get(entry.getKey()).getTypeContacts().getName());
-                            String contactTypeFromWEB = entry.getKey();
-                            //данные одинаковые ничего не делаем
-                            if (entry.getValue().equals(contactDataFromDB)) {
-                                System.out.println("do nothing");
-                                //do nothing
-                            }
-                            //если тип "Соц сеть" одинаковый, но данные разные нужно обновить, а не добавлять
-                            else if (!contactDataFromDB.equals(contactDataFromWEB)) {
-                                // ??поменять способ взятия обекта из базы как в эмаил
-                                ContactsToAccounts contactsToUpdate = socialMapBD.get(entry.getKey());
-                                contactsToUpdate.setContactData(contactDataFromWEB);
-                                contactsToAccountsRepository.save(contactsToUpdate);
+
+                        if ("".equalsIgnoreCase(entry.getValue())) {
+                            //если записи с таким TypeContact у юзера были удаляем их из базы
+                            if (socialMapBD.containsKey(entry.getKey())) {
+                                int conToAccId = (socialMapBD.get(entry.getKey())).getId();
+                                contactsToAccountsRepository.deleteRowById(conToAccId);
+                                iter.remove();
+                            } else {
+                                iter.remove();
                             }
                         }
-                        //TODO может возникнуть ситуация если юзер хочет сохранить ссылку на соцсеть которой нет
-                        //мы не верим юзеру и новую соцсеть не добавляем
-                        else if (typeContactsService.isTypeContactsExist(entry.getKey())) {
-                            contactsToAccountsService.createNewContactData(id, entry.getKey(), entry.getValue());
-                        } else {
-                            throw new MenteeNotFoundException("Mentee wonts to add a network, witch is not in Mentor4you = " + entry.getKey());
+                        // данные не пустые например "LinkedIn":"hppts://blabla"
+                        else {
+                            //проверяем была ли у юзера такая соцСеть
+                            if (socialMapBD.containsKey(entry.getKey())) {
+                                String contactDataFromDB = (socialMapBD.get(entry.getKey()).getContactData());
+                                String contactDataFromWEB = entry.getValue();
+
+                                //Может быть так что данные пришли без изменений
+                                //данные одинаковые ничего не делаем
+                                if (!contactDataFromWEB.equals(contactDataFromDB)) {
+                                    //если тип "Соц сеть" одинаковый, но данные разные нужно обновить, а не добавлять
+                                    ContactsToAccounts contactsToUpdate = socialMapBD.get(entry.getKey());
+                                    contactsToUpdate.setContactData(contactDataFromWEB);
+                                    contactsToAccountsRepository.save(contactsToUpdate);
+                                }
+                            }
+                            // если пришли сюда значит юзер добавляет новую социальную сеть
+                            // новая для себя или для всего сайта
+                            //мы не верим юзеру и новую соцсеть не добавляем
+                            else if (typeContactsService.isTypeContactsExist(entry.getKey())) {
+                                contactsToAccountsService.createNewContactData(id, entry.getKey(), entry.getValue());
+                            } else {
+                                //TODO может возникнуть ситуация если юзер хочет сохранить ссылку на соцсеть которой нет
+                                throw new MenteeNotFoundException("Mentee wonts to add a network, witch is not in Mentor4you = " + entry.getKey());
+                            }
                         }
-                        /**}*/
                     }
                 }
                 // юзер пустой значит все записи с веба добавляем в базу

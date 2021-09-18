@@ -1,8 +1,10 @@
 package com.mentor4you.repository;
 
+import com.mentor4you.model.Accounts;
 import com.mentor4you.model.ContactsToAccounts;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,5 +23,9 @@ public interface ContactsToAccountsRepository
     @Query("Select sn from ContactsToAccounts sn WHERE sn.typeContacts.name =?1")
     List<ContactsToAccounts> findAllByNameTypCont(String name);
 
+    @Query("SELECT row FROM ContactsToAccounts row WHERE row.accounts.id=?1 and row.typeContacts.name=?2")
+    ContactsToAccounts findContToAccByIdandTypCon(Integer integer, String tipeCont);
 
+    @Transactional
+    void deleteRowById(int id);
 }

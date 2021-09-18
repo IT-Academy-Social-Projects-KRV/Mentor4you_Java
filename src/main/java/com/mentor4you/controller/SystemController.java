@@ -4,12 +4,14 @@ import com.mentor4you.model.*;
 import com.mentor4you.model.Categories;
 import com.mentor4you.repository.*;
 import com.mentor4you.security.jwt.JwtProvider;
+import com.mentor4you.service.EmailService;
 import com.mentor4you.service.PasswordService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +34,7 @@ public class SystemController {
     private final PasswordService passwordService;
     private final ContactsToAccountsRepository contactsToAccountsRepository;
     private final TypeContactsRepository typeContactsRepository;
+    private final EmailService emailService;
 
     public SystemController(GroupServicesRepository groupServicesRepository,
                             AccountRepository accountRepository,
@@ -43,7 +46,8 @@ public class SystemController {
                             UserRepository userRepository,
                             PasswordService passwordService,
                             ContactsToAccountsRepository contactsToAccountsRepository,
-                            TypeContactsRepository typeContactsRepository) {
+                            TypeContactsRepository typeContactsRepository,
+                            EmailService emailService) {
         this.groupServicesRepository = groupServicesRepository;
         this.accountRepository = accountRepository;
         this.mentorRepository = mentorRepository;
@@ -55,6 +59,7 @@ public class SystemController {
         this.passwordService = passwordService;
         this.contactsToAccountsRepository = contactsToAccountsRepository;
         this.typeContactsRepository = typeContactsRepository;
+        this.emailService = emailService;
     }
 
     @Operation(summary = "method add 1 admin, 3 moderators and 15 Mentors on you DB")
@@ -280,5 +285,12 @@ public class SystemController {
     @GetMapping("/testAuth")
     public String getUser() {
         return "hi authentificaters";
+    }
+
+
+    @Operation(summary = "send test email")
+    @GetMapping("/sendTestEmail/{sendTo}")
+    public String sendEmail(@PathVariable(value = "sendTo") String sendTo) throws MessagingException {
+        return emailService.sendEmailRandomCode(sendTo,"", "45432");
     }
 }
