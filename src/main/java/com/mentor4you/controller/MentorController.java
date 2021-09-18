@@ -34,9 +34,9 @@ public class MentorController {
     Optional<Mentors> getMentorById(@PathVariable(value = "id") Integer id){
         return mentorService.getMentorById(id);
     }*/
-    @GetMapping("/{id}")
-    ResponseEntity<MentorGeneralDTO> getMentorById(@PathVariable(value = "id") Integer id){
-        return mentorService.getById(id);}
+    @GetMapping("/{email}")
+    ResponseEntity<MentorGeneralDTO> getMentorById(@PathVariable(value = "email") String email){
+        return mentorService.getByEmail(email);}
 
     @Operation(summary = "Full info about mentors", description = "This method provides the most complete information about existing mentors")
     @GetMapping
@@ -44,9 +44,9 @@ public class MentorController {
         return mentorService.getFullInfoAllMentors();
     }
 
-    @PutMapping("/{id}")
-    ResponseEntity<String> update(@PathVariable(value = "id") Integer id, @RequestBody MentorGeneralDTO up){
-        return mentorService.updateGeneralDataMentors(id,up);}
+    @PutMapping("/{email}")
+    ResponseEntity<String> update(@PathVariable(value = "email") String email, @RequestBody MentorGeneralDTO up){
+        return mentorService.updateGeneralDataMentors(email,up);}
 
 
     @ExceptionHandler

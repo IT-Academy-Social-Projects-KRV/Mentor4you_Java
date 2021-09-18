@@ -5,6 +5,7 @@ import com.mentor4you.model.*;
 import com.mentor4you.repository.AccountRepository;
 import com.mentor4you.repository.MentorRepository;
 import com.mentor4you.repository.MentorsToCategory;
+import com.mentor4you.repository.UserRepository;
 import com.mentor4you.service.requests.MentorGeneralDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,11 +24,13 @@ public class MentorService {
     MentorsToCategory mentorsToCategory;
     AccountRepository accountRepository;
     MentorRepository mentorRepository;
+    UserRepository userRepository;
 
-    public MentorService(MentorsToCategory mentorsToCategory, AccountRepository accountRepository, MentorRepository mentorRepository) {
+    public MentorService(MentorsToCategory mentorsToCategory, AccountRepository accountRepository, MentorRepository mentorRepository, UserRepository userRepository) {
         this.mentorsToCategory = mentorsToCategory;
         this.accountRepository = accountRepository;
         this.mentorRepository = mentorRepository;
+        this.userRepository = userRepository;
     }
 
     //select all mentor
@@ -52,33 +55,37 @@ public class MentorService {
 
     }
     // не фінальна версія
-    public ResponseEntity<MentorGeneralDTO> getById(int id){
-        try {
-            Mentors m = mentorRepository.getById(id);
-
-
-            MentorGeneralDTO dto =
-                    new MentorGeneralDTO(m.getDescription(),
-                            m.isShowable_status(),
-                            m.isOnline(),
-                            m.isOfflineIn(),
-                            m.isOfflineOut(),
-                            m.getEducations(),
-                            m.getCertificats(),
-                            m.getMentors_to_categories()
-                    );
-
-            return new ResponseEntity<MentorGeneralDTO>(dto, HttpStatus.OK);
-        }catch (EntityNotFoundException e){
-            return new ResponseEntity<MentorGeneralDTO>(HttpStatus.NOT_FOUND);
-        }
-
-
+    public ResponseEntity<MentorGeneralDTO> getByEmail(String email){
+        User user = userRepository.findUserByEmail(email);
+            try
+            {
+                if(user ==null||user.getRole()!=Role.MENTOR)return new ResponseEntity<>(HttpStatus.NOT_FOUND) ;
+                Mentors m = mentorRepository.getById(user.getId());
+                MentorGeneralDTO dto =
+                        new MentorGeneralDTO(m.getDescription(),
+                                m.isShowable_status(),
+                                m.isOnline(),
+                                m.isOfflineIn(),
+                                m.isOfflineOut(),
+                                m.getEducations(),
+                                m.getCertificats(),
+                                m.getMentors_to_categories()
+                        );
+                return new ResponseEntity<MentorGeneralDTO>(dto, HttpStatus.OK);
+            }
+            catch (EntityNotFoundException e)
+            {
+                return new ResponseEntity<MentorGeneralDTO>(HttpStatus.NOT_FOUND);
+            }
 
     }
-    public ResponseEntity<String> updateGeneralDataMentors(int id , MentorGeneralDTO up){
+
+
+    public ResponseEntity<String> updateGeneralDataMentors(String email , MentorGeneralDTO up){
+        User user = userRepository.findUserByEmail(email);
+        if(user ==null||user.getRole()!=Role.MENTOR)return new ResponseEntity<String>("update was Unsuccessful",HttpStatus.NOT_FOUND) ;
         try {
-            Mentors mentor = mentorRepository.getById(id);
+            Mentors mentor = mentorRepository.getById(user.getId());
             mentor.setCertificats(up.getCertificats());
             mentor.setEducations(up.getEducations());
             mentor.setDescription(up.getDescription());
@@ -89,17 +96,18 @@ public class MentorService {
             for (Mentors_to_categories n : up.getCategories()) {
                 n.setMentors(mentor);
             }
-
             mentor.setMentors_to_categories(up.getCategories());
-
-
             mentorRepository.save(mentor);
             return new ResponseEntity<String>("update was successful", HttpStatus.OK);
-        }catch (EntityNotFoundException e){}
-        return new ResponseEntity<String>("this mentor not found",HttpStatus.NOT_FOUND);
+        }catch (EntityNotFoundException e){
+          //  catch()
+
+        }
+       9return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
     }
     public void remove(Mentors m){
+        if(m.getMentors_to_categories()!=null)
         mentorsToCategory.removeByMentors(m);
     }
 }
