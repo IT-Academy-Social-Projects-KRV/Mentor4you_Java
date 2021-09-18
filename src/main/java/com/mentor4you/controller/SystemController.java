@@ -8,7 +8,6 @@ import com.mentor4you.service.EmailService;
 import com.mentor4you.service.PasswordService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -268,19 +267,6 @@ public class SystemController {
         return "languages added";
     }
 
-    @PostMapping("/auth")
-    public Object auth(@RequestBody AuthRequest request) {
-        User user = userRepository.findByEmail(request.getLogin()).get();
-        try {
-            if (new BCryptPasswordEncoder().matches(request.getPassword(), user.getPassword())) {
-                String token = jwtProvider.generateToken(user.getEmail(), user.getRole());
-                return new AuthResponse(token);
-            }
-            throw new Exception("Bad Credential");
-        } catch (Exception ex) {
-            return ex.getMessage();
-        }
-    }
 
     @GetMapping("/testAuth")
     public String getUser() {

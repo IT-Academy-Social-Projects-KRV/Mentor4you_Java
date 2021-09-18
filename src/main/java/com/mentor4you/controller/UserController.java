@@ -36,20 +36,21 @@ public class UserController {
     //select all accounts
     @Operation(summary = "select all users")
     @GetMapping
-    List<User> getAllUsers() {
+    List<User> getAllUsers(){
         return userService.getAllUsers();
     }
 
     @Operation(summary = "change password")
     @PutMapping("/changePassword")
-    ResponseEntity<?> changePassword(@RequestHeader("Authorization") String token, @RequestBody PasswordDTO request) {
+    ResponseEntity<?> changePassword(@RequestBody PasswordDTO dto, HttpServletRequest request){
+
         Map<String, String> res = new HashMap<>();
-        try {
-            String result = userService.changePassword(token, request.getOldPassword(), request.getNewPassword());
-            res.put("message", result);
+        try{
+            String result = userService.changePassword(request, dto.getOldPassword(), dto.getNewPassword());
+            res.put("message",result);
             return ResponseEntity.ok(res);
-        } catch (RegistrationException | UsernameNotFoundException e) {
-            res.put("message", e.getMessage());
+        }catch (RegistrationException | UsernameNotFoundException e){
+            res.put("message",e.getMessage());
             return ResponseEntity.badRequest().body(res);
         }
     }
@@ -59,5 +60,6 @@ public class UserController {
     public String updateEmail(@RequestBody EmailRequest request) {
         return emailService.updateEmail(request.getEmail(), request.getId());
     }
+
 
 }
