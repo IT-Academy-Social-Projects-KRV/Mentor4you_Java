@@ -1,4 +1,4 @@
-package com.mentor4you.security.jwt;
+package com.mentor4you.exception;
 
 import org.springframework.security.core.AuthenticationException;
 
