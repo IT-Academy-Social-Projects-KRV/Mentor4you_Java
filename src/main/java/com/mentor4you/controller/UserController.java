@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,10 +43,11 @@ public class UserController {
 
     @Operation(summary = "change password")
     @PutMapping("/changePassword")
-    ResponseEntity<?> changePassword(@RequestHeader("Authorization") String token, @RequestBody PasswordDTO request){
+    ResponseEntity<?> changePassword(@RequestBody PasswordDTO dto, HttpServletRequest request){
+
         Map<String, String> res = new HashMap<>();
         try{
-            String result = userService.changePassword(token, request.getOldPassword(), request.getNewPassword());
+            String result = userService.changePassword(request, dto.getOldPassword(), dto.getNewPassword());
             res.put("message",result);
             return ResponseEntity.ok(res);
         }catch (RegistrationException | UsernameNotFoundException e){
@@ -73,8 +75,9 @@ public class UserController {
             }
             else { return "email "+email+" is exist";}
         }
-        else {return "Something wrong with thr email ->  "+email;}
+        else {
+            return "Something wrong with thr email ->  "+email;
+        }
     }
-
 
 }
