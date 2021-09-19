@@ -10,8 +10,7 @@ public class MenteeUpdateRequest {
 
     private String firstName;
     private String lastName;
-    private String emailLast;
-    private String emailNew;
+    private String email;
 
     private Map<String, String> socialMap;
 
@@ -20,13 +19,11 @@ public class MenteeUpdateRequest {
 
     public MenteeUpdateRequest(String firstName,
                                String lastName,
-                               String emailLast,
-                               String emailNew,
+                               String email,
                                Map<String, String> socialMap) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.emailLast = emailLast;
-        this.emailNew = emailNew;
+        this.email = email;
         this.socialMap = socialMap;
     }
 
@@ -38,12 +35,8 @@ public class MenteeUpdateRequest {
         return lastName;
     }
 
-    public String getEmailLast() {
-        return emailLast;
-    }
-
-    public String getEmailNew() {
-        return emailNew;
+    public String getEmail() {
+        return email;
     }
 
     public Map<String, String> getSocialMap() {

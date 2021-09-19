@@ -23,4 +23,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     User findOneById(int id);
 
     User findUserByEmail(String email);
+
+
+    List<User> findByBan(Boolean bool);
 }

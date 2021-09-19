@@ -80,12 +80,12 @@ public class MenteesController {
     }
 
     //select mentee by email
-    @Operation(summary = "select mentee by email")
+    @Operation(summary = "select mentee by token")
     @GetMapping("/getMenteeDTO/")
     ResponseEntity<MenteeResponseDTO> getOneMenteeByEmail
-    (HttpServletRequest req4) {
+    (HttpServletRequest req) {
 
-        String token = jwtProvider.getTokenFromRequest(req4);
+        String token = jwtProvider.getTokenFromRequest(req);
         String emailMy = jwtProvider.getLoginFromToken(token);
         User user = userRepository.findUserByEmail(emailMy);
         int id = user.getId();
@@ -107,7 +107,6 @@ public class MenteesController {
                 } else {
                     socialMap.put("", "");
                 }
-
                 MenteeResponseDTO mDTO = new MenteeResponseDTO();
                 mDTO.setFirstName(user.getFirst_name());
                 mDTO.setLastName(user.getLast_name());
@@ -122,18 +121,13 @@ public class MenteesController {
     @Operation(summary = "update mentee by email")
     @PostMapping("/updateMenteeByEmail")
     public ResponseEntity<String> updateMenteeByEmail(@RequestBody MenteeUpdateRequest request,
-
-                                                      //HttpRequestHandler req3,
                                                       HttpServletRequest req4) {
 
+        String token = jwtProvider.getTokenFromRequest(req4);
+        String emailFromToken = jwtProvider.getLoginFromToken(token);
 
-        //HttpRequestHandler req32 = req3;
-        HttpServletRequest req42 = req4;
-
-        String token = req4.getHeader("Authorization");
-
-        String emailLast = request.getEmailLast();
-        User userToUpdate = userRepository.findUserByEmail(emailLast);
+        String emailNew = request.getEmail();
+        User userToUpdate = userRepository.findUserByEmail(emailFromToken);
         int id = userToUpdate.getId();
 
         if (userToUpdate != null) {
@@ -144,10 +138,9 @@ public class MenteesController {
 
                 //update email using method from emailService
                 //if emails are equals do nothing
-                if (userToUpdate.getEmail().equals(request.getEmailNew())) {
-                } else {
+                if (!userToUpdate.getEmail().equals(emailNew)) {
                     //TODO create new token with new email
-                    String reportUpdate = emailService.updateEmail(request.getEmailNew(), id);
+                    String reportUpdate = emailService.updateEmail(emailNew, id);
                 }
                 userRepository.save(userToUpdate);
 
@@ -171,8 +164,7 @@ public class MenteesController {
                 //находим все записи в табличке ContactsToAccount для одного юзера по id
                 List<ContactsToAccounts> listContToAcc = contactsToAccountsRepository.findAllByAccounts(id);
 
-                //Пришло с веба
-                //Map<TypeCont, ContData>
+                //Пришло с веба. Map<TypeCont, ContData>
                 Map<String, String> socialMapWeb = request.getSocialMap();
 
                 //если в базе записи с контактными данными есть то перегоняем в мапу
@@ -192,11 +184,9 @@ public class MenteesController {
                          * но, может быть так что пользователь удалил специально свою ссылку на ресурс
                          * и нужно удалить из базы
                          */
-                        //TODO add possibility delete row from table
-                        //TODO if "LinkedIn":"" и такого типа у юзера нету то не нужно добавлять, а если есть то обновить
 
                         if ("".equalsIgnoreCase(entry.getValue())) {
-                            //если записи с таким TypeContact у юзера были удаляем их из базы
+                            //если записи с таким TypeContact у юзера были, удаляем их из базы
                             if (socialMapBD.containsKey(entry.getKey())) {
                                 int conToAccId = (socialMapBD.get(entry.getKey())).getId();
                                 contactsToAccountsRepository.deleteRowById(conToAccId);
@@ -223,7 +213,7 @@ public class MenteesController {
                             }
                             // если пришли сюда значит юзер добавляет новую социальную сеть
                             // новая для себя или для всего сайта
-                            //мы не верим юзеру и новую соцсеть не добавляем
+                            // мы не верим юзеру и новую соцсеть не добавляем
                             else if (typeContactsService.isTypeContactsExist(entry.getKey())) {
                                 contactsToAccountsService.createNewContactData(id, entry.getKey(), entry.getValue());
                             } else {

@@ -181,12 +181,13 @@ public class SystemController {
     private User createOneUser(int i, Role role) {
 
         User n = new User();
-        n.setEmail(i + "_" + role.name() + "@email");
+        n.setEmail(i + "_" + role.name() + "@email.com");
         n.setPassword(passwordService.encodePassword("password"));
         n.setFirst_name(i + "_" + role.name() + "FN");
         n.setLast_name(i + "_" + role.name() + "LN");
         n.setRegistration_date(LocalDateTime.now());
         n.setStatus(true);
+        n.setBan(false);
         n.setRole(role);
 
         return n;
