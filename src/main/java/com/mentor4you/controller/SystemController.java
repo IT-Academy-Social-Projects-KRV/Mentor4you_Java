@@ -192,7 +192,7 @@ public class SystemController {
 
     //CreateSocialNetworks
     private void createSocialNetworks() {
-        String[] arrSocNet = new String[]{"1PhoneNumber", "2PhoneNumber", "LinkedIn", "FaceBook", "Telegram"};
+        String[] arrSocNet = new String[]{"PhoneNumFirst", "PhoneNumSecond", "LinkedIn", "FaceBook", "Telegram"};
 
         for (String socNetName : arrSocNet) {
             TypeContacts social_networks = new TypeContacts();
