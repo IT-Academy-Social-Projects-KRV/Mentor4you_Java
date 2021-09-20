@@ -18,9 +18,6 @@ public class MenteeResponseDTO {
     @NotEmpty
     private String email;
 
-    @NotNull
-    @NotEmpty
-    private String phoneNumber;
 
     @NotNull
     @NotEmpty
@@ -37,7 +34,6 @@ public class MenteeResponseDTO {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.phoneNumber = phoneNumber;
         this.socialMap = socialMap;
     }
 
@@ -63,14 +59,6 @@ public class MenteeResponseDTO {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 
     public Map<String, String> getSocialMap() {

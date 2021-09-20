@@ -3,9 +3,8 @@ package com.mentor4you.controller;
 import com.mentor4you.exception.ErrorObject;
 import com.mentor4you.exception.MentorNotFoundException;
 import com.mentor4you.model.Mentors;
-import com.mentor4you.model.Mentors_to_categories;
 import com.mentor4you.service.MentorService;
-import com.mentor4you.service.requests.MentorGeneralDTO;
+import com.mentor4you.model.DTO.MentorGeneralDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/mentors")

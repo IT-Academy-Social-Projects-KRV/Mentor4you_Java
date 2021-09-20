@@ -1,4 +1,4 @@
-package com.mentor4you.service.requests;
+package com.mentor4you.model.DTO;
 
 
 import com.mentor4you.model.Certificats;
@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Set;
 
 public class MentorGeneralDTO {
+
+    private MenteeResponseDTO accountInfo;
 
     private String description;
     private boolean showable_status;
@@ -34,7 +36,8 @@ public class MentorGeneralDTO {
                             boolean isOfflineOut,
                             List<Educations> educations,
                             List<Certificats> certificats,
-                            Set<Mentors_to_categories> categories) {
+                            Set<Mentors_to_categories> categories,
+                            MenteeResponseDTO accountInfo) {
         this.description = description;
         this.showable_status = showable_status;
         this.isOnline = isOnline;
@@ -43,6 +46,7 @@ public class MentorGeneralDTO {
         this.educations = educations;
         this.certificats = certificats;
         this.categories = categories;
+        this.accountInfo =accountInfo;
     }
 
     public String getDescription() {
@@ -107,5 +111,13 @@ public class MentorGeneralDTO {
 
     public void setCategories(Set<Mentors_to_categories> categories) {
         this.categories = categories;
+    }
+
+    public MenteeResponseDTO getAccountInfo() {
+        return accountInfo;
+    }
+
+    public void setAccountInfo(MenteeResponseDTO accountInfo) {
+        this.accountInfo = accountInfo;
     }
 }

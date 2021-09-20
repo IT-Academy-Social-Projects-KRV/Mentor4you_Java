@@ -1,5 +1,6 @@
 package com.mentor4you.service;
 
+import com.mentor4you.model.User;
 import com.mentor4you.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,23 @@ public class EmailService {
         Matcher matcher = pattern.matcher(email);
 
         return (matcher.matches() && length<130);
+    }
+    public String updateEmail(String email, int id)
+    {
+
+        //TODO check email to valid with sending testEmail
+        if (isEmailValidRegEx(email)){
+
+            if (userRepository.findByEmail(email).isEmpty()) {
+
+                User userToUpdate = userRepository.findOneById(id);
+                userToUpdate.setEmail(email);
+                userRepository.save(userToUpdate);
+                return "Email updated to "+ userRepository.findOneById(id).getEmail();
+            }
+            else { return "email "+email+" is exist";}
+        }
+        else {return "Something wrong with thr email ->  "+email;}
     }
 
 }

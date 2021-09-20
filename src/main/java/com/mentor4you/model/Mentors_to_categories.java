@@ -71,6 +71,19 @@ public class Mentors_to_categories {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Mentors_to_categories that = (Mentors_to_categories) o;
+        return rate == that.rate && categories.equals(that.categories) && currency.equals(that.currency);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(categories, rate, currency);
+    }
+
+    @Override
     public String toString() {
         return "Mentors_to_categories{" +
                 "id=" + id +
