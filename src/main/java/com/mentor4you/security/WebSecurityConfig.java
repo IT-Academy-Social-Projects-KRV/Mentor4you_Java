@@ -31,6 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .cors().and()
                 //виключив csrf захист щоб можна було надсилати POST запити
                 .csrf().disable()
                 .sessionManagement()
