@@ -1,5 +1,7 @@
 package com.mentor4you.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -44,7 +46,6 @@ public class Mentors {
     private boolean is_offline_out;
 
     public void setEducations(List<Educations> educations) {
-
         this.educations = educations;
     }
 

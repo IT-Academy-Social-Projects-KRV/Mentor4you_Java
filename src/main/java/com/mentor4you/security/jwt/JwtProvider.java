@@ -63,8 +63,10 @@ public class JwtProvider {
             validateTokenIsNotForALoggedOutDevice(authToken);
             return true;
         } catch (MalformedJwtException | ExpiredJwtException | UnsupportedJwtException | IllegalArgumentException e) {
+
            return false;
         }
+
     }
 
     public String getLoginFromToken(String token) {
