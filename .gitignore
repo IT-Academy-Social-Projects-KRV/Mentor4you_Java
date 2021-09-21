@@ -25,6 +25,7 @@ fabric.properties
 /.settings/
 /.metadata/
 /.recommenders/
+/target/
 /bin/
 /build/
 /doc/
