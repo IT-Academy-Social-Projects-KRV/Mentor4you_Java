@@ -108,8 +108,11 @@ public class MenteesController {
                     socialMap.put("", "");
                 }
                 MenteeResponseDTO mDTO = new MenteeResponseDTO();
-                mDTO.setFirstName(user.getFirst_name());
-                mDTO.setLastName(user.getLast_name());
+                if(user.getFirst_name().isEmpty()){mDTO.setFirstName("");}
+                else{mDTO.setFirstName(user.getFirst_name());}
+                if(user.getLast_name().isEmpty()){mDTO.setLastName("");}
+                else{mDTO.setLastName(user.getLast_name());}
+                mDTO.setEmail(user.getEmail());
                 mDTO.setSocialMap(socialMap);
                 return new ResponseEntity<MenteeResponseDTO>(mDTO, HttpStatus.OK);
             }
