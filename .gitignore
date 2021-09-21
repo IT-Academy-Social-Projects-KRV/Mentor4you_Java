@@ -1,3 +1,35 @@
+Skip to content
+Search or jump to…
+Pull requests
+Issues
+Marketplace
+Explore
+ 
+@AndriyGu 
+IT-Academy-Social-Projects-KRV
+/
+Mentor4you_Java
+Public
+2
+0
+1
+Code
+Issues
+Pull requests
+1
+Actions
+Projects
+Wiki
+Security
+Insights
+Mentor4you_Java/.gitignore
+
+Andrii New ".gitignore" file was added.
+Latest commit dd8bc04 on 11 Aug
+ History
+ 0 contributors
+83 lines (68 sloc)  1.16 KB
+   
 ### Intellij ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
@@ -48,7 +80,7 @@ fabric.properties
 *.log
 
 # Package Files #
-
+*.jar
 *.war
 *.nar
 *.ear
@@ -58,7 +90,7 @@ fabric.properties
 
 
 ### Maven ###
-
+target/
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
@@ -81,6 +113,16 @@ ehthumbs_vista.db
 
 # Folder config file
 [Dd]esktop.ini
-
-target/*/
-target/generated-sources
+© 2021 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Docs
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
+Loading complete

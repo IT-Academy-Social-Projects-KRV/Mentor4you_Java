@@ -28,18 +28,13 @@ public class DemoApplication {
 	}
 
 
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedOrigins("http://localhost:4200/");
-			}
-		};
-	}
-	@Operation(summary = "Test security method")
-	@GetMapping("/testSecurity")
-	public String testSecurity() {
-		return String.format("Security work");
-	}
+//	@Bean
+//	public WebMvcConfigurer corsConfigurer() {
+//		return new WebMvcConfigurer() {
+//			@Override
+//			public void addCorsMappings(CorsRegistry registry) {
+//				registry.addMapping("/**").allowedOrigins("http://localhost:4200/");
+//			}
+//		};
+//	}
 }
