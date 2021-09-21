@@ -91,5 +91,36 @@ public class EmailService {
 
         return "Email Sent!";
     }
+    public String sendEmailToken(String sendTo, String token, String supportmessage) throws MessagingException {
+
+        // Create a Simple MailMessage.
+        //SimpleMailMessage message = new SimpleMailMessage();
+        //message.setTo(sendTo);
+        //message.setSubject("Test Simple Email");
+        //message.setText("Hello, Im testing Simple Email");
+
+        // Send Message!
+        //this.emailSender.send(message)
+
+
+        MimeMessage message = emailSender.createMimeMessage();
+        boolean multipart = true;
+
+        MimeMessageHelper helper = new MimeMessageHelper(message, multipart, "utf-8");
+
+        String htmlMsg = supportmessage + "<h3>Im testing send a HTML email</h3>"
+                +token;
+
+        message.setContent(htmlMsg, "text/html");
+
+        helper.setTo(sendTo);
+
+        helper.setSubject("Test send HTML email");
+
+
+        this.emailSender.send(message);
+
+        return "Email Sent!";
+    }
 
 }

@@ -3,6 +3,7 @@ package com.mentor4you.service;
 
 import com.mentor4you.exception.JwtAuthenticationException;
 import com.mentor4you.model.DTO.LoginDTO;
+import com.mentor4you.model.DTO.SecureLoginDTO;
 import com.mentor4you.model.User;
 import com.mentor4you.repository.UserRepository;
 import com.mentor4you.security.jwt.CustomUserDetails;
@@ -23,6 +24,8 @@ import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 import java.time.Instant;
 import java.util.Date;
+
+import static com.mentor4you.DemoApplication.temptoken;
 
 
 @Service
@@ -50,11 +53,33 @@ public class AuthenticationService {
         if(user==null){
             throw new AuthenticationException("Email is incorrect");
         }
+        String firstPass = request.getPassword();
+        String seconPass = user.getPassword();
+        int i = 3;
 
         if(user.getStatus() && new BCryptPasswordEncoder().matches(request.getPassword(),user.getPassword())){
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     request.getEmail(),
                     request.getPassword()
+            ));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            return jwtProvider.generateAuthToken(authentication);
+        }
+
+        throw new AuthenticationException("Password is incorrect");
+    }
+    //TODO:Ask Roman
+    public String loginwithoutpassword(SecureLoginDTO request) throws AuthenticationException {
+        User user = userRepository.findUserByEmail(request.getEmail());
+
+        if(user==null){
+            throw new AuthenticationException("Email is incorrect");
+        }
+
+        if(user.getStatus() && new BCryptPasswordEncoder().matches(request.getSecuretoken(),user.getPassword())){
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    request.getEmail(),
+                    request.getSecuretoken()
             ));
             SecurityContextHolder.getContext().setAuthentication(authentication);
             return jwtProvider.generateAuthToken(authentication);

@@ -5,6 +5,7 @@ import com.mentor4you.exception.InvalidTokenRequestException;
 import com.mentor4you.exception.JwtAuthenticationException;
 
 import com.mentor4you.model.DTO.LoginDTO;
+import com.mentor4you.model.DTO.SecureLoginDTO;
 import com.mentor4you.security.jwt.cache.CurrentUser;
 import com.mentor4you.security.jwt.CustomUserDetails;
 import com.mentor4you.service.AuthenticationService;
@@ -36,6 +37,19 @@ public class AuthController {
         Map<String, String> res = new HashMap<>();
         try {
             String token = authenticationService.login(request);
+            res.put("message","You have successfully logged in");
+            res.put("token", token);
+            return ResponseEntity.ok(res);
+        }catch (AuthenticationException ex) {
+            res.put("message", ex.getMessage());
+            return ResponseEntity.badRequest().body(res);
+        }
+    }
+    @PostMapping("/extralogin")
+    public ResponseEntity<?> extralogin(@RequestBody SecureLoginDTO request){
+        Map<String, String> res = new HashMap<>();
+        try {
+            String token = authenticationService.loginwithoutpassword(request);
             res.put("message","You have successfully logged in");
             res.put("token", token);
             return ResponseEntity.ok(res);
