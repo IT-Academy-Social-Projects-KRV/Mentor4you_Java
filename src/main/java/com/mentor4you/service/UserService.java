@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -50,5 +51,19 @@ public class UserService {
         }else{
             throw new RegistrationException("The old password is incorrect");
         }
+    }
+
+    public String changeAvatar(String token, String avatarURL) {
+        String email =jwtProvider.getLoginFromToken(token);
+        if (email.isEmpty()){
+            return "Email is not found";
+        }
+        User user = userRepository.findUserByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found ");
+        }
+        user.setAvatar(avatarURL);
+        userRepository.save(user);
+        return "Your avatar is updated";
     }
 }

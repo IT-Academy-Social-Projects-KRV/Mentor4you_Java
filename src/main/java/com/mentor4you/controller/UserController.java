@@ -3,6 +3,7 @@ package com.mentor4you.controller;
 import com.mentor4you.exception.RegistrationException;
 import com.mentor4you.model.DTO.EmailRequest;
 import com.mentor4you.model.DTO.PasswordDTO;
+import com.mentor4you.model.DTO.AvatarUpdateRequest;
 import com.mentor4you.model.User;
 import com.mentor4you.repository.UserRepository;
 import com.mentor4you.service.EmailService;
@@ -80,4 +81,13 @@ public class UserController {
         }
     }
 
+//    @PostMapping("/updateAvatar")
+//    public String updateAvatar(@RequestHeader String token, @RequestBody AvatarUpdateRequest dto){
+//        return userService.changeAvatar(token, dto.getAvatarURL());
+//    }
+
+    @PostMapping("/updateAvatar")
+    public String updateAvatar(@RequestBody AvatarUpdateRequest dto){
+        return userService.changeAvatar(dto.getToken(), dto.getAvatarURL());
+    }
 }
