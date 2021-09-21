@@ -1,10 +1,10 @@
-INSERT INTO mentor4you_db.users (email, first_name, last_name, password, registration_date, role, status) VALUES
-('Mentor1@gmail.com', 'Andrii', 'Andre', '$2a$10$IYibWmE.bsgqcCcar7L2t.6k.9Q/iO6zpR/CyeBaWuTuMu4nr0OFe', '2021-09-13 10:42:19.236442', 'MENTOR',true),
-('Mentor2@gmail.com', 'Mykola', 'Myhalkov', '$2a$10$IYibWmE.bsgqcCcar7L2t.6k.9Q/iO6zpR/CyeBaWuTuMu4nr0OFe', '2021-09-13 10:42:19.236442', 'MENTOR',true),
-('Mentor3@gmail.com', 'Vasyl', 'Vasyliv', '$2a$10$IYibWmE.bsgqcCcar7L2t.6k.9Q/iO6zpR/CyeBaWuTuMu4nr0OFe', '2021-09-13 10:42:19.236442', 'MENTOR',true),
-('Mentee1@gmail.com', 'Vasyl', 'Knyazev', '$2a$10$IYibWmE.bsgqcCcar7L2t.6k.9Q/iO6zpR/CyeBaWuTuMu4nr0OFe', '2021-09-13 10:42:19.236442', 'MENTEE',true),
-('Mentee2@gmail.com', 'Vasyl', 'Vasiv', '$2a$10$IYibWmE.bsgqcCcar7L2t.6k.9Q/iO6zpR/CyeBaWuTuMu4nr0OFe', '2021-09-13 10:42:19.236442', 'MENTEE',true),
-('Mentee3@gmail.com', 'Vasyl', 'Ivanov', '$2a$10$IYibWmE.bsgqcCcar7L2t.6k.9Q/iO6zpR/CyeBaWuTuMu4nr0OFe', '2021-09-13 10:42:19.236442', 'MENTEE',true);
+INSERT INTO mentor4you_db.users (avatar, email, first_name, last_name, password, registration_date, role, status) VALUES
+('https://avatarmaker.net/images/1.png','Mentor1@gmail.com', 'Andrii', 'Andre', '$2a$10$IYibWmE.bsgqcCcar7L2t.6k.9Q/iO6zpR/CyeBaWuTuMu4nr0OFe', '2021-09-13 10:42:19.236442', 'MENTOR',true),
+('https://avatarmaker.net/images/1.png','Mentor2@gmail.com', 'Mykola', 'Myhalkov', '$2a$10$IYibWmE.bsgqcCcar7L2t.6k.9Q/iO6zpR/CyeBaWuTuMu4nr0OFe', '2021-09-13 10:42:19.236442', 'MENTOR',true),
+('https://avatarmaker.net/images/1.png','Mentor3@gmail.com', 'Vasyl', 'Vasyliv', '$2a$10$IYibWmE.bsgqcCcar7L2t.6k.9Q/iO6zpR/CyeBaWuTuMu4nr0OFe', '2021-09-13 10:42:19.236442', 'MENTOR',true),
+('https://avatarmaker.net/images/1.png','Mentee1@gmail.com', 'Vasyl', 'Knyazev', '$2a$10$IYibWmE.bsgqcCcar7L2t.6k.9Q/iO6zpR/CyeBaWuTuMu4nr0OFe', '2021-09-13 10:42:19.236442', 'MENTEE',true),
+('https://avatarmaker.net/images/1.png','Mentee2@gmail.com', 'Vasyl', 'Vasiv', '$2a$10$IYibWmE.bsgqcCcar7L2t.6k.9Q/iO6zpR/CyeBaWuTuMu4nr0OFe', '2021-09-13 10:42:19.236442', 'MENTEE',true),
+('https://avatarmaker.net/images/1.png','Mentee3@gmail.com', 'Vasyl', 'Ivanov', '$2a$10$IYibWmE.bsgqcCcar7L2t.6k.9Q/iO6zpR/CyeBaWuTuMu4nr0OFe', '2021-09-13 10:42:19.236442', 'MENTEE',true);
 COMMIT;
 
 INSERT INTO mentor4you_db.accounts (id, last_visit) VALUES
@@ -16,10 +16,9 @@ INSERT INTO mentor4you_db.accounts (id, last_visit) VALUES
 (6,'2021-09-13 10:42:19.236442');
 COMMIT;
 
-INSERT INTO mentor4you_db.group_services (name) VALUES
-('No-no'),
-('Yes-yes'),
-('Sometimes');
+INSERT INTO mentor4you_db.group_services (id, name) VALUES
+(0, 'False'),
+(1, 'True');
 COMMIT;
 
 INSERT INTO mentor4you_db.mentors (id, description, is_offline_in, is_offline_out,
