@@ -46,7 +46,6 @@ public class Mentors {
     private boolean is_offline_out;
 
     public void setEducations(List<Educations> educations) {
-
         this.educations = educations;
     }
 

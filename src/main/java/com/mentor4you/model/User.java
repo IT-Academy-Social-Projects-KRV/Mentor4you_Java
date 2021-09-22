@@ -25,6 +25,7 @@ public class User {
     private String avatar;
     private LocalDateTime registration_date;
     private Boolean status;
+    private Boolean ban;
 
     @OneToOne (mappedBy = "user")
     private Accounts accounts;
@@ -39,7 +40,9 @@ public class User {
                 String last_name,
                 String avatar,
                 LocalDateTime registration_date,
-                Boolean status) {
+                Boolean status,
+                Boolean ban,
+                Accounts accounts) {
         this.role = role;
         this.email = email;
         this.password = password;
@@ -48,8 +51,9 @@ public class User {
         this.avatar = avatar;
         this.registration_date = registration_date;
         this.status = status;
+        this.ban = ban;
+        this.accounts = accounts;
     }
-
 
     public int getId() {
         return id;
@@ -117,6 +121,14 @@ public class User {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    public Boolean getBan() {
+        return ban;
+    }
+
+    public void setBan(Boolean ban) {
+        this.ban = ban;
     }
 
     @Override
