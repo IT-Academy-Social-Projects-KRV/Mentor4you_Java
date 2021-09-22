@@ -26,10 +26,20 @@ public class DemoApplication {
 	public String hello(@RequestParam(value = "name", defaultValue = "Neo") String name) {
 		return String.format("Wake up, %s.\n The Mentor4you has you...", name);
 	}
-
+  
 	@Operation(summary = "Test security method")
 	@GetMapping("/testSecurity")
 	public String testSecurity() {
 		return String.format("Security work");
+	}
+
+	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurer() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/**").allowedOrigins("http://localhost:4200/");
+			}
+		};
 	}
 }
