@@ -16,16 +16,16 @@ INSERT INTO mentor4you_db.accounts (id, last_visit) VALUES
 (6,'2021-09-13 10:42:19.236442');
 COMMIT;
 
-INSERT INTO mentor4you_db.group_services (id, name) VALUES
-(0, 'False'),
-(1, 'True');
+INSERT INTO mentor4you_db.group_services (name) VALUES
+('False'),
+('True');
 COMMIT;
 
 INSERT INTO mentor4you_db.mentors (id, description, is_offline_in, is_offline_out,
                                    is_online, showable_status, group_services) VALUES
 (1, 'Java', 1, 1, 1, 1, 1),
-(2, 'Java', 1, 1, 1, 1, 2),
-(3, 'Java', 0, 0, 1, 1, 3);
+(2, 'Java', 1, 1, 1, 1, 1),
+(3, 'Java', 0, 0, 1, 1, 1);
 COMMIT;
 
 INSERT INTO mentor4you_db.mentees VALUES
