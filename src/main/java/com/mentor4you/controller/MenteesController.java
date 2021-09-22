@@ -108,9 +108,11 @@ public class MenteesController {
                     socialMap.put("", "");
                 }
                 MenteeResponseDTO mDTO = new MenteeResponseDTO();
-                if(user.getFirst_name().isEmpty()){mDTO.setFirstName("");}
+                if(user.getFirst_name()==null){
+                    mDTO.setFirstName("");}
                 else{mDTO.setFirstName(user.getFirst_name());}
-                if(user.getLast_name().isEmpty()){mDTO.setLastName("");}
+                if(user.getLast_name()==null)
+                {mDTO.setLastName("");}
                 else{mDTO.setLastName(user.getLast_name());}
                 mDTO.setEmail(user.getEmail());
                 mDTO.setSocialMap(socialMap);
@@ -126,6 +128,7 @@ public class MenteesController {
     public ResponseEntity<String> updateMenteeByEmail(@RequestBody MenteeUpdateRequest request,
                                                       HttpServletRequest req4) {
 
+        MenteeUpdateRequest request2 =request;
         String token = jwtProvider.getTokenFromRequest(req4);
         String emailFromToken = jwtProvider.getLoginFromToken(token);
 
@@ -136,8 +139,12 @@ public class MenteesController {
         if (userToUpdate != null) {
             if (userToUpdate.getRole().name() == Role.MENTEE.name()) {
 
-                userToUpdate.setFirst_name(request.getFirstName());
-                userToUpdate.setLast_name(request.getLastName());
+
+                if(request.getFirstName().isEmpty()){userToUpdate.setFirst_name("");}
+                else{userToUpdate.setFirst_name(request.getFirstName());}
+
+                if(request.getLastName().isEmpty()){userToUpdate.setLast_name("");}
+                else{ userToUpdate.setLast_name(request.getLastName());}
 
                 //update email using method from emailService
                 //if emails are equals do nothing
