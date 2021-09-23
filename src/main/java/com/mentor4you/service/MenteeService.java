@@ -101,7 +101,4 @@ public class MenteeService {
         }
         throw new MenteeNotFoundException("Mentees with id = " + id + " not found");
     }
-
-
-
 }

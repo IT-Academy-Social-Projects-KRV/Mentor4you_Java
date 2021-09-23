@@ -9,10 +9,7 @@ import com.mentor4you.repository.ContactsToAccountsRepository;
 import com.mentor4you.repository.TypeContactsRepository;
 import com.mentor4you.repository.UserRepository;
 import com.mentor4you.security.jwt.JwtProvider;
-import com.mentor4you.service.ContactsToAccountsService;
-import com.mentor4you.service.EmailService;
-import com.mentor4you.service.MenteeService;
-import com.mentor4you.service.TypeContactsService;
+import com.mentor4you.service.*;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,6 +34,7 @@ public class MenteesController {
     ContactsToAccountsService contactsToAccountsService;
     TypeContactsService typeContactsService;
     JwtProvider jwtProvider;
+    UserService userService;
 
     public MenteesController(MenteeService menteesService,
                              UserRepository userRepository,
@@ -45,7 +43,8 @@ public class MenteesController {
                              TypeContactsRepository typeContactsRepository,
                              ContactsToAccountsService contactsToAccountsService,
                              TypeContactsService typeContactsService,
-                             JwtProvider jwtProvider) {
+                             JwtProvider jwtProvider,
+                             UserService userService) {
         this.menteesService = menteesService;
         this.userRepository = userRepository;
         this.contactsToAccountsRepository = contactsToAccountsRepository;
@@ -54,6 +53,7 @@ public class MenteesController {
         this.contactsToAccountsService = contactsToAccountsService;
         this.typeContactsService = typeContactsService;
         this.jwtProvider = jwtProvider;
+        this.userService = userService;
     }
 
     //select mentees by id
@@ -90,7 +90,7 @@ public class MenteesController {
     public ResponseEntity<String> updateMenteeByToken(@RequestBody MenteeUpdateRequest request,
                                                       HttpServletRequest req4) {
 
-      return   menteesService.updateMenteeByToken(request, req4);
+      return   userService.updateUserByToken(request, req4);
     }
 }
 

@@ -111,8 +111,6 @@ public class UserService {
         int id = userToUpdate.getId();
 
         if (userToUpdate != null) {
-            if (userToUpdate.getRole().name() == Role.MENTEE.name()) {
-
 
                 if(request.getFirstName().isEmpty()){userToUpdate.setFirst_name("");}
                 else{userToUpdate.setFirst_name(request.getFirstName());}
@@ -130,9 +128,6 @@ public class UserService {
 
                 contactsToAccountsService.changeContactsDataUser(request, id);
 
-            } else {
-                throw new MenteeNotFoundException("Mentees with id = " + id + " not found");
-            }
         } else {
             throw new MenteeNotFoundException("Mentees with id = " + id + " not found");
         }
