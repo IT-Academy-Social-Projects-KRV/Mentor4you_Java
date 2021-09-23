@@ -17,7 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @Service
-public class MenteeService {
+public class MenteeService
+{
     @Autowired
     AccountRepository accountRepository;
     MenteeRepository menteeRepository;
@@ -27,6 +28,7 @@ public class MenteeService {
     EmailService emailService;
     TypeContactsService typeContactsService;
     ContactsToAccountsService contactsToAccountsService;
+    UserService userService;
 
     public MenteeService(AccountRepository accountRepository,
                          MenteeRepository menteeRepository,
@@ -35,7 +37,8 @@ public class MenteeService {
                          ContactsToAccountsRepository contactsToAccountsRepository,
                          EmailService emailService,
                          TypeContactsService typeContactsService,
-                         ContactsToAccountsService contactsToAccountsService) {
+                         ContactsToAccountsService contactsToAccountsService,
+                         UserService userService) {
         this.accountRepository = accountRepository;
         this.menteeRepository = menteeRepository;
         this.jwtProvider = jwtProvider;
@@ -44,6 +47,7 @@ public class MenteeService {
         this.emailService = emailService;
         this.typeContactsService = typeContactsService;
         this.contactsToAccountsService = contactsToAccountsService;
+        this.userService=userService;
     }
 
     public List<Mentees> getFullInfoAllMentees(){
@@ -63,42 +67,29 @@ public class MenteeService {
         throw new MenteeNotFoundException("Mentee with id = "+ id +" not found");
     }
 
-    public ResponseEntity<MenteeResponseDTO> getOneMenteeByToken(HttpServletRequest req){
+    public ResponseEntity<MenteeResponseDTO> getOneMenteeByToken(HttpServletRequest req)
+    {
         String token = jwtProvider.getTokenFromRequest(req);
+
         String emailMy = jwtProvider.getLoginFromToken(token);
+
         User user = userRepository.findUserByEmail(emailMy);
-        int id = user.getId();
-        if (user.getRole().name() == Role.MENTEE.name()) {
 
-            Map<String, String> socialMap = new HashMap<>();
+        if(user.getRole()==Role.MENTEE)
+            return  userService.getOneMentee(user);
+        else return new ResponseEntity<MenteeResponseDTO>(HttpStatus.NOT_FOUND);
+    }
 
-            //Social_networks socialNetworks = socialNetworksRepository.getById(id);
-            if (user != null) {
+    public ResponseEntity<String> updateUserByToken(MenteeUpdateRequest request,
+                                                    HttpServletRequest req4){
+        String token = jwtProvider.getTokenFromRequest(req4);
 
-                List<ContactsToAccounts> listConToAkk = contactsToAccountsRepository.findAllByAccounts(id);
+        String emailFromToken = jwtProvider.getLoginFromToken(token);
 
-                if (listConToAkk.size() > 0) {
-                    for (ContactsToAccounts lA : listConToAkk) {
-                        String typContact = lA.getTypeContacts().getName();
-                        String contData = lA.getContactData();
-                        socialMap.put(typContact, contData);
-                    }
-                } else {
-                    socialMap.put("", "");
-                }
-                MenteeResponseDTO mDTO = new MenteeResponseDTO();
-                if(user.getFirst_name()==null){
-                    mDTO.setFirstName("");}
-                else{mDTO.setFirstName(user.getFirst_name());}
-                if(user.getLast_name()==null)
-                {mDTO.setLastName("");}
-                else{mDTO.setLastName(user.getLast_name());}
-                mDTO.setEmail(user.getEmail());
-                mDTO.setSocialMap(socialMap);
-                return new ResponseEntity<MenteeResponseDTO>(mDTO, HttpStatus.OK);
-            }
-            return null;
-        }
-        throw new MenteeNotFoundException("Mentees with id = " + id + " not found");
+        User userToUpdate = userRepository.findUserByEmail(emailFromToken);
+
+        if(userToUpdate.getRole() ==Role.MENTEE)
+            return userService.updateUser(userToUpdate,request);
+        else return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
     }
 }

@@ -2,10 +2,13 @@ package com.mentor4you.service;
 
 import com.mentor4you.exception.MenteeNotFoundException;
 import com.mentor4you.exception.RegistrationException;
+import com.mentor4you.model.ContactsToAccounts;
+import com.mentor4you.model.DTO.MenteeResponseDTO;
 import com.mentor4you.model.DTO.MenteeUpdateRequest;
 import com.mentor4you.model.DTO.UserBanDTO;
 import com.mentor4you.model.Role;
 import com.mentor4you.model.User;
+import com.mentor4you.repository.ContactsToAccountsRepository;
 import com.mentor4you.repository.UserRepository;
 import com.mentor4you.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserService {
@@ -29,18 +34,17 @@ public class UserService {
     JwtProvider jwtProvider;
     EmailService emailService;
     ContactsToAccountsService contactsToAccountsService;
+    ContactsToAccountsRepository contactsToAccountsRepository;
 
-    public UserService(UserRepository userRepository,
-                       JwtProvider jwtProvider,
-                       EmailService emailService,
-                       ContactsToAccountsService contactsToAccountsService) {
+    public UserService(PasswordService passwordService, UserRepository userRepository, JwtProvider jwtProvider, EmailService emailService, ContactsToAccountsService contactsToAccountsService, ContactsToAccountsRepository contactsToAccountsRepository) {
+        this.passwordService = passwordService;
         this.userRepository = userRepository;
         this.jwtProvider = jwtProvider;
         this.emailService = emailService;
         this.contactsToAccountsService = contactsToAccountsService;
+        this.contactsToAccountsRepository = contactsToAccountsRepository;
     }
 
-    //select all users
     public List<User> getAllUsers(){
         return userRepository.findAll();
     }
@@ -101,13 +105,8 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<String> updateUserByToken(@RequestBody MenteeUpdateRequest request,
-                                                      HttpServletRequest req4){
-        String token = jwtProvider.getTokenFromRequest(req4);
-        String emailFromToken = jwtProvider.getLoginFromToken(token);
-
+    public ResponseEntity<String> updateUser(User userToUpdate,MenteeUpdateRequest request){
         String emailNew = request.getEmail();
-        User userToUpdate = userRepository.findUserByEmail(emailFromToken);
         int id = userToUpdate.getId();
 
         if (userToUpdate != null) {
@@ -132,6 +131,41 @@ public class UserService {
             throw new MenteeNotFoundException("User with id = " + id + " not found");
         }
         return new ResponseEntity<String>("ok", HttpStatus.OK);
+    }
+
+    public ResponseEntity<MenteeResponseDTO> getOneMentee(User user){
+
+        int id = user.getId();
+
+
+            Map<String, String> socialMap = new HashMap<>();
+
+            //Social_networks socialNetworks = socialNetworksRepository.getById(id);
+            if (user != null) {
+
+                List<ContactsToAccounts> listConToAkk = contactsToAccountsRepository.findAllByAccounts(id);
+
+                if (listConToAkk.size() > 0) {
+                    for (ContactsToAccounts lA : listConToAkk) {
+                        String typContact = lA.getTypeContacts().getName();
+                        String contData = lA.getContactData();
+                        socialMap.put(typContact, contData);
+                    }
+                } else {
+                    socialMap.put("", "");
+                }
+                MenteeResponseDTO mDTO = new MenteeResponseDTO();
+                if(user.getFirst_name()==null){
+                    mDTO.setFirstName("");}
+                else{mDTO.setFirstName(user.getFirst_name());}
+                if(user.getLast_name()==null)
+                {mDTO.setLastName("");}
+                else{mDTO.setLastName(user.getLast_name());}
+                mDTO.setEmail(user.getEmail());
+                mDTO.setSocialMap(socialMap);
+                return new ResponseEntity<MenteeResponseDTO>(mDTO, HttpStatus.OK);
+            }
+            return null;
     }
 
 }

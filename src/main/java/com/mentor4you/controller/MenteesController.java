@@ -90,7 +90,7 @@ public class MenteesController {
     public ResponseEntity<String> updateMenteeByToken(@RequestBody MenteeUpdateRequest request,
                                                       HttpServletRequest req4) {
 
-      return   userService.updateUserByToken(request, req4);
+      return menteesService.updateUserByToken(request, req4);
     }
 }
 
