@@ -1,19 +1,15 @@
 package com.mentor4you.model.DTO;
 
+import java.io.IOException;
+
 public class AvatarUpdateRequest {
     private String avatarURL;
-    private String token;
 
-    public AvatarUpdateRequest(String avatarURL, String token) {
+    public AvatarUpdateRequest(String avatarURL) throws IOException {
+        if (!avatarURL.startsWith("http://")){
+            throw new IOException ("Invalid avatar URL");
+        }
         this.avatarURL = avatarURL;
-        this.token = token;
-    }
-
-    public String getToken() {
-        return token;
-    }
-    public void setToken(String token) {
-        this.token = token;
     }
 
     public String getAvatarURL() {

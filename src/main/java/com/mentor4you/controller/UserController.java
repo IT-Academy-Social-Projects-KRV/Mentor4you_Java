@@ -81,13 +81,13 @@ public class UserController {
         }
     }
 
-//    @PostMapping("/updateAvatar")
-//    public String updateAvatar(@RequestHeader String token, @RequestBody AvatarUpdateRequest dto){
-//        return userService.changeAvatar(token, dto.getAvatarURL());
-//    }
-
     @PostMapping("/updateAvatar")
-    public String updateAvatar(@RequestBody AvatarUpdateRequest dto){
-        return userService.changeAvatar(dto.getToken(), dto.getAvatarURL());
+    public String updateAvatar(@RequestHeader String token, @RequestBody AvatarUpdateRequest dto){
+        return userService.changeAvatar(token, dto.getAvatarURL());
     }
+
+//    @PostMapping("/updateAvatar")
+//    public String updateAvatar(@RequestBody AvatarUpdateRequest dto){
+//        return userService.changeAvatar(dto.getToken(), dto.getAvatarURL());
+//    }
 }
