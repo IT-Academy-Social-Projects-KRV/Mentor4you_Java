@@ -129,7 +129,7 @@ public class UserService {
                 contactsToAccountsService.changeContactsDataUser(request, id);
 
         } else {
-            throw new MenteeNotFoundException("Mentees with id = " + id + " not found");
+            throw new MenteeNotFoundException("User with id = " + id + " not found");
         }
         return new ResponseEntity<String>("ok", HttpStatus.OK);
     }
