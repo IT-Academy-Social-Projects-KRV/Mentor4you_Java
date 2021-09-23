@@ -1,9 +1,17 @@
-GET
-http://localhost:8080/system/add 
+#Initial accounts data:
+#####1 Admin, 3 Moderators, 5 Mentors, 5 Mentees
+    Email pattern: Role@gmail.com;              Password: Mentor4you
+    
+    Examples:
+    Admin1@gmail.com 
+    Moderator2@gmail.com 
+    Mentor3@gmail.com 
+    Mentee4@gmail.com
 
-localhost:8080/system/add
-#Insert data into Roles GroupServices Accounts Users Mentors
-#result  -->>  1 admin \\ 3 moderators \\ 15 mentors
+#GET http://localhost:8080/system/add 
+
+###Insert data into Roles GroupServices Accounts Users Mentors
+###result  -->>  1 admin \\ 3 moderators \\ 15 mentors
 
 
 # Project launch:Linc to swagger
@@ -33,13 +41,13 @@ http://localhost:8080/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-confi
 ### Adminer setting for databases access:
 #####  - MySQL
       Server:	mysql
-      User:	mentor4you
+      User:	        mentor4you
       Password:	1234
       Database:	mentor4you_db
       
 #####  - MongoDB
       Server:	mongo_db
-      User:	mentor4you
+      User:	        mentor4you
       Password:
       Database:	mentor4you_db 
       
