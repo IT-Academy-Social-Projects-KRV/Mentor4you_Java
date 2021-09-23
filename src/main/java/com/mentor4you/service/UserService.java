@@ -6,7 +6,6 @@ import com.mentor4you.model.ContactsToAccounts;
 import com.mentor4you.model.DTO.MenteeResponseDTO;
 import com.mentor4you.model.DTO.MenteeUpdateRequest;
 import com.mentor4you.model.DTO.UserBanDTO;
-import com.mentor4you.model.Role;
 import com.mentor4you.model.User;
 import com.mentor4you.repository.ContactsToAccountsRepository;
 import com.mentor4you.repository.UserRepository;
@@ -14,10 +13,8 @@ import com.mentor4you.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -105,7 +102,7 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<String> updateUser(User userToUpdate,MenteeUpdateRequest request){
+    public ResponseEntity<String> updateUser(User userToUpdate, MenteeResponseDTO request){
         String emailNew = request.getEmail();
         int id = userToUpdate.getId();
 

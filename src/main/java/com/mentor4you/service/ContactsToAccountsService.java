@@ -3,6 +3,7 @@ package com.mentor4you.service;
 import com.mentor4you.exception.MenteeNotFoundException;
 import com.mentor4you.model.Accounts;
 import com.mentor4you.model.ContactsToAccounts;
+import com.mentor4you.model.DTO.MenteeResponseDTO;
 import com.mentor4you.model.DTO.MenteeUpdateRequest;
 import com.mentor4you.model.TypeContacts;
 import com.mentor4you.repository.AccountRepository;
@@ -50,7 +51,7 @@ public class ContactsToAccountsService {
     }
 
 
-    public void changeContactsDataUser(MenteeUpdateRequest request, int id){
+    public void changeContactsDataUser(MenteeResponseDTO request, int id){
     /**
      * Данные с веба могут быть:
      * такие как в базе

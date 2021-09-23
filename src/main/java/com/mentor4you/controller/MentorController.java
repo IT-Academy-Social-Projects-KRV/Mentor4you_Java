@@ -37,10 +37,16 @@ public class MentorController {
     }
 
     @Operation(summary = "select mentee by token")
-    @GetMapping("/getMenteeDTO/")
+    @GetMapping("/getMentorDTO/")
     ResponseEntity<MentorGeneralResponseDTO> getOneMentorByToken
             (HttpServletRequest req) {
         return mentorService.getOneMentorByToken(req);
+    }
+    @Operation(summary = "select mentee by token")
+    @PutMapping("/UpdateMentor/")
+    ResponseEntity<String> updateMentorByToken
+            (HttpServletRequest req,@RequestBody MentorGeneralResponseDTO dto) {
+        return mentorService.updateMentorByToken(dto,req);
     }
 
     @Operation(summary = "Full info about mentors", description = "This method provides the most complete information about existing mentors")

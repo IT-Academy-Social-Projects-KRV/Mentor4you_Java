@@ -80,7 +80,7 @@ public class MenteeService
         else return new ResponseEntity<MenteeResponseDTO>(HttpStatus.NOT_FOUND);
     }
 
-    public ResponseEntity<String> updateUserByToken(MenteeUpdateRequest request,
+    public ResponseEntity<String> updateUserByToken(MenteeResponseDTO request,
                                                     HttpServletRequest req4){
         String token = jwtProvider.getTokenFromRequest(req4);
 
