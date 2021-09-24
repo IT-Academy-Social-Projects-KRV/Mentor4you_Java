@@ -51,7 +51,11 @@ public class AuthenticationService {
             throw new AuthenticationException("Email is incorrect");
         }
 
-        if(user.getStatus() && new BCryptPasswordEncoder().matches(request.getPassword(),user.getPassword())){
+
+        if(new BCryptPasswordEncoder().matches(request.getPassword(),user.getPassword())){
+            if(!user.getStatus()){
+                throw new AuthenticationException("User been deleted");
+            }
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     request.getEmail(),
                     request.getPassword()

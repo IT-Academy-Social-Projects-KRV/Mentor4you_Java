@@ -1,12 +1,14 @@
 package com.mentor4you.service;
 
+import com.mentor4you.exception.AdminDeleteException;
 import com.mentor4you.exception.RegistrationException;
 import com.mentor4you.model.DTO.UserBanDTO;
 import com.mentor4you.model.User;
 import com.mentor4you.repository.UserRepository;
 import com.mentor4you.security.jwt.JwtProvider;
+import com.mentor4you.security.jwt.cache.event.OnUserLogoutSuccessEvent;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -18,13 +20,17 @@ import java.util.List;
 public class UserService {
 
     @Autowired
+    ApplicationEventPublisher applicationEventPublisher;
     PasswordService passwordService;
     UserRepository userRepository;
     JwtProvider jwtProvider;
+    AuthenticationService authenticationService;
 
-    public UserService(UserRepository userRepository, JwtProvider jwtProvider) {
+    public UserService(ApplicationEventPublisher applicationEventPublisher, UserRepository userRepository, JwtProvider jwtProvider, AuthenticationService authenticationService) {
         this.userRepository = userRepository;
         this.jwtProvider = jwtProvider;
+        this.authenticationService = authenticationService;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     //select all users
@@ -86,5 +92,24 @@ public class UserService {
                 return "User's ban status changed";}
             else { return "User ban status has not been changed";}
         }
+    }
+
+    public String deleteUser(HttpServletRequest request) {
+        String token = jwtProvider.getTokenFromRequest(request);
+        String email = jwtProvider.getLoginFromToken(token);
+        User user = userRepository.findUserByEmail(email);
+
+        if(user.getRole().name().equals("ADMIN")){
+            throw new AdminDeleteException("You can not delete ADMIN account");
+        }
+
+        user.setStatus(false);
+        userRepository.save(user);
+
+        OnUserLogoutSuccessEvent logoutEventPublisher = new OnUserLogoutSuccessEvent(user.getEmail(),token);
+        applicationEventPublisher.publishEvent(logoutEventPublisher);
+
+
+        return "Account been deleted";
     }
 }
