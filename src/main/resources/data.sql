@@ -89,29 +89,33 @@ INSERT INTO mentor4you_db.languages_to_accounts (account_id, languages_id) VALUE
 COMMIT;
 
 INSERT INTO mentor4you_db.type_contacts (id, name) VALUES
-(1, 'Phone'),
-(2, 'Email'),
-(3, 'Web-site'),
-(4, 'GitHub');
+(1, 'PhoneNumFirst'),
+(2, 'PhoneNumSecond'),
+(3, 'LinkedIn'),
+(4, 'Facebook'),
+(5, 'Telegram'),
+(6, 'Skype'),
+(7, 'GitHub'),
+(8, 'Email');
 COMMIT;
 
 INSERT INTO mentor4you_db.contacts_to_accounts (contact_data, accounts_id, type_contacts_id) VALUES
-('+380998877666', 1, 1), ('Admin1@gmail.com', 1, 2), ('My-site URL', 1, 3), ('My GitHub URL',1, 4),
-('+380998877667', 2, 1), ('Moderator1@gmail.com',2,2),
-('+380998877668', 3, 1), ('Moderator2@gmail.com',3,2),
-('+380998877669', 4, 1), ('Moderator3@gmail.com',4,2),
+('+380998877666', 1, 1), ('Admin1@gmail.com', 1, 8), ('My-site URL', 1, 3), ('My GitHub URL',1, 7),
+('+380998877667', 2, 1), ('Moderator1@gmail.com',2,8),
+('+380998877668', 3, 1), ('Moderator2@gmail.com',3,8),
+('+380998877669', 4, 1), ('Moderator3@gmail.com',4,8),
 
-('+380998877670', 5, 1), ('Mentor1@gmail.com', 5, 2), ('My-site URL', 5, 3), ('My GitHub URL',5, 4),
-('+380998877671', 6, 1), ('Mentor2@gmail.com', 6, 2), ('My-site URL', 6, 3), ('My GitHub URL',6, 4),
-('+380998877672', 7, 1), ('Mentor3@gmail.com', 7, 2), ('My-site URL', 7, 3), ('My GitHub URL',7, 4),
-('+380998877673', 8, 1), ('Mentor4@gmail.com', 8, 2), ('My-site URL', 8, 3), ('My GitHub URL',8, 4),
-('+380998877674', 9, 1), ('Mentor5@gmail.com', 9, 2), ('My-site URL', 9, 3), ('My GitHub URL',9, 4),
+('+380998877670', 5, 1), ('Mentor1@gmail.com', 5, 8), ('My-site URL', 5, 3), ('My GitHub URL',5, 7),
+('+380998877671', 6, 1), ('Mentor2@gmail.com', 6, 8), ('My-site URL', 6, 3), ('My GitHub URL',6, 7),
+('+380998877672', 7, 1), ('Mentor3@gmail.com', 7, 8), ('My-site URL', 7, 3), ('My GitHub URL',7, 7),
+('+380998877673', 8, 1), ('Mentor4@gmail.com', 8, 8), ('My-site URL', 8, 3), ('My GitHub URL',8, 7),
+('+380998877674', 9, 1), ('Mentor5@gmail.com', 9, 8), ('My-site URL', 9, 3), ('My GitHub URL',9, 7),
 
-('+380998877675', 9, 1), ('Mentee1@gmail.com', 9, 2), ('My-site URL', 9, 3), ('My GitHub URL',9, 4),
-('+380998877676', 9, 1), ('Mentee2@gmail.com', 9, 2), ('My-site URL', 9, 3), ('My GitHub URL',9, 4),
-('+380998877677', 9, 1), ('Mentee3@gmail.com', 9, 2), ('My-site URL', 9, 3), ('My GitHub URL',9, 4),
-('+380998877678', 9, 1), ('Mentee4@gmail.com', 9, 2), ('My-site URL', 9, 3), ('My GitHub URL',9, 4),
-('+380998877679', 9, 1), ('Mentee5@gmail.com', 9, 2), ('My-site URL', 9, 3), ('My GitHub URL',9, 4);
+('+380998877675', 9, 1), ('Mentee1@gmail.com', 9, 8), ('My-site URL', 9, 3), ('My GitHub URL',9, 7),
+('+380998877676', 9, 1), ('Mentee2@gmail.com', 9, 8), ('My-site URL', 9, 3), ('My GitHub URL',9, 7),
+('+380998877677', 9, 1), ('Mentee3@gmail.com', 9, 8), ('My-site URL', 9, 3), ('My GitHub URL',9, 7),
+('+380998877678', 9, 1), ('Mentee4@gmail.com', 9, 8), ('My-site URL', 9, 3), ('My GitHub URL',9, 7),
+('+380998877679', 9, 1), ('Mentee5@gmail.com', 9, 8), ('My-site URL', 9, 3), ('My GitHub URL',9, 7);
 COMMIT;
 
 INSERT INTO mentor4you_db.mentors_to_categories (id, currency, rate, mentors_id) VALUES
