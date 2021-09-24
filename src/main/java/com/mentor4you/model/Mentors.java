@@ -22,16 +22,11 @@ public class Mentors {
     @MapsId
     private Accounts accounts;
 
-    @ManyToOne
-    @JoinColumn(name = "group_services")
-    private GroupServices group_services;
+    @Enumerated(EnumType.STRING)
+    private GroupServ groupServ;
 
     @OneToMany(mappedBy = "mentors")
     private Set<Mentors_to_categories> mentors_to_categories;
-
-
-
-
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="education")
@@ -66,7 +61,7 @@ public class Mentors {
     public Mentors(Accounts accounts,
                    String description,
                    boolean showable_status,
-                   GroupServices group_services,
+                   GroupServ groupServ,
                    boolean is_online,
                    boolean is_offline_in,
                    boolean is_offline_out
@@ -74,7 +69,7 @@ public class Mentors {
         this.accounts = accounts;
         this.description = description;
         this.showable_status = showable_status;
-        this.group_services = group_services;
+        this.groupServ = groupServ;
         this.is_online = is_online;
         this.is_offline_in = is_offline_in;
         this.is_offline_out = is_offline_out;
@@ -108,13 +103,9 @@ public class Mentors {
         this.showable_status = showable_status;
     }
 
-    public GroupServices getGroup_services() {
-        return group_services;
-    }
+    public GroupServ getGroupServ() {return groupServ;}
 
-    public void setGroup_services(GroupServices group_services) {
-        this.group_services = group_services;
-    }
+    public void setGroupServ(GroupServ groupServ) {this.groupServ = groupServ;}
 
     public boolean isIs_online(boolean b) {
         return is_online;
@@ -171,7 +162,7 @@ public class Mentors {
                 ", description='" + description + '\'' +
                 ", showable_status=" + showable_status +
                 ", accounts=" + accounts +
-                ", group_services=" + group_services +
+                ", group_services=" + groupServ +
                 ", mentors_to_categories=" + mentors_to_categories +
                 ", educations=" + educations +
                 ", certificats=" + certificats +
