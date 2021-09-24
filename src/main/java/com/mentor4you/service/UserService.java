@@ -52,20 +52,6 @@ public class UserService {
         }
     }
 
-    public String changeAvatar(String token, String avatarURL) {
-        String email =jwtProvider.getLoginFromToken(token);
-        if (email.isEmpty()){
-            return "Email is not found";
-        }
-        User user = userRepository.findUserByEmail(email);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found ");
-        }
-        user.setAvatar(avatarURL);
-        userRepository.save(user);
-        return "Your avatar is updated";
-    }
-
 
     public List<UserBanDTO> getAllBannedUsers(Boolean bool){
 

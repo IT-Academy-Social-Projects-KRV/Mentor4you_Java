@@ -3,10 +3,8 @@ package com.mentor4you.controller;
 import com.mentor4you.exception.RegistrationException;
 import com.mentor4you.model.DTO.EmailRequest;
 import com.mentor4you.model.DTO.PasswordDTO;
-import com.mentor4you.model.DTO.AvatarUpdateRequest;
 import com.mentor4you.model.DTO.UserBanDTO;
 import com.mentor4you.model.DTO.UserBanUpdateRequest;
-import com.mentor4you.model.Mentees;
 import com.mentor4you.model.User;
 import com.mentor4you.repository.UserRepository;
 import com.mentor4you.service.EmailService;
@@ -22,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 
 @RestController
@@ -79,16 +76,6 @@ public class UserController {
             return new ResponseEntity(list, HttpStatus.OK);
         }
     }
-
-    @PostMapping("/updateAvatar")
-    public String updateAvatar(@RequestHeader String token, @RequestBody AvatarUpdateRequest dto){
-        return userService.changeAvatar(token, dto.getAvatarURL());
-    }
-
-//    @PostMapping("/updateAvatar")
-//    public String updateAvatar(@RequestBody AvatarUpdateRequest dto){
-//        return userService.changeAvatar(dto.getToken(), dto.getAvatarURL());
-//    }
 
     @Operation(summary = "change User's ban status")
     @PutMapping("/changeBanToUser")
