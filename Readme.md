@@ -27,6 +27,7 @@ http://localhost:8080/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-confi
 ### Open the terminal in the frontend folder, run the command and wait for its execution:	:computer:
     docker build -t frontend .
 ### Open the terminal in the backtend folder, and execute commands consistently:	:computer:
+    mvn clean package -DskipTests    
     docker-compose -p mentor4you up
     
 ## Expected result: The project "mentor4you" is started.	
