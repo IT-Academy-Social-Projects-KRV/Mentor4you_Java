@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.Instant;
 import java.util.Date;
 
-import static com.mentor4you.DemoApplication.temptoken;
 
 
 @Service
