@@ -86,4 +86,11 @@ public class UserController {
         String result = userService.changeBanToUser(dto.banStatus, dto.getId());
         return new ResponseEntity<String>(result, HttpStatus.OK);
     }
+
+    @Operation(summary = "change User's avatar")
+    @PutMapping("/changeAvatar")
+    ResponseEntity<?> changeAvatar(@RequestHeader("Authorization") String header, @RequestParam("avatarURL")String avatarURL) {
+        String result = userService.changeAvatar(header, avatarURL);
+        return new ResponseEntity<String>(result, HttpStatus.OK);
+    }
 }

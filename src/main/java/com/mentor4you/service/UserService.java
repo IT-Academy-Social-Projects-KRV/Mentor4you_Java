@@ -87,4 +87,18 @@ public class UserService {
             else { return "User ban status has not been changed";}
         }
     }
+
+    public String changeAvatar(String header, String avatarURL) {
+        String email = jwtProvider.getLoginFromToken(header.substring(7));
+        User user = userRepository.findUserByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException("User is not found.");
+        }
+        if(!(avatarURL.startsWith("http://") || avatarURL.startsWith("https://"))) {
+            return "New Avatar URL is incorrect";
+        }
+        user.setAvatar(avatarURL);
+        userRepository.save(user);
+        return "You avatar is changed";
+    }
 }
