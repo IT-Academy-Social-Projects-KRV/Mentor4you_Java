@@ -2,11 +2,11 @@ package com.mentor4you.service;
 
 import com.mentor4you.exception.RegistrationException;
 import com.mentor4you.model.DTO.UserBanDTO;
+import com.mentor4you.model.Role;
 import com.mentor4you.model.User;
 import com.mentor4you.repository.UserRepository;
 import com.mentor4you.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -100,5 +100,14 @@ public class UserService {
         user.setAvatar(avatarURL);
         userRepository.save(user);
         return "You avatar is changed";
+    }
+
+    public String changeMyRole(String header){
+        String email = jwtProvider.getLoginFromToken(header.substring(7));
+        User user = userRepository.findUserByEmail(email);
+        if (user.getRole().equals(Role.MENTOR)) {user.setRole(Role.MENTEE);}
+        else if (user.getRole().equals(Role.MENTEE)) {user.setRole(Role.MENTOR);}
+        userRepository.save(user);
+        return "Congratulation, you are become a ".concat(user.getRole().name());
     }
 }
