@@ -110,6 +110,6 @@ public class UserService {
         applicationEventPublisher.publishEvent(logoutEventPublisher);
 
 
-        return "Account been deleted";
+        return "Account has been deleted";
     }
 }
