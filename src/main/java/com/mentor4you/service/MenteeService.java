@@ -2,26 +2,52 @@ package com.mentor4you.service;
 
 import com.mentor4you.exception.MenteeNotFoundException;
 import com.mentor4you.exception.MentorNotFoundException;
-import com.mentor4you.model.Mentees;
-import com.mentor4you.model.Mentors;
-import com.mentor4you.model.Role;
-import com.mentor4you.repository.AccountRepository;
-import com.mentor4you.repository.MenteeRepository;
-import com.mentor4you.repository.MentorRepository;
+import com.mentor4you.model.*;
+import com.mentor4you.model.DTO.MenteeResponseDTO;
+import com.mentor4you.model.DTO.MenteeUpdateRequest;
+import com.mentor4you.repository.*;
+import com.mentor4you.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.List;
-import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
+
 @Service
-public class MenteeService {
+public class MenteeService
+{
     @Autowired
     AccountRepository accountRepository;
     MenteeRepository menteeRepository;
+    JwtProvider jwtProvider;
+    UserRepository userRepository;
+    ContactsToAccountsRepository contactsToAccountsRepository;
+    EmailService emailService;
+    TypeContactsService typeContactsService;
+    ContactsToAccountsService contactsToAccountsService;
+    UserService userService;
 
-    public MenteeService(AccountRepository accountRepository, MenteeRepository menteeRepository) {
+    public MenteeService(AccountRepository accountRepository,
+                         MenteeRepository menteeRepository,
+                         JwtProvider jwtProvider,
+                         UserRepository userRepository,
+                         ContactsToAccountsRepository contactsToAccountsRepository,
+                         EmailService emailService,
+                         TypeContactsService typeContactsService,
+                         ContactsToAccountsService contactsToAccountsService,
+                         UserService userService) {
         this.accountRepository = accountRepository;
         this.menteeRepository = menteeRepository;
+        this.jwtProvider = jwtProvider;
+        this.userRepository = userRepository;
+        this.contactsToAccountsRepository = contactsToAccountsRepository;
+        this.emailService = emailService;
+        this.typeContactsService = typeContactsService;
+        this.contactsToAccountsService = contactsToAccountsService;
+        this.userService=userService;
     }
 
     public List<Mentees> getFullInfoAllMentees(){
@@ -39,5 +65,31 @@ public class MenteeService {
             return theMentee;
         }
         throw new MenteeNotFoundException("Mentee with id = "+ id +" not found");
+    }
+
+    public ResponseEntity<MenteeResponseDTO> getOneMenteeByToken(HttpServletRequest req)
+    {
+        String token = jwtProvider.getTokenFromRequest(req);
+
+        String emailMy = jwtProvider.getLoginFromToken(token);
+
+        User user = userRepository.findUserByEmail(emailMy);
+
+        if(user.getRole()==Role.MENTEE)
+            return  userService.getOneMentee(user);
+        else return new ResponseEntity<MenteeResponseDTO>(HttpStatus.NOT_FOUND);
+    }
+
+    public ResponseEntity<String> updateUserByToken(MenteeResponseDTO request,
+                                                    HttpServletRequest req4){
+        String token = jwtProvider.getTokenFromRequest(req4);
+
+        String emailFromToken = jwtProvider.getLoginFromToken(token);
+
+        User userToUpdate = userRepository.findUserByEmail(emailFromToken);
+
+        if(userToUpdate.getRole() ==Role.MENTEE)
+            return userService.updateUser(userToUpdate,request);
+        else return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
     }
 }

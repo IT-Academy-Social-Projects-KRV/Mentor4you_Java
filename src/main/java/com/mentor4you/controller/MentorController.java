@@ -3,6 +3,8 @@ package com.mentor4you.controller;
 import com.mentor4you.exception.ErrorObject;
 import com.mentor4you.exception.MentorNotFoundException;
 import com.mentor4you.model.Accounts;
+import com.mentor4you.model.DTO.MenteeResponseDTO;
+import com.mentor4you.model.DTO.MentorGeneralResponseDTO;
 import com.mentor4you.model.Mentors;
 import com.mentor4you.service.MentorService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,12 +29,24 @@ public class MentorController {
     }
 
 
-
     //select mentor by id
     @Operation(summary = "select mentor by id")
     @GetMapping("/{id}")
     Optional<Mentors> getMentorById(@PathVariable(value = "id") Integer id){
         return mentorService.getMentorById(id);
+    }
+
+    @Operation(summary = "select mentee by token")
+    @GetMapping("/getMentorDTO/")
+    ResponseEntity<MentorGeneralResponseDTO> getOneMentorByToken
+            (HttpServletRequest req) {
+        return mentorService.getOneMentorByToken(req);
+    }
+    @Operation(summary = "select mentee by token")
+    @PutMapping("/UpdateMentor/")
+    ResponseEntity<String> updateMentorByToken
+            (HttpServletRequest req,@RequestBody MentorGeneralResponseDTO dto) {
+        return mentorService.updateMentorByToken(dto,req);
     }
 
     @Operation(summary = "Full info about mentors", description = "This method provides the most complete information about existing mentors")
