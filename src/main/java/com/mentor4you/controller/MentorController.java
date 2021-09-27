@@ -9,8 +9,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +36,7 @@ public class MentorController {
     Optional<Mentors> getMentorById(@PathVariable(value = "id") Integer id){
         return mentorService.getMentorById(id);
     }
+
 
     @Operation(summary = "Full info about mentors", description = "This method provides the most complete information about existing mentors")
     @GetMapping
