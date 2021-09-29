@@ -1,5 +1,6 @@
 package com.mentor4you.controller;
 
+import com.mentor4you.exception.AdminDeleteException;
 import com.mentor4you.exception.RegistrationException;
 import com.mentor4you.model.DTO.EmailRequest;
 import com.mentor4you.model.DTO.PasswordDTO;
@@ -99,4 +100,18 @@ public class UserController {
         return new ResponseEntity<String>(result, HttpStatus.OK);
     }
 
+    @Operation(summary = "delete user account")
+    @DeleteMapping("/delete")
+    ResponseEntity<?> deleteUser(HttpServletRequest request){
+        Map<String, String> res = new HashMap<>();
+
+        try {
+            String result = userService.deleteUser(request);
+            res.put("message", result);
+            return ResponseEntity.ok(res);
+        } catch (AdminDeleteException e) {
+            res.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(res);
+        }
+    }
 }

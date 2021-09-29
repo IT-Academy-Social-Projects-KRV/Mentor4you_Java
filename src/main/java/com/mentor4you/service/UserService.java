@@ -1,5 +1,6 @@
 package com.mentor4you.service;
 
+import com.mentor4you.exception.AdminDeleteException;
 import com.mentor4you.exception.MenteeNotFoundException;
 import com.mentor4you.exception.RegistrationException;
 import com.mentor4you.model.ContactsToAccounts;
@@ -11,7 +12,9 @@ import com.mentor4you.model.User;
 import com.mentor4you.repository.ContactsToAccountsRepository;
 import com.mentor4you.repository.UserRepository;
 import com.mentor4you.security.jwt.JwtProvider;
+import com.mentor4you.security.jwt.cache.event.OnUserLogoutSuccessEvent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,17 +30,22 @@ import java.util.Map;
 public class UserService {
 
     @Autowired
+    ApplicationEventPublisher applicationEventPublisher;
     PasswordService passwordService;
     UserRepository userRepository;
     JwtProvider jwtProvider;
+    AuthenticationService authenticationService;
     EmailService emailService;
     ContactsToAccountsService contactsToAccountsService;
     ContactsToAccountsRepository contactsToAccountsRepository;
 
-    public UserService(PasswordService passwordService, UserRepository userRepository, JwtProvider jwtProvider, EmailService emailService, ContactsToAccountsService contactsToAccountsService, ContactsToAccountsRepository contactsToAccountsRepository) {
+    public UserService(PasswordService passwordService, UserRepository userRepository, JwtProvider jwtProvider, EmailService emailService, ContactsToAccountsService contactsToAccountsService, ContactsToAccountsRepository contactsToAccountsRepository,
+                       AuthenticationService authenticationService, ApplicationEventPublisher applicationEventPublisher) {
         this.passwordService = passwordService;
         this.userRepository = userRepository;
         this.jwtProvider = jwtProvider;
+        this.authenticationService = authenticationService;
+        this.applicationEventPublisher = applicationEventPublisher;
         this.emailService = emailService;
         this.contactsToAccountsService = contactsToAccountsService;
         this.contactsToAccountsRepository = contactsToAccountsRepository;
@@ -185,5 +193,24 @@ public class UserService {
                 return new ResponseEntity<MenteeResponseDTO>(mDTO, HttpStatus.OK);
             }
             return null;
+    }
+
+    public String deleteUser(HttpServletRequest request) {
+        String token = jwtProvider.getTokenFromRequest(request);
+        String email = jwtProvider.getLoginFromToken(token);
+        User user = userRepository.findUserByEmail(email);
+
+        if(user.getRole().name().equals("ADMIN")){
+            throw new AdminDeleteException("You can not delete ADMIN account");
+        }
+
+        user.setStatus(false);
+        userRepository.save(user);
+
+        OnUserLogoutSuccessEvent logoutEventPublisher = new OnUserLogoutSuccessEvent(user.getEmail(),token);
+        applicationEventPublisher.publishEvent(logoutEventPublisher);
+
+
+        return "Account has been deleted";
     }
 }
