@@ -7,6 +7,7 @@ import com.mentor4you.model.ContactsToAccounts;
 import com.mentor4you.model.DTO.MenteeResponseDTO;
 import com.mentor4you.model.DTO.MenteeUpdateRequest;
 import com.mentor4you.model.DTO.UserBanDTO;
+import com.mentor4you.model.Role;
 import com.mentor4you.model.User;
 import com.mentor4you.repository.ContactsToAccountsRepository;
 import com.mentor4you.repository.UserRepository;
@@ -109,7 +110,28 @@ public class UserService {
             else { return "User ban status has not been changed";}
         }
     }
+    public String changeAvatar(String header, String avatarURL) {
+        String email = jwtProvider.getLoginFromToken(header.substring(7));
+        User user = userRepository.findUserByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException("User is not found.");
+        }
+        if(!(avatarURL.startsWith("http://") || avatarURL.startsWith("https://"))) {
+            return "New Avatar URL is incorrect";
+        }
+        user.setAvatar(avatarURL);
+        userRepository.save(user);
+        return "You avatar is changed";
+    }
 
+    public String changeMyRole(String header){
+        String email = jwtProvider.getLoginFromToken(header.substring(7));
+        User user = userRepository.findUserByEmail(email);
+        if (user.getRole().equals(Role.MENTOR)) {user.setRole(Role.MENTEE);}
+        else if (user.getRole().equals(Role.MENTEE)) {user.setRole(Role.MENTOR);}
+        userRepository.save(user);
+        return "Congratulation, you are become a ".concat(user.getRole().name());
+    }
     public ResponseEntity<String> updateUser(User userToUpdate, MenteeResponseDTO request){
         String emailNew = request.getEmail();
         int id = userToUpdate.getId();
