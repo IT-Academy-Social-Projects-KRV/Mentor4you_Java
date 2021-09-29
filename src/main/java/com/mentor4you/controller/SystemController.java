@@ -22,7 +22,6 @@ import java.util.Random;
 public class SystemController {
 
     @Autowired
-    private final GroupServicesRepository groupServicesRepository;
     private final AccountRepository accountRepository;
     private final MentorRepository mentorRepository;
     private final LanguagesRepository languagesRepository;
@@ -35,7 +34,7 @@ public class SystemController {
     private final TypeContactsRepository typeContactsRepository;
     private final EmailService emailService;
 
-    public SystemController(GroupServicesRepository groupServicesRepository,
+    public SystemController(
                             AccountRepository accountRepository,
                             MentorRepository mentorRepository,
                             LanguagesRepository languagesRepository,
@@ -47,7 +46,6 @@ public class SystemController {
                             ContactsToAccountsRepository contactsToAccountsRepository,
                             TypeContactsRepository typeContactsRepository,
                             EmailService emailService) {
-        this.groupServicesRepository = groupServicesRepository;
         this.accountRepository = accountRepository;
         this.mentorRepository = mentorRepository;
         this.languagesRepository = languagesRepository;
@@ -68,9 +66,7 @@ public class SystemController {
     public String registerRoles() {
 
        try {
-            groupServicesRepository.save(new GroupServices("No"));
-            groupServicesRepository.save(new GroupServices("Yes"));
-            groupServicesRepository.save(new GroupServices("Mix"));
+
 
 
             createLanguages();
@@ -147,9 +143,10 @@ public class SystemController {
             m.setAccounts(createOneAccount(user, i));
             m.setDescription("description");
             m.setShowable_status(true);
-            m.isIs_online(true);
-            m.isIs_offline_in(true);
-            m.isIs_offline_out(true);
+            m.setGroupServ(GroupServ.MIX);
+            m.isOnline();
+            m.isOfflineIn();
+            m.isOfflineOut();
             m.setEducations(Arrays.asList(new Educations(i + "edu"), new Educations(i + "edu_other")));
             m.setCertificats(Arrays.asList(new Certificats(i + "cert"), new Certificats(i + "cert_other")));
 
