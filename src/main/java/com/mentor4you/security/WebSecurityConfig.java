@@ -33,14 +33,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .cors().and()
                 //виключив csrf захист щоб можна було надсилати POST запити
-                .csrf().disable()
+                .cors().and().csrf().disable()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 //TODO  chek all permits
-                .authorizeRequests().antMatchers("/api/auth/*","/api/registration","/api/users","/api/users/getAllBannedUser","/api/users/changeBanToUser").permitAll()
+                .authorizeRequests().antMatchers("/api/auth/*","/api/registration","/api/users","/api/users/getAllBannedUser",
+                    "/api/users/changeBanToUser","/api/users/changeAvatar", "/api/users/changeRole","/api/admin/appointModerator").permitAll()
                 .and()
                 .authorizeRequests().antMatchers("/api/**").authenticated()
                 .anyRequest().permitAll()

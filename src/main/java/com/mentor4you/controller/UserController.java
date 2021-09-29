@@ -1,11 +1,11 @@
 package com.mentor4you.controller;
 
+import com.mentor4you.exception.AdminDeleteException;
 import com.mentor4you.exception.RegistrationException;
 import com.mentor4you.model.DTO.EmailRequest;
 import com.mentor4you.model.DTO.PasswordDTO;
 import com.mentor4you.model.DTO.UserBanDTO;
 import com.mentor4you.model.DTO.UserBanUpdateRequest;
-import com.mentor4you.model.Mentees;
 import com.mentor4you.model.User;
 import com.mentor4you.repository.UserRepository;
 import com.mentor4you.service.EmailService;
@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 
 @RestController
@@ -85,5 +84,34 @@ public class UserController {
     ResponseEntity<?> changeBanToUser(@RequestBody UserBanUpdateRequest dto) {
         String result = userService.changeBanToUser(dto.banStatus, dto.getId());
         return new ResponseEntity<String>(result, HttpStatus.OK);
+    }
+
+    @Operation(summary = "change User's avatar")
+    @PutMapping("/changeAvatar")
+    ResponseEntity<?> changeAvatar(@RequestHeader("Authorization") String header, @RequestParam("avatarURL")String avatarURL) {
+        String result = userService.changeAvatar(header, avatarURL);
+        return new ResponseEntity<String>(result, HttpStatus.OK);
+    }
+
+    @Operation(summary = "change current user`s role")
+    @PutMapping("/changeRole")
+    ResponseEntity<?> changeRole(@RequestHeader("Authorization") String header) {
+        String result = userService.changeMyRole(header);
+        return new ResponseEntity<String>(result, HttpStatus.OK);
+    }
+
+    @Operation(summary = "delete user account")
+    @DeleteMapping("/delete")
+    ResponseEntity<?> deleteUser(HttpServletRequest request){
+        Map<String, String> res = new HashMap<>();
+
+        try {
+            String result = userService.deleteUser(request);
+            res.put("message", result);
+            return ResponseEntity.ok(res);
+        } catch (AdminDeleteException e) {
+            res.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(res);
+        }
     }
 }
