@@ -3,6 +3,7 @@ package com.mentor4you.controller;
 import com.mentor4you.exception.ErrorObject;
 import com.mentor4you.exception.MentorNotFoundException;
 import com.mentor4you.model.Accounts;
+import com.mentor4you.model.DTO.ExtendedMenteeDTO;
 import com.mentor4you.model.DTO.MenteeResponseDTO;
 import com.mentor4you.model.DTO.MentorGeneralResponseDTO;
 import com.mentor4you.model.Mentors;
@@ -32,7 +33,7 @@ public class MentorController {
     //select mentor by id
     @Operation(summary = "select mentor by id")
     @GetMapping("/{id}")
-    Optional<Mentors> getMentorById(@PathVariable(value = "id") Integer id){
+    ResponseEntity<ExtendedMenteeDTO> getMentorById(@PathVariable(value = "id") Integer id){
         return mentorService.getMentorById(id);
     }
 

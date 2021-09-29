@@ -2,6 +2,7 @@ package com.mentor4you.service;
 
 import com.mentor4you.exception.MentorNotFoundException;
 import com.mentor4you.model.*;
+import com.mentor4you.model.DTO.ExtendedMenteeDTO;
 import com.mentor4you.model.DTO.MenteeResponseDTO;
 import com.mentor4you.model.DTO.MentorGeneralResponseDTO;
 import com.mentor4you.repository.AccountRepository;
@@ -10,6 +11,7 @@ import com.mentor4you.repository.MentorsToCategory;
 import com.mentor4you.repository.UserRepository;
 import com.mentor4you.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -66,14 +68,31 @@ public class MentorService {
 
     }
     //    select mentor by id
-    public Optional<Mentors> getMentorById(int id){
+    public ResponseEntity<ExtendedMenteeDTO> getMentorById(int id){
 
-        Optional<Mentors> theMentor = mentorRepository.findById(id).stream().filter(e->e.getId()==id).findFirst();
-        if(theMentor.isPresent()) {
-            return theMentor;
+        Mentors mentor = mentorRepository.findOneById(id);
+        if(mentor!=null){
+            ExtendedMenteeDTO dto = new ExtendedMenteeDTO();
+
+            dto.setId(mentor.getId());
+            dto.setName(mentor.getAccounts().getUser().getFirst_name());
+            dto.setSecondName(mentor.getAccounts().getUser().getLast_name());
+            dto.setOfflineIn(mentor.isOfflineIn());
+            dto.setOfflineOut(mentor.isOfflineOut());
+            dto.setOnline(mentor.isOnline());
+            dto.setCategories(mentor.getMentors_to_categories());
+            dto.setDescription(mentor.getDescription());
+            dto.setEducations(mentor.getEducations());
+            dto.setCertificats(mentor.getCertificats());
+            Set<String>l =new HashSet<>();
+            for (Languages language : mentor.getAccounts().getLanguagesList()) {
+                l.add(language.getName());
+            }
+            dto.setLanguages(l);
+
+            return new ResponseEntity<ExtendedMenteeDTO>(dto,HttpStatus.OK);
         }
-
-        throw new MentorNotFoundException("Mentor with id = "+ id +" not found");
+        else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
     }
     public ResponseEntity<MentorGeneralResponseDTO> getOneMentorByToken(HttpServletRequest request){
