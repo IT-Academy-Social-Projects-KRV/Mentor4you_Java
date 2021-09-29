@@ -25,19 +25,14 @@ public class MentorGeneralResponseDTO {
 
     private Set<Mentors_to_categories> categories;
 
+    private Set<String> languages;
+
 
     public MentorGeneralResponseDTO() {
     }
 
-    public MentorGeneralResponseDTO(String description,
-                                    boolean showable_status,
-                                    boolean isOnline,
-                                    boolean isOfflineIn,
-                                    boolean isOfflineOut,
-                                    List<Educations> educations,
-                                    List<Certificats> certificats,
-                                    Set<Mentors_to_categories> categories,
-                                    MenteeResponseDTO accountInfo) {
+    public MentorGeneralResponseDTO(MenteeResponseDTO accountInfo, String description, boolean showable_status, boolean isOnline, boolean isOfflineIn, boolean isOfflineOut, List<Educations> educations, List<Certificats> certificats, Set<Mentors_to_categories> categories, Set<String> languages) {
+        this.accountInfo = accountInfo;
         this.description = description;
         this.showable_status = showable_status;
         this.isOnline = isOnline;
@@ -46,7 +41,7 @@ public class MentorGeneralResponseDTO {
         this.educations = educations;
         this.certificats = certificats;
         this.categories = categories;
-        this.accountInfo =accountInfo;
+        this.languages = languages;
     }
 
     public String getDescription() {
@@ -119,5 +114,13 @@ public class MentorGeneralResponseDTO {
 
     public void setAccountInfo(MenteeResponseDTO accountInfo) {
         this.accountInfo = accountInfo;
+    }
+
+    public Set<String> getLanguages() {
+        return languages;
+    }
+
+    public void setLanguages(Set<String> languages) {
+        this.languages = languages;
     }
 }

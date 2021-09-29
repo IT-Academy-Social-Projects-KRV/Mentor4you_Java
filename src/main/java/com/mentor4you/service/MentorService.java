@@ -17,8 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Transactional
 @Service
@@ -27,6 +29,7 @@ public class MentorService {
     @Autowired
     MentorsToCategory mentorsToCategory;
     AccountRepository accountRepository;
+    LanguagesService languagesService;
     MentorRepository mentorRepository;
     UserRepository userRepository;
     MenteeService menteeService;
@@ -35,6 +38,7 @@ public class MentorService {
 
 
     public MentorService(
+                         LanguagesService languagesService,
                          MentorsToCategory mentorsToCategory,
                          AccountRepository accountRepository,
                          MentorRepository mentorRepository,
@@ -42,6 +46,7 @@ public class MentorService {
                          MenteeService menteeService,
                          UserService userService,
                          JwtProvider jwtProvider) {
+        this.languagesService = languagesService;
         this.mentorsToCategory = mentorsToCategory;
         this.accountRepository = accountRepository;
         this.mentorRepository = mentorRepository;
@@ -84,6 +89,12 @@ public class MentorService {
 
             Mentors m = mentorRepository.getById(user.getId());
 
+            Set<String>l =new HashSet<>();
+
+            for (Languages language : m.getAccounts().getLanguagesList()) {
+                l.add(language.getName());
+            }
+
             MentorGeneralResponseDTO dto =new MentorGeneralResponseDTO();
             dto.setAccountInfo(mDTO);
             dto.setCertificats(m.getCertificats());
@@ -94,6 +105,7 @@ public class MentorService {
             dto.setOfflineIn(m.isOfflineIn());
             dto.setOfflineOut(m.isOfflineOut());
             dto.setShowable_status(m.isShowable_status());
+            dto.setLanguages(l);
 
             return new ResponseEntity<MentorGeneralResponseDTO>(dto, HttpStatus.OK);
         }
@@ -116,9 +128,16 @@ public class MentorService {
         userService.updateUser(user,dto.getAccountInfo());
         Mentors mentor = mentorRepository.getById(user.getId());
 
+
+
         remove(mentor);
         for (Mentors_to_categories n : dto.getCategories()){
                 n.setMentors(mentor);
+        }
+
+        Set<Languages>l =new HashSet<>();
+        if(dto.getLanguages()!=null){
+            l = languagesService.getAllLanguages(dto.getLanguages());
         }
 
 
@@ -130,6 +149,7 @@ public class MentorService {
         mentor.setOnline(dto.isOnline());
         mentor.setOfflineOut(dto.isOfflineOut());
         mentor.setOfflineIn(dto.isOfflineIn());
+        mentor.getAccounts().setLanguagesList(l);
 
 
         mentorRepository.save(mentor);
