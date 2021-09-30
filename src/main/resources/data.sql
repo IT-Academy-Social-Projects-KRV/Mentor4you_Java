@@ -1,20 +1,20 @@
 INSERT INTO mentor4you_db.users (avatar, email, first_name, last_name, password, registration_date, role, status) VALUES
-('https://avatarmaker.net/images/1.png','Admin1@gmail.com', 'Admin', 'Admino', '$2a$10$n22WnLFhl0ic2H64dILwRer.MQBil0NttGwLalGZjgQTtmdx7w4ni', '2021-09-13 10:42:19.236442', 'ADMIN',true),
-('https://avatarmaker.net/images/1.png','Moderator1@gmail.com', 'Moder', 'Mod', '$2a$10$n22WnLFhl0ic2H64dILwRer.MQBil0NttGwLalGZjgQTtmdx7w4ni', '2021-09-13 10:42:19.236442', 'MODERATOR',true),
-('https://avatarmaker.net/images/1.png','Moderator2@gmail.com', 'Mod', 'Moder', '$2a$10$n22WnLFhl0ic2H64dILwRer.MQBil0NttGwLalGZjgQTtmdx7w4ni', '2021-09-13 10:42:19.236442', 'MODERATOR',true),
-('https://avatarmaker.net/images/1.png','Moderator3@gmail.com', 'Modest', 'Moderovich', '$2a$10$n22WnLFhl0ic2H64dILwRer.MQBil0NttGwLalGZjgQTtmdx7w4ni', '2021-09-13 10:42:19.236442', 'MODERATOR',true),
+('https://avatarmaker.net/images/1.png','Admin1@gmail.com', 'Admin', 'Admino', '$2a$10$LTIXsz6vEwmL0Bqwr9vDsefnHsi15M99WDuCTY8ejfMzFEGq/25Cy', '2021-09-13 10:42:19.236442', 'ADMIN',true),
+('https://avatarmaker.net/images/1.png','Moderator1@gmail.com', 'Moder', 'Mod', '$2a$10$LTIXsz6vEwmL0Bqwr9vDsefnHsi15M99WDuCTY8ejfMzFEGq/25Cy', '2021-09-13 10:42:19.236442', 'MODERATOR',true),
+('https://avatarmaker.net/images/1.png','Moderator2@gmail.com', 'Mod', 'Moder', '$2a$10$LTIXsz6vEwmL0Bqwr9vDsefnHsi15M99WDuCTY8ejfMzFEGq/25Cy', '2021-09-13 10:42:19.236442', 'MODERATOR',true),
+('https://avatarmaker.net/images/1.png','Moderator3@gmail.com', 'Modest', 'Moderovich', '$2a$10$LTIXsz6vEwmL0Bqwr9vDsefnHsi15M99WDuCTY8ejfMzFEGq/25Cy', '2021-09-13 10:42:19.236442', 'MODERATOR',true),
 
-('https://avatarmaker.net/images/1.png','Mentor1@gmail.com', 'Andrii', 'Android', '$2a$10$n22WnLFhl0ic2H64dILwRer.MQBil0NttGwLalGZjgQTtmdx7w4ni', '2021-09-13 10:42:19.236442', 'MENTOR',true),
-('https://avatarmaker.net/images/1.png','Mentor2@gmail.com', 'Mykola', 'Myhalkov', '$2a$10$n22WnLFhl0ic2H64dILwRer.MQBil0NttGwLalGZjgQTtmdx7w4ni', '2021-09-13 10:42:19.236442', 'MENTOR',true),
-('https://avatarmaker.net/images/1.png','Mentor3@gmail.com', 'Vasyl', 'Vasyliv', '$2a$10$n22WnLFhl0ic2H64dILwRer.MQBil0NttGwLalGZjgQTtmdx7w4ni', '2021-09-13 10:42:19.236442', 'MENTOR',true),
-('https://avatarmaker.net/images/1.png','Mentor4@gmail.com', 'Ivan', 'Ivanov', '$2a$10$n22WnLFhl0ic2H64dILwRer.MQBil0NttGwLalGZjgQTtmdx7w4ni', '2021-09-13 10:42:19.236442', 'MENTOR',true),
-('https://avatarmaker.net/images/1.png','Mentor5@gmail.com', 'Leonard', 'Vasyliv', '$2a$10$n22WnLFhl0ic2H64dILwRer.MQBil0NttGwLalGZjgQTtmdx7w4ni', '2021-09-13 10:42:19.236442', 'MENTOR',true),
+('https://avatarmaker.net/images/1.png','Mentor1@gmail.com', 'Andrii', 'Android', '$2a$10$LTIXsz6vEwmL0Bqwr9vDsefnHsi15M99WDuCTY8ejfMzFEGq/25Cy', '2021-09-13 10:42:19.236442', 'MENTOR',true),
+('https://avatarmaker.net/images/1.png','Mentor2@gmail.com', 'Mykola', 'Myhalkov', '$2a$10$LTIXsz6vEwmL0Bqwr9vDsefnHsi15M99WDuCTY8ejfMzFEGq/25Cy', '2021-09-13 10:42:19.236442', 'MENTOR',true),
+('https://avatarmaker.net/images/1.png','Mentor3@gmail.com', 'Vasyl', 'Vasyliv', '$2a$10$LTIXsz6vEwmL0Bqwr9vDsefnHsi15M99WDuCTY8ejfMzFEGq/25Cy', '2021-09-13 10:42:19.236442', 'MENTOR',true),
+('https://avatarmaker.net/images/1.png','Mentor4@gmail.com', 'Ivan', 'Ivanov', '$2a$10$LTIXsz6vEwmL0Bqwr9vDsefnHsi15M99WDuCTY8ejfMzFEGq/25Cy', '2021-09-13 10:42:19.236442', 'MENTOR',true),
+('https://avatarmaker.net/images/1.png','Mentor5@gmail.com', 'Leonard', 'Vasyliv', '$2a$10$LTIXsz6vEwmL0Bqwr9vDsefnHsi15M99WDuCTY8ejfMzFEGq/25Cy', '2021-09-13 10:42:19.236442', 'MENTOR',true),
 
-('https://avatarmaker.net/images/1.png','Mentee1@gmail.com', 'Orest', 'Knyazev', '$2a$10$n22WnLFhl0ic2H64dILwRer.MQBil0NttGwLalGZjgQTtmdx7w4ni', '2021-09-13 10:42:19.236442', 'MENTEE',true),
-('https://avatarmaker.net/images/1.png','Mentee2@gmail.com', 'Dmytro', 'Vasiv', '$2a$10$n22WnLFhl0ic2H64dILwRer.MQBil0NttGwLalGZjgQTtmdx7w4ni', '2021-09-13 10:42:19.236442', 'MENTEE',true),
-('https://avatarmaker.net/images/1.png','Mentee3@gmail.com', 'Bogdan', 'Ivanov', '$2a$10$n22WnLFhl0ic2H64dILwRer.MQBil0NttGwLalGZjgQTtmdx7w4ni', '2021-09-13 10:42:19.236442', 'MENTEE',true),
-('https://avatarmaker.net/images/1.png','Mentee4@gmail.com', 'Peter', 'Kwit', '$2a$10$n22WnLFhl0ic2H64dILwRer.MQBil0NttGwLalGZjgQTtmdx7w4ni', '2021-09-13 10:42:19.236442', 'MENTEE',true),
-('https://avatarmaker.net/images/1.png','Mentee5@gmail.com', 'Herasim', 'Nechai', '$2a$10$n22WnLFhl0ic2H64dILwRer.MQBil0NttGwLalGZjgQTtmdx7w4ni', '2021-09-13 10:42:19.236442', 'MENTEE',true);
+('https://avatarmaker.net/images/1.png','Mentee1@gmail.com', 'Orest', 'Knyazev', '$2a$10$LTIXsz6vEwmL0Bqwr9vDsefnHsi15M99WDuCTY8ejfMzFEGq/25Cy', '2021-09-13 10:42:19.236442', 'MENTEE',true),
+('https://avatarmaker.net/images/1.png','Mentee2@gmail.com', 'Dmytro', 'Vasiv', '$2a$10$LTIXsz6vEwmL0Bqwr9vDsefnHsi15M99WDuCTY8ejfMzFEGq/25Cy', '2021-09-13 10:42:19.236442', 'MENTEE',true),
+('https://avatarmaker.net/images/1.png','Mentee3@gmail.com', 'Bogdan', 'Ivanov', '$2a$10$LTIXsz6vEwmL0Bqwr9vDsefnHsi15M99WDuCTY8ejfMzFEGq/25Cy', '2021-09-13 10:42:19.236442', 'MENTEE',true),
+('https://avatarmaker.net/images/1.png','Mentee4@gmail.com', 'Peter', 'Kwit', '$2a$10$LTIXsz6vEwmL0Bqwr9vDsefnHsi15M99WDuCTY8ejfMzFEGq/25Cy', '2021-09-13 10:42:19.236442', 'MENTEE',true),
+('https://avatarmaker.net/images/1.png','Mentee5@gmail.com', 'Herasim', 'Nechai', '$2a$10$LTIXsz6vEwmL0Bqwr9vDsefnHsi15M99WDuCTY8ejfMzFEGq/25Cy', '2021-09-13 10:42:19.236442', 'MENTEE',true);
 COMMIT;
 
 INSERT INTO mentor4you_db.accounts (id, last_visit) VALUES
@@ -113,12 +113,30 @@ INSERT INTO mentor4you_db.contacts_to_accounts (contact_data, accounts_id, type_
 ('+380998877679', 9, 1), ('Mentee5@gmail.com', 9, 8), ('My-site URL', 9, 3), ('My GitHub URL',9, 7);
 COMMIT;
 
-INSERT INTO mentor4you_db.mentors_to_categories (id, currency, rate, mentors_id) VALUES
-(1, 'UAH', 150, 5),
-(4, 'UAH', 175, 6),
-(2, 'USD', 10, 7),
-(5, 'UAH', 230, 8),
-(6, 'UAH', 250, 9);
+INSERT INTO mentor4you_db.mentors_to_categories (id, currency, rate,categories_id ,mentors_id) VALUES
+(1, 'UAH', 150, 1,5),
+(4, 'UAH', 175, 2,6),
+(2, 'USD', 10, 2,7),
+(5, 'UAH', 230, 3,8),
+(6, 'UAH', 250, 4,9);
+COMMIT;
+
+INSERT INTO mentor4you_db.educations (id,description,name,education) VALUES
+(1,'description','higher education',5),
+(2,'description','higher education',6),
+(3,'description','higher education',7),
+(4,'description','higher education',8),
+(5,'description','higher education',9);
 COMMIT;
 
 
+INSERT INTO mentor4you_db.certificats (id,description,link,name,certificats) VALUES
+(1,'description','http://link','Very Cool Certificat',5),
+(2,'description','http://link','Very Cool Certificat',6),
+(3,'description','http://link','Very Cool Certificat',7),
+(4,'description','http://link','Very Cool Certificat',8),
+(5,'description','http://link','Very Cool Certificat',9),
+(6,'description','http://link','Very Cool Certificat',5),
+(7,'description','http://link','Very Cool Certificat',8),
+(8,'description','http://link','Very Cool Certificat',9);
+COMMIT;
