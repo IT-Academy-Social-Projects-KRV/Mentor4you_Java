@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
@@ -67,6 +68,7 @@ public class UserController {
         return emailService.updateEmail(request.getEmail(), request.getId());
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MODERATOR')")
     @Operation(summary = "get banned user")
     @GetMapping("/getAllBannedUser")
     ResponseEntity<List<UserBanDTO>> getAllBannedUser() {
@@ -80,6 +82,7 @@ public class UserController {
 
 
     @Operation(summary = "change User's ban status")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MODERATOR')")
     @PutMapping("/changeBanToUser")
     ResponseEntity<?> changeBanToUser(@RequestBody UserBanUpdateRequest dto) {
         String result = userService.changeBanToUser(dto.banStatus, dto.getId());
