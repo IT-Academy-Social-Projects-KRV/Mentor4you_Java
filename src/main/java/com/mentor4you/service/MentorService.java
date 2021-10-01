@@ -19,6 +19,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -55,7 +56,7 @@ public class MentorService {
     public List<Mentors> getFullInfoAllMentors(){
         int theMentors = accountRepository.findByRole(Role.MENTOR).size();
         if(theMentors!=0){
-            return mentorRepository.findAll();
+            return mentorRepository.findAll().stream().filter(mentors -> mentors.getAccounts().getUser().getStatus()).collect(Collectors.toList());
         }
         throw new MentorNotFoundException("Mentors not found");
 
