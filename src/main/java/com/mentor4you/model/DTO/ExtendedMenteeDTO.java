@@ -1,22 +1,26 @@
 package com.mentor4you.model.DTO;
 
-
 import com.mentor4you.model.Certificats;
 import com.mentor4you.model.Educations;
-
 import com.mentor4you.model.Mentors_to_categories;
 
 import java.util.List;
 import java.util.Set;
 
-public class MentorGeneralResponseDTO {
+public class ExtendedMenteeDTO {
 
-    private MenteeResponseDTO accountInfo;
+    private int id;
+
+    private String name;
+
+    private String secondName;
 
     private String description;
-    private boolean showable_status;
+
     private boolean isOnline;
+
     private boolean isOfflineIn;
+
     private boolean isOfflineOut;
 
     private List<Educations> educations;
@@ -27,21 +31,32 @@ public class MentorGeneralResponseDTO {
 
     private Set<String> languages;
 
-
-    public MentorGeneralResponseDTO() {
+    public ExtendedMenteeDTO() {
     }
 
-    public MentorGeneralResponseDTO(MenteeResponseDTO accountInfo, String description, boolean showable_status, boolean isOnline, boolean isOfflineIn, boolean isOfflineOut, List<Educations> educations, List<Certificats> certificats, Set<Mentors_to_categories> categories, Set<String> languages) {
-        this.accountInfo = accountInfo;
-        this.description = description;
-        this.showable_status = showable_status;
-        this.isOnline = isOnline;
-        this.isOfflineIn = isOfflineIn;
-        this.isOfflineOut = isOfflineOut;
-        this.educations = educations;
-        this.certificats = certificats;
-        this.categories = categories;
-        this.languages = languages;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSecondName() {
+        return secondName;
+    }
+
+    public void setSecondName(String secondName) {
+        this.secondName = secondName;
     }
 
     public String getDescription() {
@@ -50,14 +65,6 @@ public class MentorGeneralResponseDTO {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public boolean isShowable_status() {
-        return showable_status;
-    }
-
-    public void setShowable_status(boolean showable_status) {
-        this.showable_status = showable_status;
     }
 
     public boolean isOnline() {
@@ -106,14 +113,6 @@ public class MentorGeneralResponseDTO {
 
     public void setCategories(Set<Mentors_to_categories> categories) {
         this.categories = categories;
-    }
-
-    public MenteeResponseDTO getAccountInfo() {
-        return accountInfo;
-    }
-
-    public void setAccountInfo(MenteeResponseDTO accountInfo) {
-        this.accountInfo = accountInfo;
     }
 
     public Set<String> getLanguages() {
