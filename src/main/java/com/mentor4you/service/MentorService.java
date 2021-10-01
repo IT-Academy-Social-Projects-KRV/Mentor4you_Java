@@ -2,6 +2,7 @@ package com.mentor4you.service;
 
 import com.mentor4you.exception.MentorNotFoundException;
 import com.mentor4you.model.*;
+import com.mentor4you.model.DTO.ExtendedMenteeDTO;
 import com.mentor4you.model.DTO.MenteeResponseDTO;
 import com.mentor4you.model.DTO.MentorGeneralResponseDTO;
 import com.mentor4you.repository.AccountRepository;
@@ -10,6 +11,7 @@ import com.mentor4you.repository.MentorsToCategory;
 import com.mentor4you.repository.UserRepository;
 import com.mentor4you.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,8 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Transactional
 @Service
@@ -27,6 +31,7 @@ public class MentorService {
     @Autowired
     MentorsToCategory mentorsToCategory;
     AccountRepository accountRepository;
+    LanguagesService languagesService;
     MentorRepository mentorRepository;
     UserRepository userRepository;
     MenteeService menteeService;
@@ -35,6 +40,7 @@ public class MentorService {
 
 
     public MentorService(
+                         LanguagesService languagesService,
                          MentorsToCategory mentorsToCategory,
                          AccountRepository accountRepository,
                          MentorRepository mentorRepository,
@@ -42,6 +48,7 @@ public class MentorService {
                          MenteeService menteeService,
                          UserService userService,
                          JwtProvider jwtProvider) {
+        this.languagesService = languagesService;
         this.mentorsToCategory = mentorsToCategory;
         this.accountRepository = accountRepository;
         this.mentorRepository = mentorRepository;
@@ -61,14 +68,31 @@ public class MentorService {
 
     }
     //    select mentor by id
-    public Optional<Mentors> getMentorById(int id){
+    public ResponseEntity<ExtendedMenteeDTO> getMentorById(int id){
 
-        Optional<Mentors> theMentor = mentorRepository.findById(id).stream().filter(e->e.getId()==id).findFirst();
-        if(theMentor.isPresent()) {
-            return theMentor;
+        Mentors mentor = mentorRepository.findOneById(id);
+        if(mentor!=null){
+            ExtendedMenteeDTO dto = new ExtendedMenteeDTO();
+
+            dto.setId(mentor.getId());
+            dto.setName(mentor.getAccounts().getUser().getFirst_name());
+            dto.setSecondName(mentor.getAccounts().getUser().getLast_name());
+            dto.setOfflineIn(mentor.isOfflineIn());
+            dto.setOfflineOut(mentor.isOfflineOut());
+            dto.setOnline(mentor.isOnline());
+            dto.setCategories(mentor.getMentors_to_categories());
+            dto.setDescription(mentor.getDescription());
+            dto.setEducations(mentor.getEducations());
+            dto.setCertificats(mentor.getCertificats());
+            Set<String>l =new HashSet<>();
+            for (Languages language : mentor.getAccounts().getLanguagesList()) {
+                l.add(language.getName());
+            }
+            dto.setLanguages(l);
+
+            return new ResponseEntity<ExtendedMenteeDTO>(dto,HttpStatus.OK);
         }
-
-        throw new MentorNotFoundException("Mentor with id = "+ id +" not found");
+        else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
     }
     public ResponseEntity<MentorGeneralResponseDTO> getOneMentorByToken(HttpServletRequest request){
@@ -84,6 +108,12 @@ public class MentorService {
 
             Mentors m = mentorRepository.getById(user.getId());
 
+            Set<String>l =new HashSet<>();
+
+            for (Languages language : m.getAccounts().getLanguagesList()) {
+                l.add(language.getName());
+            }
+
             MentorGeneralResponseDTO dto =new MentorGeneralResponseDTO();
             dto.setAccountInfo(mDTO);
             dto.setCertificats(m.getCertificats());
@@ -94,6 +124,7 @@ public class MentorService {
             dto.setOfflineIn(m.isOfflineIn());
             dto.setOfflineOut(m.isOfflineOut());
             dto.setShowable_status(m.isShowable_status());
+            dto.setLanguages(l);
 
             return new ResponseEntity<MentorGeneralResponseDTO>(dto, HttpStatus.OK);
         }
@@ -116,9 +147,16 @@ public class MentorService {
         userService.updateUser(user,dto.getAccountInfo());
         Mentors mentor = mentorRepository.getById(user.getId());
 
+
+
         remove(mentor);
         for (Mentors_to_categories n : dto.getCategories()){
                 n.setMentors(mentor);
+        }
+
+        Set<Languages>l =new HashSet<>();
+        if(dto.getLanguages()!=null){
+            l = languagesService.getAllLanguages(dto.getLanguages());
         }
 
 
@@ -130,6 +168,7 @@ public class MentorService {
         mentor.setOnline(dto.isOnline());
         mentor.setOfflineOut(dto.isOfflineOut());
         mentor.setOfflineIn(dto.isOfflineIn());
+        mentor.getAccounts().setLanguagesList(l);
 
 
         mentorRepository.save(mentor);
