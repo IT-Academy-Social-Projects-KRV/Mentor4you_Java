@@ -19,8 +19,8 @@ public class Cooperation {
     @JoinColumn(name = "mentor_id")
     private Mentors mentors;
 
-
-    private int status;
+    @Enumerated(EnumType.STRING)
+    private CoopStatus status;
 
 
     public Cooperation() {
@@ -43,21 +43,11 @@ public class Cooperation {
         this.mentors = mentors;
     }
 
-    public int getStatus() {
+    public CoopStatus getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(CoopStatus status) {
         this.status = status;
-    }
-
-    @Override
-    public String toString() {
-        return "Cooperation{" +
-                "id=" + id +
-                ", mentees=" + mentees +
-                ", mentors=" + mentors +
-                ", status=" + status +
-                '}';
     }
 }

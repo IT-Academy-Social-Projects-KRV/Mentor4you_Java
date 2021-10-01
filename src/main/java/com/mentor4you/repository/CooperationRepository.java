@@ -1,5 +1,6 @@
 package com.mentor4you.repository;
 
+import com.mentor4you.model.CoopStatus;
 import com.mentor4you.model.Cooperation;
 import com.mentor4you.model.Mentees;
 import com.mentor4you.model.Mentors;
@@ -17,7 +18,11 @@ import java.util.Set;
 @Repository
 public interface CooperationRepository extends JpaRepository<Cooperation,Integer> {
 
-    Set<Cooperation> findByMentors(Mentors mentors);
+
+    @Query("SELECT c FROM Cooperation c WHERE c.mentors.id =:mentor and c.status =:status")
+    Set<Cooperation> findByMentors(@Param("mentor") int mentor,@Param("status") CoopStatus status);
+
+    Set<Cooperation> findByMentees(Mentees mentees);
 
     @Query("SELECT c FROM Cooperation c WHERE c.mentees =:mentee and c.mentors =:mentor")
     Cooperation coopIsPresent(@Param("mentee") Mentees mentee,@Param("mentor") Mentors mentor);

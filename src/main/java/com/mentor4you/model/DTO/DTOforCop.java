@@ -1,6 +1,6 @@
 package com.mentor4you.model.DTO;
 
-public class MenteeDTOforCop {
+public class DTOforCop {
 
     private int id ;
 
@@ -8,10 +8,10 @@ public class MenteeDTOforCop {
 
     private String secondName;
 
-    public MenteeDTOforCop() {
+    public DTOforCop() {
     }
 
-    public MenteeDTOforCop(int id, String name, String secondName) {
+    public DTOforCop(int id, String name, String secondName) {
         this.id = id;
         this.name = name;
         this.secondName = secondName;

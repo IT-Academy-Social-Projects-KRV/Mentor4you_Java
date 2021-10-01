@@ -1,7 +1,6 @@
 package com.mentor4you.controller;
 
-import com.mentor4you.model.DTO.MenteeDTOforCop;
-import com.mentor4you.security.jwt.JwtProvider;
+import com.mentor4you.model.DTO.DTOforCop;
 import com.mentor4you.service.CooperationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,13 +28,12 @@ public class CooperationController {
     }
 
     @GetMapping("/mentorCooperation")
-    public ResponseEntity<Set<MenteeDTOforCop>> getCooperationForMentor(HttpServletRequest request){
+    public ResponseEntity<Set<DTOforCop>> getCooperationForMentor(HttpServletRequest request){
         return  cooperationService.getCooperation(request);
     }
 
-    @PutMapping("/approve/{id}")
-    public ResponseEntity<String> approve(@PathVariable(value = "id")Integer id,HttpServletRequest request){
-        return  cooperationService.approveCooperation(request,id);
+    @PutMapping("/approve/{id},{status}")
+    public ResponseEntity<String> decisionsOnCoop(@PathVariable(value = "id")Integer id,@PathVariable(value = "status")Boolean status,HttpServletRequest request){
+        return  cooperationService.decisionsOnCoop(request,id,status);
     }
-
 }

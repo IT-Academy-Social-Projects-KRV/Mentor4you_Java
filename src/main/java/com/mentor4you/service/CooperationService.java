@@ -2,7 +2,7 @@ package com.mentor4you.service;
 
 
 import com.mentor4you.model.*;
-import com.mentor4you.model.DTO.MenteeDTOforCop;
+import com.mentor4you.model.DTO.DTOforCop;
 import com.mentor4you.repository.CooperationRepository;
 import com.mentor4you.repository.MenteeRepository;
 import com.mentor4you.repository.MentorRepository;
@@ -56,13 +56,13 @@ public class CooperationService {
         Cooperation c =new Cooperation();
         c.setMentors(mentor);
         c.setMentees(mentee);
-        c.setStatus(0);
+        c.setStatus(CoopStatus.CREATED);
         cooperationRepository.save(c);
         return new ResponseEntity<String>(HttpStatus.OK);
     }
 
 
-    public ResponseEntity<Set<MenteeDTOforCop>> getCooperation(HttpServletRequest request){
+    public ResponseEntity<Set<DTOforCop>> getCooperation(HttpServletRequest request){
         String token =jwtProvider.getTokenFromRequest(request);
 
         String email =jwtProvider.getLoginFromToken(token);
@@ -70,11 +70,11 @@ public class CooperationService {
         User user = userRepository.findUserByEmail(email);
 
 
-        Set<MenteeDTOforCop> s =new HashSet<>();
+        Set<DTOforCop> s =new HashSet<>();
 
 
-        for(Cooperation c :cooperationRepository.findByMentors(mentorRepository.getById(user.getId()))){
-            MenteeDTOforCop dto = new MenteeDTOforCop();
+        for(Cooperation c :cooperationRepository.findByMentors(user.getId(),CoopStatus.CREATED)){
+            DTOforCop dto = new DTOforCop();
             dto.setId(c.getMentees().getId());
             dto.setName(c.getMentees().getAccounts().getUser().getFirst_name());
             dto.setSecondName(c.getMentees().getAccounts().getUser().getLast_name());
@@ -82,26 +82,36 @@ public class CooperationService {
         }
 
         if(s.isEmpty()==false)
-            return new ResponseEntity<Set<MenteeDTOforCop>>(s,HttpStatus.OK);
-        else return new ResponseEntity<Set<MenteeDTOforCop>>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Set<DTOforCop>>(s,HttpStatus.OK);
+        else return new ResponseEntity<Set<DTOforCop>>(HttpStatus.NOT_FOUND);
     }
 
 
 
-    public ResponseEntity<String> approveCooperation(HttpServletRequest request,int id){
+    public ResponseEntity<String> decisionsOnCoop(HttpServletRequest request,int id,Boolean s){
         String token =jwtProvider.getTokenFromRequest(request);
         String email =jwtProvider.getLoginFromToken(token);
         Mentors mentor =mentorRepository.getById(userRepository.findUserByEmail(email).getId());
         Mentees mentee =menteeRepository.getById(id);
         Cooperation cooperation = cooperationRepository.coopIsPresent(mentee,mentor);
+        String massage = null;
         System.out.println(cooperation);
         if(cooperationRepository.coopIsPresent(mentee,mentor)!=null){
 
-            cooperation.setStatus(1);
+            if(s){
+                cooperation.setStatus(CoopStatus.APPROVED);
+                massage ="Coop start";
+            }
+            else {
+                cooperation.setStatus(CoopStatus.REJECTED);
+                massage ="Coop rejected";
+
+            }
             cooperationRepository.save(cooperation);
-            return new ResponseEntity<String>("cooperation was started",HttpStatus.OK);
+            return new ResponseEntity<String>(massage,HttpStatus.OK);
+
         }
-        else  return new ResponseEntity<String>("fail",HttpStatus.LOCKED);
+        else  return new ResponseEntity<String>("fail",HttpStatus.NOT_FOUND);
         //cooperationRepository.approve(mentee,mentor,1);
 
 
