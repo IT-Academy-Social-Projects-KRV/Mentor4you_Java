@@ -27,4 +27,37 @@ public class Cooperation {
     }
 
 
+    public Mentees getMentees() {
+        return mentees;
+    }
+
+    public void setMentees(Mentees mentees) {
+        this.mentees = mentees;
+    }
+
+    public Mentors getMentors() {
+        return mentors;
+    }
+
+    public void setMentors(Mentors mentors) {
+        this.mentors = mentors;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Cooperation{" +
+                "id=" + id +
+                ", mentees=" + mentees +
+                ", mentors=" + mentors +
+                ", status=" + status +
+                '}';
+    }
 }
