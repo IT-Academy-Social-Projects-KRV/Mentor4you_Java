@@ -13,4 +13,6 @@ public interface MentorRepository
 
         extends JpaRepository<Mentors, Integer> {
     Optional<Mentors> findById(int id);
+
+    Mentors findOneById(int id);
 }
