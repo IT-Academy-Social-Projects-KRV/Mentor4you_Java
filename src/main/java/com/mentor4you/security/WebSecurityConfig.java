@@ -40,7 +40,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 //TODO  chek all permits
-                .authorizeRequests().antMatchers("/api/auth/*","/api/registration","/api/users","/api/users/getAllBannedUser","/api/users/changeBanToUser").permitAll()
+                .authorizeRequests().antMatchers("/api/auth/*",
+                        "/api/registration",
+                        "/api/users",
+                        "/api/users/getAllBannedUser",
+                        "/api/users/changeBanToUser",//dell
+                        "/api/searchMentor",//dell,
+                        "/api/users/Test/{{id}}/{{name}}",//dell
+                        "/api/searchMentor/Test/{{contactLast}}/{{contactFirst}}",//dell
+                        "/api/mentors",//dell
+                        "/api/searchMentor/filterGetListSmallMentors/{{city}}/{{categoryName}}/{{language}}/{{minPrice}}/{{maxPrice}}",//dell
+                        "/api/searchMentor/findMentorsBestRating/{{number}}",//dell
+                        "/api/users/changeUser"//dell
+                ).permitAll()
                 .and()
                 .authorizeRequests().antMatchers("/api/**").authenticated()
                 .anyRequest().permitAll()
@@ -61,7 +73,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
                 .allowedOrigins("http://localhost:4200")
                 .allowedMethods("*");
     }
-
 
     @Override
     @Bean

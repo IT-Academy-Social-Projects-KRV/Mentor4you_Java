@@ -86,4 +86,13 @@ public class UserController {
         String result = userService.changeBanToUser(dto.banStatus, dto.getId());
         return new ResponseEntity<String>(result, HttpStatus.OK);
     }
+
+
+    @Operation(summary = "change User's name")
+    @PutMapping("/changeUser")
+    ResponseEntity<?> changeUser() {
+        userRepository.updateUser("Change4", 5, "1_MENTOR@email.com");
+
+        return new ResponseEntity<String>(HttpStatus.OK);
+    }
 }

@@ -139,7 +139,6 @@ public class UserService {
 
             //Social_networks socialNetworks = socialNetworksRepository.getById(id);
             if (user != null) {
-
                 List<ContactsToAccounts> listConToAkk = contactsToAccountsRepository.findAllByAccounts(id);
 
                 if (listConToAkk.size() > 0) {
