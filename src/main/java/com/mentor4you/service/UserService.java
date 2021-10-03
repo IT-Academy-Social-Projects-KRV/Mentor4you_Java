@@ -211,14 +211,18 @@ public class UserService {
             Accounts accounts = accountRepository.getById(user.getId());
             if (user.getRole().equals(Role.MENTOR)) {
                 user.setRole(Role.MENTEE);
-                Mentees mentee = new Mentees();
-                mentee.setAccounts(accounts);
-                menteeRepository.save(mentee);
+                if(!menteeRepository.existsById(user.getId())) {
+                    Mentees mentee = new Mentees();
+                    mentee.setAccounts(accounts);
+                    menteeRepository.save(mentee);
+                }
             } else if (user.getRole().equals(Role.MENTEE)) {
                 user.setRole(Role.MENTOR);
-                Mentors mentor = new Mentors();
-                mentor.setAccounts(accounts);
-                mentorRepository.save(mentor);
+                if(!mentorRepository.existsById(user.getId())) {
+                    Mentors mentor = new Mentors();
+                    mentor.setAccounts(accounts);
+                    mentorRepository.save(mentor);
+                }
             }
             userRepository.save(user);
             return "Congratulation, you are become a ".concat(user.getRole().name());
