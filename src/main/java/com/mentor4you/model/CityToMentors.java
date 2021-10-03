@@ -16,7 +16,6 @@ public class CityToMentors {
         @JoinColumn(name = "cityId")
         private City city;
 
-        @JsonIgnore
         @ManyToOne
         @JoinColumn(name = "mentorId")
         private Mentors mentors;
