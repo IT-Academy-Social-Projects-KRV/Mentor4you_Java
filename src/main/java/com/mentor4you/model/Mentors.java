@@ -39,7 +39,7 @@ public class Mentors {
     @JoinColumn(name="certificats")
     private List<Certificats> certificats;
 
-    @OneToMany(mappedBy = "mentors")
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "mentors")
     private List<CityToMentors> cityToMentors;
 
 

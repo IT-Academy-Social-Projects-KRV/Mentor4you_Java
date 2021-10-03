@@ -12,10 +12,12 @@ public class CityToMentors {
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private int id;
 
+        @JsonIgnore
         @ManyToOne
         @JoinColumn(name = "cityId")
         private City city;
 
+        @JsonIgnore
         @ManyToOne
         @JoinColumn(name = "mentorId")
         private Mentors mentors;
