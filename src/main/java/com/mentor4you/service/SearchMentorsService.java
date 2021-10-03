@@ -4,6 +4,7 @@ import com.mentor4you.model.*;
 import com.mentor4you.model.DTO.serchMentorsDTO.SearchMentorsDTO;
 import com.mentor4you.model.DTO.serchMentorsDTO.SmallDataMentorDTO;
 import com.mentor4you.repository.CategoriesRepository;
+import com.mentor4you.repository.CityRepository;
 import com.mentor4you.repository.LanguagesRepository;
 import com.mentor4you.repository.MentorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +25,16 @@ public class SearchMentorsService {
     CategoriesRepository categoriesRepository;
     LanguagesRepository languagesRepository;
     MentorRepository mentorRepository;
+    CityRepository cityRepository;
 
     public SearchMentorsService(CategoriesRepository categoriesRepository,
                                 LanguagesRepository languagesRepository,
-                                MentorRepository mentorRepository) {
+                                MentorRepository mentorRepository,
+                                CityRepository cityRepository) {
         this.categoriesRepository = categoriesRepository;
         this.languagesRepository = languagesRepository;
         this.mentorRepository = mentorRepository;
+        this.cityRepository = cityRepository;
     }
 
     public List<Categories> findAllCategories() {
@@ -60,6 +64,21 @@ public class SearchMentorsService {
             return languagesNameList;
         }
     }
+
+    public List<City> findAllCity(){
+       return cityRepository.findAllCity();
+    }
+
+    public List<String> findAllCityName() {
+        List<String> sityNameList = cityRepository.findAllCityName();
+        if (sityNameList.isEmpty()) {
+            sityNameList.add("");
+            return (sityNameList);
+        } else {
+            return sityNameList;
+        }
+    }
+
 
     public ResponseEntity<List<SmallDataMentorDTO>> createSmallMentorDTOFiltr(
             List<Mentors> mentorsList, String city, String category, String language, int minRate, int maxRate) {
@@ -207,6 +226,7 @@ public class SearchMentorsService {
         SearchMentorsDTO searchMentorsDTO = new SearchMentorsDTO();
         searchMentorsDTO.setCategoriesList(findAllCategoriesName());
         searchMentorsDTO.setLanguagesList(findAllLanfuagesName());
+        searchMentorsDTO.setCityList(findAllCityName());
         return searchMentorsDTO;
     }
 }

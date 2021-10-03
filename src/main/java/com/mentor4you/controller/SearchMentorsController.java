@@ -1,5 +1,6 @@
 package com.mentor4you.controller;
 
+import com.mentor4you.model.DTO.serchMentorsDTO.SearchMentorsDTO;
 import com.mentor4you.model.DTO.serchMentorsDTO.SmallDataMentorDTO;
 import com.mentor4you.model.Mentors;
 import com.mentor4you.repository.AccountRepository;
@@ -64,5 +65,12 @@ public class SearchMentorsController {
             return new ResponseEntity<List<SmallDataMentorDTO>>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @Operation(summary = "Full info about categories, languages and countries")
+    @GetMapping
+    SearchMentorsDTO getAllMentor(){
+        return searchMentorsService.createSerchMentorSTOList();
+    }
+
 
 }

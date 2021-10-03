@@ -11,8 +11,7 @@ public class SearchMentorsDTO {
 
     private List<String> categoriesList;
     private List<String> languagesList;
-    private List<String> cityList = new ArrayList<>(Arrays.asList("Rivne", "Poltava", "Kyiv"));
-
+    private List<String> cityList;
 
     public SearchMentorsDTO() {
     }
@@ -47,6 +46,8 @@ public class SearchMentorsDTO {
     public void setCityList(List<String> cityList) {
         this.cityList = cityList;
     }
+
+
 
 
 }
