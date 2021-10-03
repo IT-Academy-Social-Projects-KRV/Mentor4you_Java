@@ -44,8 +44,8 @@ public class AmazonClient {
         return convFile;
     }
 
-    private String generateFileName(int id) {
-        return id+"userAvatar";
+    private String generateFileName(int id, MultipartFile multiPart) {
+        return id+"_userAvatar"+multiPart.getOriginalFilename().substring(multiPart.getOriginalFilename().lastIndexOf("."));
     }
 
     private void uploadFileTos3bucket(String fileName, File file) {
@@ -54,12 +54,11 @@ public class AmazonClient {
     }
 
     public String uploadFile(int id, MultipartFile multipartFile) {
-
         String fileUrl = "";
         try {
             File file = convertMultiPartToFile(multipartFile);
-            String fileName = generateFileName(id);
-            fileUrl = endpointUrl + "/" + bucketName + "/" + fileName;
+            String fileName = generateFileName(id, multipartFile);
+            fileUrl = "https://" + bucketName + "."+ endpointUrl + "/avatars/"+ fileName;
             uploadFileTos3bucket(fileName, file);
             file.delete();
         } catch (Exception e) {

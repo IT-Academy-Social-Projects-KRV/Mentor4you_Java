@@ -189,14 +189,13 @@ public class UserService {
         return "Account has been deleted";
     }
 
-    public String changeAvatar(String header, String avatarURL) {
-        String email = jwtProvider.getLoginFromToken(header.substring(7));
-        User user = userRepository.findUserByEmail(email);
+    public String changeAvatar(String header, String avatarURL) throws Exception {
+        User user = getUserByHeader(header);
         if (user == null) {
             throw new UsernameNotFoundException("User is not found.");
         }
         if(!(avatarURL.startsWith("http://") || avatarURL.startsWith("https://"))) {
-            return "New Avatar URL is incorrect";
+            throw new Exception("New Avatar URL is incorrect");
         }
         user.setAvatar(avatarURL);
         userRepository.save(user);
@@ -212,14 +211,23 @@ public class UserService {
         return "Congratulation, you are become a ".concat(user.getRole().name());
     }
 
-    public int getIdByHeader(String header){
+    public int getIdByHeader(String header) throws Exception{
         return getUserByHeader(header).getId();
     }
-    private User getUserByHeader(String header){
-        String email = jwtProvider.getLoginFromToken(header.substring(7));
+    private User getUserByHeader(String header) throws Exception{
+        String token;
+        if(header.startsWith("Bearer ")){
+            token = header.substring(7);
+        } else {
+            token = header;
+        }
+        if(!jwtProvider.validateToken(token)){
+            throw new Exception("Your token is expired");
+        }
+        String email = jwtProvider.getLoginFromToken(token);
         return userRepository.findUserByEmail(email);
     }
-    public String getAvatarByHeader(String header){
+    public String getAvatarByHeader (String header) throws Exception{
         return getUserByHeader(header).getAvatar();
     }
 

@@ -107,25 +107,45 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "upload new user`s avatar to cloud storage")
     @PostMapping("/uploadAvatar")
-    public String uploadAvatar(@RequestHeader("Authorization") String header, @RequestPart(value = "file") MultipartFile file) {
-        int id = userService.getIdByHeader(header);
-        String fileURL = this.amazonClient.uploadFile(id, file);
-        return userService.changeAvatar(header, fileURL);
+    ResponseEntity<?>  uploadAvatar(@RequestHeader("Authorization") String header, @RequestPart(value = "file") MultipartFile file) {
+        Map<String, String> res = new HashMap<>();
+        try{
+            int id = userService.getIdByHeader(header);
+            String fileURL = this.amazonClient.uploadFile(id, file);
+            String result = userService.changeAvatar(header, fileURL);
+            res.put("result", result);
+            res.put("new avatar URL",fileURL);
+            return ResponseEntity.ok(res);
+        } catch (Exception e){
+            res.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(res);
+        }
+
     }
 
     @DeleteMapping("/deleteAvatar")
-    public String deleteAvatar(@RequestHeader("Authorization") String header) {
-        String fileUrl = userService.getAvatarByHeader(header);
-        userService.changeAvatar(header, "https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/standartUserAvatar.png");
-        return this.amazonClient.deleteFileFromS3Bucket(fileUrl);
-
+    ResponseEntity<?> deleteAvatar(@RequestHeader("Authorization") String header) {
+        try {
+            String fileUrl = userService.getAvatarByHeader(header);
+            userService.changeAvatar(header, "https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/standartUserAvatar.png");
+            String result = this.amazonClient.deleteFileFromS3Bucket(fileUrl);
+            return ResponseEntity.ok(result);
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
     @Operation(summary = "change User's avatar")
     @PutMapping("/changeAvatar")
     ResponseEntity<?> changeAvatar(@RequestHeader("Authorization") String header, @RequestParam("avatarURL")String avatarURL) {
-        String result = userService.changeAvatar(header, avatarURL);
-        return new ResponseEntity<String>(result, HttpStatus.OK);
+        try{
+            String result = userService.changeAvatar(header, avatarURL);
+            return new ResponseEntity<String>(result, HttpStatus.OK);
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
 
     @Operation(summary = "change current user`s role")
