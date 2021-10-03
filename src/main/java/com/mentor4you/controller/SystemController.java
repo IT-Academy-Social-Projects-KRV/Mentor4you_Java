@@ -4,11 +4,13 @@ import com.mentor4you.model.*;
 import com.mentor4you.model.Categories;
 import com.mentor4you.repository.*;
 import com.mentor4you.security.jwt.JwtProvider;
+import com.mentor4you.service.EmailService;
 import com.mentor4you.service.PasswordService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +22,6 @@ import java.util.Random;
 public class SystemController {
 
     @Autowired
-    private final GroupServicesRepository groupServicesRepository;
     private final AccountRepository accountRepository;
     private final MentorRepository mentorRepository;
     private final LanguagesRepository languagesRepository;
@@ -31,8 +32,9 @@ public class SystemController {
     private final PasswordService passwordService;
     private final ContactsToAccountsRepository contactsToAccountsRepository;
     private final TypeContactsRepository typeContactsRepository;
+    private final EmailService emailService;
 
-    public SystemController(GroupServicesRepository groupServicesRepository,
+    public SystemController(
                             AccountRepository accountRepository,
                             MentorRepository mentorRepository,
                             LanguagesRepository languagesRepository,
@@ -42,8 +44,8 @@ public class SystemController {
                             UserRepository userRepository,
                             PasswordService passwordService,
                             ContactsToAccountsRepository contactsToAccountsRepository,
-                            TypeContactsRepository typeContactsRepository) {
-        this.groupServicesRepository = groupServicesRepository;
+                            TypeContactsRepository typeContactsRepository,
+                            EmailService emailService) {
         this.accountRepository = accountRepository;
         this.mentorRepository = mentorRepository;
         this.languagesRepository = languagesRepository;
@@ -54,6 +56,7 @@ public class SystemController {
         this.passwordService = passwordService;
         this.contactsToAccountsRepository = contactsToAccountsRepository;
         this.typeContactsRepository = typeContactsRepository;
+        this.emailService = emailService;
     }
 
     @Operation(summary = "method add 1 admin, 3 moderators and 15 Mentors on you DB")
@@ -63,9 +66,7 @@ public class SystemController {
     public String registerRoles() {
 
        try {
-            groupServicesRepository.save(new GroupServices("No"));
-            groupServicesRepository.save(new GroupServices("Yes"));
-            groupServicesRepository.save(new GroupServices("Mix"));
+
 
 
             createLanguages();
@@ -142,9 +143,10 @@ public class SystemController {
             m.setAccounts(createOneAccount(user, i));
             m.setDescription("description");
             m.setShowable_status(true);
-            m.isIs_online(true);
-            m.isIs_offline_in(true);
-            m.isIs_offline_out(true);
+            m.setGroupServ(GroupServ.MIX);
+            m.isOnline();
+            m.isOfflineIn();
+            m.isOfflineOut();
             m.setEducations(Arrays.asList(new Educations(i + "edu"), new Educations(i + "edu_other")));
             m.setCertificats(Arrays.asList(new Certificats(i + "cert"), new Certificats(i + "cert_other")));
 
@@ -176,12 +178,13 @@ public class SystemController {
     private User createOneUser(int i, Role role) {
 
         User n = new User();
-        n.setEmail(i + "_" + role.name() + "@email");
+        n.setEmail(i + "_" + role.name() + "@email.com");
         n.setPassword(passwordService.encodePassword("password"));
         n.setFirst_name(i + "_" + role.name() + "FN");
         n.setLast_name(i + "_" + role.name() + "LN");
         n.setRegistration_date(LocalDateTime.now());
         n.setStatus(true);
+        n.setBan(false);
         n.setRole(role);
 
         return n;
@@ -189,7 +192,15 @@ public class SystemController {
 
     //CreateSocialNetworks
     private void createSocialNetworks() {
-        String[] arrSocNet = new String[]{"1PhoneNumber", "2PhoneNumber", "LinkedIn", "FaceBook", "Telegram"};
+        String[] arrSocNet = new String[]{
+                "PhoneNumFirst",
+                "PhoneNumSecond",
+                "LinkedIn",
+                "FaceBook",
+                "Telegram",
+                "Skype",
+                "GitHub"
+        };
 
         for (String socNetName : arrSocNet) {
             TypeContacts social_networks = new TypeContacts();
@@ -258,5 +269,12 @@ public class SystemController {
     @GetMapping("/testAuth")
     public String getUser() {
         return "hi authentificaters";
+    }
+
+
+    @Operation(summary = "send test email")
+    @GetMapping("/sendTestEmail/{sendTo}")
+    public String sendEmail(@PathVariable(value = "sendTo") String sendTo) throws MessagingException {
+        return emailService.sendEmailRandomCode(sendTo,"", "45432");
     }
 }

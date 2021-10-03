@@ -6,17 +6,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(
+        prePostEnabled = true,
+        securedEnabled = true,
+        jsr250Enabled = true)
+
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
     private final JwtFilter jwtFilter;
@@ -32,11 +40,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
     protected void configure(HttpSecurity http) throws Exception {
         http
                 //виключив csrf захист щоб можна було надсилати POST запити
-                .csrf().disable()
+                .cors().and().csrf().disable()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests().antMatchers("/api/auth/*","/api/registration","/api/users").permitAll()
+                //TODO  chek all permits
+                .authorizeRequests().antMatchers("/api/auth/*","/api/registration","/api/users","/api/users/getAllBannedUser",
+                    "/api/users/changeBanToUser","/api/users/changeAvatar", "/api/users/changeRole","/api/admin/appointModerator").permitAll()
                 .and()
                 .authorizeRequests().antMatchers("/api/**").authenticated()
                 .anyRequest().permitAll()
@@ -57,6 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
                 .allowedOrigins("http://localhost:4200")
                 .allowedMethods("*");
     }
+
 
     @Override
     @Bean

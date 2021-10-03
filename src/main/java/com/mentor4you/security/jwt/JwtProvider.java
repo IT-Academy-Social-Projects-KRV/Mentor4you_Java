@@ -49,7 +49,6 @@ public class JwtProvider {
         Date now = new Date();
         Date expireDate = new Date(now.getTime()+604800000);
 
-
         return Jwts.builder()
                 .setSubject(customUserDetails.getUsername())
                 .setIssuedAt(new Date())

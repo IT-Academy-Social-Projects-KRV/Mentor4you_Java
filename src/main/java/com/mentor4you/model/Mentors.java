@@ -1,12 +1,12 @@
 package com.mentor4you.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Entity
 @Table(name = "Mentors")
 public class Mentors {
@@ -22,15 +22,11 @@ public class Mentors {
     @MapsId
     private Accounts accounts;
 
-    @ManyToOne
-    @JoinColumn(name = "group_services")
-    private GroupServices group_services;
+    @Enumerated(EnumType.STRING)
+    private GroupServ groupServ;
 
-    @OneToMany(mappedBy = "mentors")
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "mentors")
     private Set<Mentors_to_categories> mentors_to_categories;
-
-
-
 
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -41,25 +37,15 @@ public class Mentors {
     @JoinColumn(name="certificats")
     private List<Certificats> certificats;
 
-    private boolean is_online;
-    private boolean is_offline_in;
-    private boolean is_offline_out;
+    @Column(name = "is_online")
+    private boolean isOnline;
 
-    public void setEducations(List<Educations> educations) {
+    @Column(name = "is_offline_in")
+    private boolean isOfflineIn;
 
-        this.educations = educations;
-    }
+    @Column(name = "is_offline_out")
+    private boolean isOfflineOut;
 
-
-
-    public List<Certificats> getCertificats() {
-        return certificats;
-    }
-
-
-    public void setCertificats(List<Certificats> certificats) {
-        this.certificats = certificats;
-    }
 
     public Mentors() {
     }
@@ -67,7 +53,7 @@ public class Mentors {
     public Mentors(Accounts accounts,
                    String description,
                    boolean showable_status,
-                   GroupServices group_services,
+                   GroupServ groupServ,
                    boolean is_online,
                    boolean is_offline_in,
                    boolean is_offline_out
@@ -75,10 +61,10 @@ public class Mentors {
         this.accounts = accounts;
         this.description = description;
         this.showable_status = showable_status;
-        this.group_services = group_services;
-        this.is_online = is_online;
-        this.is_offline_in = is_offline_in;
-        this.is_offline_out = is_offline_out;
+        this.groupServ = groupServ;
+        this.isOnline = is_online;
+        this.isOfflineIn = is_offline_in;
+        this.isOfflineOut = is_offline_out;
     }
 
     public int getId() {
@@ -109,36 +95,58 @@ public class Mentors {
         this.showable_status = showable_status;
     }
 
-    public GroupServices getGroup_services() {
-        return group_services;
+
+    public boolean isOnline() {
+        return isOnline;
     }
 
-    public void setGroup_services(GroupServices group_services) {
-        this.group_services = group_services;
+    public void setOnline(boolean online) {
+        isOnline = online;
+    }
+    public GroupServ getGroupServ() {return groupServ;}
+
+    public void setGroupServ(GroupServ groupServ) {this.groupServ = groupServ;}
+
+    public boolean isOfflineIn() {
+        return isOfflineIn;
     }
 
-    public boolean isIs_online(boolean b) {
-        return is_online;
+    public void setOfflineIn(boolean offlineIn) {
+        isOfflineIn = offlineIn;
     }
 
-    public void setIs_online(boolean is_online) {
-        this.is_online = is_online;
+    public boolean isOfflineOut() {
+        return isOfflineOut;
     }
 
-    public boolean isIs_offline_in(boolean b) {
-        return is_offline_in;
+    public void setOfflineOut(boolean offlineOut) {
+        isOfflineOut = offlineOut;
     }
 
-    public void setIs_offline_in(boolean is_offline_in) {
-        this.is_offline_in = is_offline_in;
+    public List<Educations> getEducations() {
+        return educations;
     }
 
-    public boolean isIs_offline_out(boolean b) {
-        return is_offline_out;
+    public void setEducations(List<Educations> educations) {
+
+        this.educations = educations;
     }
 
-    public void setIs_offline_out(boolean is_offline_out) {
-        this.is_offline_out = is_offline_out;
+    public List<Certificats> getCertificats() {
+        return certificats;
+    }
+
+
+    public void setCertificats(List<Certificats> certificats) {
+        this.certificats = certificats;
+    }
+
+    public Set<Mentors_to_categories> getMentors_to_categories() {
+        return mentors_to_categories;
+    }
+
+    public void setMentors_to_categories(Set<Mentors_to_categories> mentors_to_categories) {
+        this.mentors_to_categories = mentors_to_categories;
     }
 
     @Override
@@ -147,23 +155,8 @@ public class Mentors {
         if (o == null || getClass() != o.getClass()) return false;
         Mentors mentors = (Mentors) o;
         return id == mentors.id
-                && showable_status == mentors.showable_status
-                && is_online == mentors.is_online
-                && is_offline_in == mentors.is_offline_in
-                && is_offline_out == mentors.is_offline_out;
+                && showable_status == mentors.showable_status;
     }
-
-   /* @Override
-    public int hashCode() {
-        return Objects.hash(id,
-                description,
-                showable_status,
-                accounts,
-                group_services,
-                is_online,
-                is_offline_in,
-                is_offline_out);
-    }*/
 
     @Override
     public String toString() {
@@ -172,13 +165,13 @@ public class Mentors {
                 ", description='" + description + '\'' +
                 ", showable_status=" + showable_status +
                 ", accounts=" + accounts +
-                ", group_services=" + group_services +
+                ", groupServ=" + groupServ +
                 ", mentors_to_categories=" + mentors_to_categories +
                 ", educations=" + educations +
                 ", certificats=" + certificats +
-                ", is_online=" + is_online +
-                ", is_offline_in=" + is_offline_in +
-                ", is_offline_out=" + is_offline_out +
+                ", isOnline=" + isOnline +
+                ", isOfflineIn=" + isOfflineIn +
+                ", isOfflineOut=" + isOfflineOut +
                 '}';
     }
 }

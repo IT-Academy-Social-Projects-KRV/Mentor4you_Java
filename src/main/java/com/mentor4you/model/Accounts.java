@@ -3,10 +3,7 @@ package com.mentor4you.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name="Accounts")
@@ -37,7 +34,7 @@ public class Accounts {
             joinColumns = @JoinColumn(name = "account_id"),
             inverseJoinColumns = @JoinColumn(name = "languages_id")
     )
-    private List<Languages> languagesList;
+    private Set<Languages> languagesList;
 
 
     @OneToMany(mappedBy = "accounts")
@@ -70,17 +67,17 @@ public class Accounts {
         this.last_visit = last_visit;
     }
 
-    public List<Languages> getLanguagesList() {
+    public Set<Languages> getLanguagesList() {
         return languagesList;
     }
 
     public void addLanguages(Languages languages) {
-        if(languagesList.isEmpty()) languagesList = new ArrayList<>();
+        if(languagesList.isEmpty()) languagesList = new HashSet<>();
         this.languagesList.add(languages);
         languages.addAccounts(this);
     }
 
-    public void setLanguagesList(List<Languages> languagesList) {
+    public void setLanguagesList(Set<Languages> languagesList) {
         this.languagesList = languagesList;
     }
 
