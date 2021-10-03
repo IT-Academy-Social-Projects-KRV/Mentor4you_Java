@@ -110,28 +110,6 @@ public class UserService {
             else { return "User ban status has not been changed";}
         }
     }
-    public String changeAvatar(String header, String avatarURL) {
-        String email = jwtProvider.getLoginFromToken(header.substring(7));
-        User user = userRepository.findUserByEmail(email);
-        if (user == null) {
-            throw new UsernameNotFoundException("User is not found.");
-        }
-        if(!(avatarURL.startsWith("http://") || avatarURL.startsWith("https://"))) {
-            return "New Avatar URL is incorrect";
-        }
-        user.setAvatar(avatarURL);
-        userRepository.save(user);
-        return "You avatar is changed";
-    }
-
-    public String changeMyRole(String header){
-        String email = jwtProvider.getLoginFromToken(header.substring(7));
-        User user = userRepository.findUserByEmail(email);
-        if (user.getRole().equals(Role.MENTOR)) {user.setRole(Role.MENTEE);}
-        else if (user.getRole().equals(Role.MENTEE)) {user.setRole(Role.MENTOR);}
-        userRepository.save(user);
-        return "Congratulation, you are become a ".concat(user.getRole().name());
-    }
     public ResponseEntity<String> updateUser(User userToUpdate, MenteeResponseDTO request){
         String emailNew = request.getEmail();
         int id = userToUpdate.getId();
@@ -163,8 +141,6 @@ public class UserService {
     public ResponseEntity<MenteeResponseDTO> getOneMentee(User user){
 
         int id = user.getId();
-
-
             Map<String, String> socialMap = new HashMap<>();
 
             //Social_networks socialNetworks = socialNetworksRepository.getById(id);
@@ -210,7 +186,41 @@ public class UserService {
         OnUserLogoutSuccessEvent logoutEventPublisher = new OnUserLogoutSuccessEvent(user.getEmail(),token);
         applicationEventPublisher.publishEvent(logoutEventPublisher);
 
-
         return "Account has been deleted";
     }
+
+    public String changeAvatar(String header, String avatarURL) {
+        String email = jwtProvider.getLoginFromToken(header.substring(7));
+        User user = userRepository.findUserByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException("User is not found.");
+        }
+        if(!(avatarURL.startsWith("http://") || avatarURL.startsWith("https://"))) {
+            return "New Avatar URL is incorrect";
+        }
+        user.setAvatar(avatarURL);
+        userRepository.save(user);
+        return "You avatar is changed";
+    }
+
+    public String changeMyRole(String header){
+        String email = jwtProvider.getLoginFromToken(header.substring(7));
+        User user = userRepository.findUserByEmail(email);
+        if (user.getRole().equals(Role.MENTOR)) {user.setRole(Role.MENTEE);}
+        else if (user.getRole().equals(Role.MENTEE)) {user.setRole(Role.MENTOR);}
+        userRepository.save(user);
+        return "Congratulation, you are become a ".concat(user.getRole().name());
+    }
+
+    public int getIdByHeader(String header){
+        return getUserByHeader(header).getId();
+    }
+    private User getUserByHeader(String header){
+        String email = jwtProvider.getLoginFromToken(header.substring(7));
+        return userRepository.findUserByEmail(email);
+    }
+    public String getAvatarByHeader(String header){
+        return getUserByHeader(header).getAvatar();
+    }
+
 }

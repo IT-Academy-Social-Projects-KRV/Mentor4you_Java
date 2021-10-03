@@ -8,6 +8,7 @@ import com.mentor4you.model.DTO.UserBanDTO;
 import com.mentor4you.model.DTO.UserBanUpdateRequest;
 import com.mentor4you.model.User;
 import com.mentor4you.repository.UserRepository;
+import com.mentor4you.service.AmazonClient;
 import com.mentor4you.service.EmailService;
 import com.mentor4you.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,7 +19,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
@@ -29,15 +29,17 @@ import java.util.Map;
 @RequestMapping("/api/users")
 public class UserController {
 
-    @Autowired
     UserService userService;
     UserRepository userRepository;
     EmailService emailService;
+    AmazonClient amazonClient;
 
-    public UserController(UserService userService, UserRepository userRepository, EmailService emailService) {
+    @Autowired
+    public UserController(UserService userService, UserRepository userRepository, EmailService emailService, AmazonClient amazonClient) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.emailService = emailService;
+        this.amazonClient = amazonClient;
     }
 
     //select all accounts
