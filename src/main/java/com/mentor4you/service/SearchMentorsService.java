@@ -201,5 +201,12 @@ public class SearchMentorsService {
         }
         return new ResponseEntity<List<SmallDataMentorDTO>>(smallMentorDTOList, HttpStatus.OK);
     }
+
+    public SearchMentorsDTO createSerchMentorSTOList(){
+        SearchMentorsDTO searchMentorsDTO = new SearchMentorsDTO();
+        searchMentorsDTO.setCategoriesList(findAllCategoriesName());
+        searchMentorsDTO.setLanguagesList(findAllLanfuagesName());
+        return searchMentorsDTO;
+    }
 }
 
