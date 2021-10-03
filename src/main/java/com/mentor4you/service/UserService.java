@@ -3,14 +3,11 @@ package com.mentor4you.service;
 import com.mentor4you.exception.AdminDeleteException;
 import com.mentor4you.exception.MenteeNotFoundException;
 import com.mentor4you.exception.RegistrationException;
-import com.mentor4you.model.ContactsToAccounts;
+import com.mentor4you.model.*;
 import com.mentor4you.model.DTO.MenteeResponseDTO;
 import com.mentor4you.model.DTO.MenteeUpdateRequest;
 import com.mentor4you.model.DTO.UserBanDTO;
-import com.mentor4you.model.Role;
-import com.mentor4you.model.User;
-import com.mentor4you.repository.ContactsToAccountsRepository;
-import com.mentor4you.repository.UserRepository;
+import com.mentor4you.repository.*;
 import com.mentor4you.security.jwt.JwtProvider;
 import com.mentor4you.security.jwt.cache.event.OnUserLogoutSuccessEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +35,12 @@ public class UserService {
     EmailService emailService;
     ContactsToAccountsService contactsToAccountsService;
     ContactsToAccountsRepository contactsToAccountsRepository;
+    @Autowired
+    MentorRepository mentorRepository;
+    @Autowired
+    MenteeRepository menteeRepository;
+    @Autowired
+    AccountRepository accountRepository;
 
     public UserService(PasswordService passwordService, UserRepository userRepository, JwtProvider jwtProvider, EmailService emailService, ContactsToAccountsService contactsToAccountsService, ContactsToAccountsRepository contactsToAccountsRepository,
                        AuthenticationService authenticationService, ApplicationEventPublisher applicationEventPublisher) {
@@ -203,12 +206,25 @@ public class UserService {
     }
 
     public String changeMyRole(String header){
-        String email = jwtProvider.getLoginFromToken(header.substring(7));
-        User user = userRepository.findUserByEmail(email);
-        if (user.getRole().equals(Role.MENTOR)) {user.setRole(Role.MENTEE);}
-        else if (user.getRole().equals(Role.MENTEE)) {user.setRole(Role.MENTOR);}
-        userRepository.save(user);
-        return "Congratulation, you are become a ".concat(user.getRole().name());
+        try {
+            User user = getUserByHeader(header);
+            Accounts accounts = accountRepository.getById(user.getId());
+            if (user.getRole().equals(Role.MENTOR)) {
+                user.setRole(Role.MENTEE);
+                Mentees mentee = new Mentees();
+                mentee.setAccounts(accounts);
+                menteeRepository.save(mentee);
+            } else if (user.getRole().equals(Role.MENTEE)) {
+                user.setRole(Role.MENTOR);
+                Mentors mentor = new Mentors();
+                mentor.setAccounts(accounts);
+                mentorRepository.save(mentor);
+            }
+            userRepository.save(user);
+            return "Congratulation, you are become a ".concat(user.getRole().name());
+        } catch (Exception e){
+            return e.getMessage();
+        }
     }
 
     public int getIdByHeader(String header) throws Exception{
