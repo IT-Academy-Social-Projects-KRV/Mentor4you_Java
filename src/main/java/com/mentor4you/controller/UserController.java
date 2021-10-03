@@ -136,6 +136,7 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
     @Operation(summary = "change User's avatar")
     @PutMapping("/changeAvatar")
     ResponseEntity<?> changeAvatar(@RequestHeader("Authorization") String header, @RequestParam("avatarURL")String avatarURL) {

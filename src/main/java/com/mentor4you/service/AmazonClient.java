@@ -49,7 +49,7 @@ public class AmazonClient {
     }
 
     private void uploadFileTos3bucket(String fileName, File file) {
-        s3client.putObject(new PutObjectRequest(bucketName, fileName, file)
+        s3client.putObject(new PutObjectRequest(bucketName + "/avatars", fileName, file)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
     }
 
@@ -58,7 +58,7 @@ public class AmazonClient {
         try {
             File file = convertMultiPartToFile(multipartFile);
             String fileName = generateFileName(id, multipartFile);
-            fileUrl = "https://" + bucketName + "."+ endpointUrl + "/avatars/"+ fileName;
+            fileUrl = "https://" + bucketName + "." + endpointUrl + "/avatars/"+ fileName;
             uploadFileTos3bucket(fileName, file);
             file.delete();
         } catch (Exception e) {
