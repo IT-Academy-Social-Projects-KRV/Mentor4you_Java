@@ -48,17 +48,22 @@ public class CooperationService {
 
         Mentors mentor =mentorRepository.getById(id);
         Mentees mentee =menteeRepository.getById(userRepository.findUserByEmail(email).getId());
+        Cooperation c =cooperationRepository.coopIsPresent(mentee.getId(),mentor.getId());
 
-        if(cooperationRepository.coopIsPresent(mentee,mentor)!=null){
-            return new ResponseEntity<String>("Cooperation already exists",HttpStatus.BAD_REQUEST);
-        }
-
-        Cooperation c =new Cooperation();
-        c.setMentors(mentor);
-        c.setMentees(mentee);
-        c.setStatus(CoopStatus.CREATED);
-        cooperationRepository.save(c);
-        return new ResponseEntity<String>(HttpStatus.OK);
+            try {
+                if(c.getStatus() == CoopStatus.CREATED || c.getStatus() == CoopStatus.APPROVED)
+                    return new ResponseEntity<String>("Cooperation already exists",HttpStatus.BAD_REQUEST);
+            }
+            catch(NullPointerException exception){
+                c =new Cooperation();
+                c.setMentors(mentor);
+                c.setMentees(mentee);
+            }
+            finally {
+                c.setStatus(CoopStatus.CREATED);
+                cooperationRepository.save(c);
+            }
+        return new ResponseEntity<String>("Cooperation Request created",HttpStatus.OK);
     }
 
 
@@ -93,10 +98,10 @@ public class CooperationService {
         String email =jwtProvider.getLoginFromToken(token);
         Mentors mentor =mentorRepository.getById(userRepository.findUserByEmail(email).getId());
         Mentees mentee =menteeRepository.getById(id);
-        Cooperation cooperation = cooperationRepository.coopIsPresent(mentee,mentor);
+        Cooperation cooperation = cooperationRepository.coopIsPresent(mentee.getId(),mentor.getId());
         String massage = null;
         System.out.println(cooperation);
-        if(cooperationRepository.coopIsPresent(mentee,mentor)!=null){
+        if(cooperation!=null){
 
             if(s){
                 cooperation.setStatus(CoopStatus.APPROVED);

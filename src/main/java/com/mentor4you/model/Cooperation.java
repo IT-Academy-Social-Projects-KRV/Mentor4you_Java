@@ -50,4 +50,14 @@ public class Cooperation {
     public void setStatus(CoopStatus status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "Cooperation{" +
+                "id=" + id +
+                ", mentees=" + mentees +
+                ", mentors=" + mentors +
+                ", status=" + status +
+                '}';
+    }
 }

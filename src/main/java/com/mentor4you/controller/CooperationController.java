@@ -32,8 +32,8 @@ public class CooperationController {
         return  cooperationService.getCooperation(request);
     }
 
-    @PutMapping("/approve/{id},{status}")
-    public ResponseEntity<String> decisionsOnCoop(@PathVariable(value = "id")Integer id,@PathVariable(value = "status")Boolean status,HttpServletRequest request){
+    @PutMapping("/approve/{id}")
+    public ResponseEntity<String> decisionsOnCoop(@PathVariable(value = "id")Integer id,@RequestBody Boolean status,HttpServletRequest request){
         return  cooperationService.decisionsOnCoop(request,id,status);
     }
 }

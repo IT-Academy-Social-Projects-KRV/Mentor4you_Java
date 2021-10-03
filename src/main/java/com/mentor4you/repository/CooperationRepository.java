@@ -24,8 +24,8 @@ public interface CooperationRepository extends JpaRepository<Cooperation,Integer
 
     Set<Cooperation> findByMentees(Mentees mentees);
 
-    @Query("SELECT c FROM Cooperation c WHERE c.mentees =:mentee and c.mentors =:mentor")
-    Cooperation coopIsPresent(@Param("mentee") Mentees mentee,@Param("mentor") Mentors mentor);
+    @Query("SELECT c FROM Cooperation c WHERE c.mentees.id =:mentee and c.mentors.id =:mentor")
+    Cooperation  coopIsPresent(@Param("mentee") int mentee,@Param("mentor") int mentor);
 
 
     @Transactional
