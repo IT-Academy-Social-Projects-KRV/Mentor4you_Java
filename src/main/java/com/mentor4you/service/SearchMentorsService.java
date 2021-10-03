@@ -1,6 +1,7 @@
 package com.mentor4you.service;
 
 import com.mentor4you.model.*;
+import com.mentor4you.model.DTO.serchMentorsDTO.SearchMentorsDTO;
 import com.mentor4you.model.DTO.serchMentorsDTO.SmallDataMentorDTO;
 import com.mentor4you.repository.CategoriesRepository;
 import com.mentor4you.repository.LanguagesRepository;
