@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -89,20 +90,6 @@ public class UserController {
         return new ResponseEntity<String>(result, HttpStatus.OK);
     }
 
-    @Operation(summary = "change User's avatar")
-    @PutMapping("/changeAvatar")
-    ResponseEntity<?> changeAvatar(@RequestHeader("Authorization") String header, @RequestParam("avatarURL")String avatarURL) {
-        String result = userService.changeAvatar(header, avatarURL);
-        return new ResponseEntity<String>(result, HttpStatus.OK);
-    }
-
-    @Operation(summary = "change current user`s role")
-    @PutMapping("/changeRole")
-    ResponseEntity<?> changeRole(@RequestHeader("Authorization") String header) {
-        String result = userService.changeMyRole(header);
-        return new ResponseEntity<String>(result, HttpStatus.OK);
-    }
-
     @Operation(summary = "delete user account")
     @DeleteMapping("/delete")
     ResponseEntity<?> deleteUser(HttpServletRequest request){
@@ -116,5 +103,33 @@ public class UserController {
             res.put("message", e.getMessage());
             return ResponseEntity.badRequest().body(res);
         }
+    }
+
+    @PostMapping("/uploadAvatar")
+    public String uploadAvatar(@RequestHeader("Authorization") String header, @RequestPart(value = "file") MultipartFile file) {
+        int id = userService.getIdByHeader(header);
+        String fileURL = this.amazonClient.uploadFile(id, file);
+        return userService.changeAvatar(header, fileURL);
+    }
+
+    @DeleteMapping("/deleteAvatar")
+    public String deleteAvatar(@RequestHeader("Authorization") String header) {
+        String fileUrl = userService.getAvatarByHeader(header);
+        userService.changeAvatar(header, "https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/standartUserAvatar.png");
+        return this.amazonClient.deleteFileFromS3Bucket(fileUrl);
+
+    }
+    @Operation(summary = "change User's avatar")
+    @PutMapping("/changeAvatar")
+    ResponseEntity<?> changeAvatar(@RequestHeader("Authorization") String header, @RequestParam("avatarURL")String avatarURL) {
+        String result = userService.changeAvatar(header, avatarURL);
+        return new ResponseEntity<String>(result, HttpStatus.OK);
+    }
+
+    @Operation(summary = "change current user`s role")
+    @PutMapping("/changeRole")
+    ResponseEntity<?> changeRole(@RequestHeader("Authorization") String header) {
+        String result = userService.changeMyRole(header);
+        return new ResponseEntity<String>(result, HttpStatus.OK);
     }
 }
