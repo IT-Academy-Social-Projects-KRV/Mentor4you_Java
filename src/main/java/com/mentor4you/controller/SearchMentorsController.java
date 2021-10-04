@@ -72,5 +72,15 @@ public class SearchMentorsController {
         return searchMentorsService.createSerchMentorSTOList();
     }
 
+    /*@Operation(summary = "")
+    @GetMapping("/findMentorsBiId/{id}")
+    ResponseEntity<List<SmallDataMentorDTO>> fff(@PathVariable("id") int id){
+        List<Mentors> mentList = mentorRepository.findMentorsById(id);
+        if (mentList.size() > 0) {
+            return searchMentorsService.createSmallMentorDTO(mentList);
+        } else {
+            return new ResponseEntity<List<SmallDataMentorDTO>>(HttpStatus.NOT_FOUND);
+        }
+    }*/
 
 }
