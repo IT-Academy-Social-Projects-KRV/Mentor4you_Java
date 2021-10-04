@@ -24,6 +24,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
         prePostEnabled = true,
         securedEnabled = true,
         jsr250Enabled = true)
+
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
     private final JwtFilter jwtFilter;
