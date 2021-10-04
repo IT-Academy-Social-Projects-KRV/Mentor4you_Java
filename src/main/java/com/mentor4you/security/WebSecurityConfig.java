@@ -46,7 +46,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
                 .and()
                 //TODO  chek all permits
                 .authorizeRequests().antMatchers("/api/auth/*","/api/registration","/api/users","/api/users/getAllBannedUser",
-                    "/api/users/changeBanToUser","/api/users/changeAvatar", "/api/users/changeRole","/api/admin/appointModerator").permitAll()
+                "/api/users/changeBanToUser","/api/users/changeAvatar", "/api/users/changeRole","/api/admin/appointModerator",
+                "/api/users/uploadAvatar", "/api/users/deleteAvatar", "/api/mentors/**", "/api/mentees/**").permitAll()
                 .and()
                 .authorizeRequests().antMatchers("/api/**").authenticated()
                 .anyRequest().permitAll()

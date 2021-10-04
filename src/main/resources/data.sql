@@ -1,20 +1,20 @@
 INSERT INTO mentor4you_db.users (avatar, email, first_name, last_name, password, registration_date, role, status) VALUES
-('https://avatarmaker.net/images/1.png','Admin1@gmail.com', 'Admin', 'Admino', '$2a$10$LTIXsz6vEwmL0Bqwr9vDsefnHsi15M99WDuCTY8ejfMzFEGq/25Cy', '2021-09-13 10:42:19.236442', 'ADMIN',true),
-('https://avatarmaker.net/images/1.png','Moderator1@gmail.com', 'Moder', 'Mod', '$2a$10$LTIXsz6vEwmL0Bqwr9vDsefnHsi15M99WDuCTY8ejfMzFEGq/25Cy', '2021-09-13 10:42:19.236442', 'MODERATOR',true),
-('https://avatarmaker.net/images/1.png','Moderator2@gmail.com', 'Mod', 'Moder', '$2a$10$LTIXsz6vEwmL0Bqwr9vDsefnHsi15M99WDuCTY8ejfMzFEGq/25Cy', '2021-09-13 10:42:19.236442', 'MODERATOR',true),
-('https://avatarmaker.net/images/1.png','Moderator3@gmail.com', 'Modest', 'Moderovich', '$2a$10$LTIXsz6vEwmL0Bqwr9vDsefnHsi15M99WDuCTY8ejfMzFEGq/25Cy', '2021-09-13 10:42:19.236442', 'MODERATOR',true),
+('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/adminAvatar.jpeg','Admin1@gmail.com', 'Admin', 'Admino', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'ADMIN',true),
+('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/moderatorAvatar.jpg','Moderator1@gmail.com', 'Moder', 'Mod', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MODERATOR',true),
+('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/moderatorAvatar.jpg','Moderator2@gmail.com', 'Mod', 'Moder', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MODERATOR',true),
+('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/moderatorAvatar.jpg','Moderator3@gmail.com', 'Modest', 'Moderovich', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MODERATOR',true),
 
-('https://avatarmaker.net/images/1.png','Mentor1@gmail.com', 'Andrii', 'Android', '$2a$10$LTIXsz6vEwmL0Bqwr9vDsefnHsi15M99WDuCTY8ejfMzFEGq/25Cy', '2021-09-13 10:42:19.236442', 'MENTOR',true),
-('https://avatarmaker.net/images/1.png','Mentor2@gmail.com', 'Mykola', 'Myhalkov', '$2a$10$LTIXsz6vEwmL0Bqwr9vDsefnHsi15M99WDuCTY8ejfMzFEGq/25Cy', '2021-09-13 10:42:19.236442', 'MENTOR',true),
-('https://avatarmaker.net/images/1.png','Mentor3@gmail.com', 'Vasyl', 'Vasyliv', '$2a$10$LTIXsz6vEwmL0Bqwr9vDsefnHsi15M99WDuCTY8ejfMzFEGq/25Cy', '2021-09-13 10:42:19.236442', 'MENTOR',true),
-('https://avatarmaker.net/images/1.png','Mentor4@gmail.com', 'Ivan', 'Ivanov', '$2a$10$LTIXsz6vEwmL0Bqwr9vDsefnHsi15M99WDuCTY8ejfMzFEGq/25Cy', '2021-09-13 10:42:19.236442', 'MENTOR',true),
-('https://avatarmaker.net/images/1.png','Mentor5@gmail.com', 'Leonard', 'Vasyliv', '$2a$10$LTIXsz6vEwmL0Bqwr9vDsefnHsi15M99WDuCTY8ejfMzFEGq/25Cy', '2021-09-13 10:42:19.236442', 'MENTOR',true),
+('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/standartUserAvatar.png','Mentor1@gmail.com', 'Andrii', 'Android', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MENTOR',true),
+('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/standartUserAvatar.png','Mentor2@gmail.com', 'Mykola', 'Myhalkov', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MENTOR',true),
+('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/standartUserAvatar.png','Mentor3@gmail.com', 'Vasyl', 'Vasyliv', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MENTOR',true),
+('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/standartUserAvatar.png','Mentor4@gmail.com', 'Ivan', 'Ivanov', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MENTOR',true),
+('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/standartUserAvatar.png','Mentor5@gmail.com', 'Leonard', 'Vasyliv', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MENTOR',true),
 
-('https://avatarmaker.net/images/1.png','Mentee1@gmail.com', 'Orest', 'Knyazev', '$2a$10$LTIXsz6vEwmL0Bqwr9vDsefnHsi15M99WDuCTY8ejfMzFEGq/25Cy', '2021-09-13 10:42:19.236442', 'MENTEE',true),
-('https://avatarmaker.net/images/1.png','Mentee2@gmail.com', 'Dmytro', 'Vasiv', '$2a$10$LTIXsz6vEwmL0Bqwr9vDsefnHsi15M99WDuCTY8ejfMzFEGq/25Cy', '2021-09-13 10:42:19.236442', 'MENTEE',true),
-('https://avatarmaker.net/images/1.png','Mentee3@gmail.com', 'Bogdan', 'Ivanov', '$2a$10$LTIXsz6vEwmL0Bqwr9vDsefnHsi15M99WDuCTY8ejfMzFEGq/25Cy', '2021-09-13 10:42:19.236442', 'MENTEE',true),
-('https://avatarmaker.net/images/1.png','Mentee4@gmail.com', 'Peter', 'Kwit', '$2a$10$LTIXsz6vEwmL0Bqwr9vDsefnHsi15M99WDuCTY8ejfMzFEGq/25Cy', '2021-09-13 10:42:19.236442', 'MENTEE',true),
-('https://avatarmaker.net/images/1.png','Mentee5@gmail.com', 'Herasim', 'Nechai', '$2a$10$LTIXsz6vEwmL0Bqwr9vDsefnHsi15M99WDuCTY8ejfMzFEGq/25Cy', '2021-09-13 10:42:19.236442', 'MENTEE',true);
+('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/standartUserAvatar.png','Mentee1@gmail.com', 'Orest', 'Knyazev', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MENTEE',true),
+('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/standartUserAvatar.png','Mentee2@gmail.com', 'Dmytro', 'Vasiv', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MENTEE',true),
+('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/standartUserAvatar.png','Mentee3@gmail.com', 'Bogdan', 'Ivanov', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MENTEE',true),
+('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/standartUserAvatar.png','Mentee4@gmail.com', 'Peter', 'Kwit', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MENTEE',true),
+('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/standartUserAvatar.png','Mentee5@gmail.com', 'Herasim', 'Nechai', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MENTEE',true);
 COMMIT;
 
 INSERT INTO mentor4you_db.accounts (id, last_visit) VALUES
