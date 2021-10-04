@@ -176,6 +176,7 @@ public class SearchMentorsService {
 
         SmallDataMentorDTO smallMentTemp = new SmallDataMentorDTO();
 
+
         smallMentTemp.setId(m.getId());
         smallMentTemp.setAvatar(m.getAccounts().getUser().getAvatar());
         smallMentTemp.setFirstName(m.getAccounts().getUser().getFirst_name());

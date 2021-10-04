@@ -28,6 +28,7 @@ public class SmallDataMentorDTO{
     public SmallDataMentorDTO() {
     }
 
+
     public SmallDataMentorDTO(int id,
                               String firstName,
                               String lastName,
