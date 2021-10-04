@@ -22,7 +22,8 @@ public interface CooperationRepository extends JpaRepository<Cooperation,Integer
     @Query("SELECT c FROM Cooperation c WHERE c.mentors.id =:mentor and c.status =:status")
     Set<Cooperation> findByMentors(@Param("mentor") int mentor,@Param("status") CoopStatus status);
 
-    Set<Cooperation> findByMentees(Mentees mentees);
+    @Query("SELECT c FROM Cooperation c WHERE c.mentees.id =:mentees and c.status IN :status")
+    Set<Cooperation> findByMentees(@Param("mentees") int mentees,@Param("status") Set<CoopStatus> status);
 
     @Query("SELECT c FROM Cooperation c WHERE c.mentees.id =:mentee and c.mentors.id =:mentor")
     Cooperation  coopIsPresent(@Param("mentee") int mentee,@Param("mentor") int mentor);

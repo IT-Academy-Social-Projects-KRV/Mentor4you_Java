@@ -14,8 +14,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -46,7 +49,13 @@ public class CooperationService {
 
         String email =jwtProvider.getLoginFromToken(token);
 
-        Mentors mentor =mentorRepository.getById(id);
+
+        Mentors mentor=null;
+        try{
+            mentor =mentorRepository.getById(id);
+        }catch (EntityNotFoundException e){
+            return new ResponseEntity<String>("Mentor not found",HttpStatus.NOT_FOUND);
+        }
         Mentees mentee =menteeRepository.getById(userRepository.findUserByEmail(email).getId());
         Cooperation c =cooperationRepository.coopIsPresent(mentee.getId(),mentor.getId());
 
@@ -60,23 +69,21 @@ public class CooperationService {
                 c.setMentees(mentee);
             }
             finally {
-                c.setStatus(CoopStatus.CREATED);
-                cooperationRepository.save(c);
+                    c.setStatus(CoopStatus.CREATED);
+                    cooperationRepository.save(c);
             }
         return new ResponseEntity<String>("Cooperation Request created",HttpStatus.OK);
     }
 
 
-    public ResponseEntity<Set<DTOforCop>> getCooperation(HttpServletRequest request){
+    public ResponseEntity<Set<DTOforCop>>getCooperationForMentor(HttpServletRequest request){
         String token =jwtProvider.getTokenFromRequest(request);
 
         String email =jwtProvider.getLoginFromToken(token);
 
         User user = userRepository.findUserByEmail(email);
 
-
         Set<DTOforCop> s =new HashSet<>();
-
 
         for(Cooperation c :cooperationRepository.findByMentors(user.getId(),CoopStatus.CREATED)){
             DTOforCop dto = new DTOforCop();
@@ -85,7 +92,32 @@ public class CooperationService {
             dto.setSecondName(c.getMentees().getAccounts().getUser().getLast_name());
             s.add(dto);
         }
+        if(s.isEmpty()==false)
+            return new ResponseEntity<Set<DTOforCop>>(s,HttpStatus.OK);
+        else return new ResponseEntity<Set<DTOforCop>>(HttpStatus.NOT_FOUND);
+    }
 
+    public ResponseEntity<Set<DTOforCop>> getCooperationForMentee(HttpServletRequest request){
+        String token =jwtProvider.getTokenFromRequest(request);
+
+        String email =jwtProvider.getLoginFromToken(token);
+
+        User user = userRepository.findUserByEmail(email);
+
+        Set<DTOforCop> s =new HashSet<>();
+
+        Set<CoopStatus> coop = new HashSet<>();
+        coop.add(CoopStatus.APPROVED);
+        System.out.println(coop);
+        System.out.println(cooperationRepository.findByMentees(user.getId(),coop));
+
+        for(Cooperation c :cooperationRepository.findByMentees(user.getId(),coop)){
+            DTOforCop dto = new DTOforCop();
+            dto.setId(c.getMentors().getId());
+            dto.setName(c.getMentors().getAccounts().getUser().getFirst_name());
+            dto.setSecondName(c.getMentors().getAccounts().getUser().getLast_name());
+            s.add(dto);
+        }
         if(s.isEmpty()==false)
             return new ResponseEntity<Set<DTOforCop>>(s,HttpStatus.OK);
         else return new ResponseEntity<Set<DTOforCop>>(HttpStatus.NOT_FOUND);
@@ -100,7 +132,6 @@ public class CooperationService {
         Mentees mentee =menteeRepository.getById(id);
         Cooperation cooperation = cooperationRepository.coopIsPresent(mentee.getId(),mentor.getId());
         String massage = null;
-        System.out.println(cooperation);
         if(cooperation!=null){
 
             if(s){

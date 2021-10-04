@@ -29,7 +29,12 @@ public class CooperationController {
 
     @GetMapping("/mentorCooperation")
     public ResponseEntity<Set<DTOforCop>> getCooperationForMentor(HttpServletRequest request){
-        return  cooperationService.getCooperation(request);
+        return  cooperationService.getCooperationForMentor(request);
+    }
+
+    @GetMapping("/menteeCooperation")
+    public ResponseEntity<Set<DTOforCop>> getCooperationForMentee(HttpServletRequest request){
+        return  cooperationService.getCooperationForMentee(request);
     }
 
     @PutMapping("/approve/{id}")
