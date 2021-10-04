@@ -44,15 +44,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
                         "/api/registration",
                         "/api/users",
                         "/api/users/getAllBannedUser",
-                        "/api/users/changeBanToUser",//dell
+                        "/api/users/changeBanToUser",
                         "/api/searchMentor",//dell,
                         "/api/users/Test/{{id}}/{{name}}",//dell
                         "/api/searchMentor/Test/{{contactLast}}/{{contactFirst}}",//dell
                         "/api/mentors",//dell
                         "/api/searchMentor/filterGetListSmallMentors/{{city}}/{{categoryName}}/{{language}}/{{minPrice}}/{{maxPrice}}",//dell
                         "/api/searchMentor/findMentorsBestRating/{{number}}",//dell
-                        "/api/users/changeUser"//dell
-                ).permitAll()
+                        "/api/users/changeUser",//dell
+                        "/api/users/changeAvatar",
+                        "/api/users/changeRole",
+                        "/api/admin/appointModerator").permitAll()
                 .and()
                 .authorizeRequests().antMatchers("/api/**").authenticated()
                 .anyRequest().permitAll()
@@ -73,6 +75,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
                 .allowedOrigins("http://localhost:4200")
                 .allowedMethods("*");
     }
+
 
     @Override
     @Bean

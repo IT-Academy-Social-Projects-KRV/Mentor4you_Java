@@ -15,4 +15,6 @@ public interface LanguagesRepository extends JpaRepository<Languages, Integer> {
 
     @Query("select a.name from Languages a")
     List<String> findAllLanguagesName();
+
+    Languages findByName(String name);
 }

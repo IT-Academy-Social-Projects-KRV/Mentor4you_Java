@@ -1,5 +1,6 @@
 package com.mentor4you.controller;
 
+import com.mentor4you.exception.AdminDeleteException;
 import com.mentor4you.exception.RegistrationException;
 import com.mentor4you.model.DTO.EmailRequest;
 import com.mentor4you.model.DTO.PasswordDTO;
@@ -14,6 +15,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
@@ -81,6 +83,7 @@ public class UserController {
 
 
     @Operation(summary = "change User's ban status")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MODERATOR')")
     @PutMapping("/changeBanToUser")
     ResponseEntity<?> changeBanToUser(@RequestBody UserBanUpdateRequest dto) {
         String result = userService.changeBanToUser(dto.banStatus, dto.getId());
@@ -94,5 +97,34 @@ public class UserController {
         userRepository.updateUser("Change4", 5, "1_MENTOR@email.com");
 
         return new ResponseEntity<String>(HttpStatus.OK);
+    }
+
+    @Operation(summary = "change User's avatar")
+    @PutMapping("/changeAvatar")
+    ResponseEntity<?> changeAvatar(@RequestHeader("Authorization") String header, @RequestParam("avatarURL")String avatarURL) {
+        String result = userService.changeAvatar(header, avatarURL);
+        return new ResponseEntity<String>(result, HttpStatus.OK);
+    }
+
+    @Operation(summary = "change current user`s role")
+    @PutMapping("/changeRole")
+    ResponseEntity<?> changeRole(@RequestHeader("Authorization") String header) {
+        String result = userService.changeMyRole(header);
+        return new ResponseEntity<String>(result, HttpStatus.OK);
+    }
+
+    @Operation(summary = "delete user account")
+    @DeleteMapping("/delete")
+    ResponseEntity<?> deleteUser(HttpServletRequest request){
+        Map<String, String> res = new HashMap<>();
+
+        try {
+            String result = userService.deleteUser(request);
+            res.put("message", result);
+            return ResponseEntity.ok(res);
+        } catch (AdminDeleteException e) {
+            res.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(res);
+        }
     }
 }

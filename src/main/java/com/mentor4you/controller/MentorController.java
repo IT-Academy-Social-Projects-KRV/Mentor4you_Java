@@ -3,6 +3,7 @@ package com.mentor4you.controller;
 import com.mentor4you.exception.ErrorObject;
 import com.mentor4you.exception.MentorNotFoundException;
 import com.mentor4you.model.Accounts;
+import com.mentor4you.model.DTO.ExtendedMenteeDTO;
 import com.mentor4you.model.DTO.MenteeResponseDTO;
 import com.mentor4you.model.DTO.MentorGeneralResponseDTO;
 import com.mentor4you.model.Mentors;
@@ -11,8 +12,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +37,7 @@ public class MentorController {
     //select mentor by id
     @Operation(summary = "select mentor by id")
     @GetMapping("/{id}")
-    Optional<Mentors> getMentorById(@PathVariable(value = "id") Integer id){
+    ResponseEntity<ExtendedMenteeDTO> getMentorById(@PathVariable(value = "id") Integer id){
         return mentorService.getMentorById(id);
     }
 

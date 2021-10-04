@@ -16,8 +16,9 @@ import java.util.Optional;
 
 @Repository
 @Transactional(readOnly = true)
-public interface MentorRepository extends JpaRepository<Mentors, Integer> {
+public interface MentorRepository
 
+        extends JpaRepository<Mentors, Integer> {
     Optional<Mentors> findById(int id);
 
     @Query("Select distinct m.mentors from Mentors_to_categories m WHERE m.categories.name=?1")
@@ -26,4 +27,6 @@ public interface MentorRepository extends JpaRepository<Mentors, Integer> {
     @Query(value = "Select distinct m from Mentors m ORDER BY m.rating DESC")
     List<Mentors> findMentorsBestRating(Pageable pageable);
 
+
+    Mentors findOneById(int id);
 }
