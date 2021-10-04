@@ -1,9 +1,18 @@
-GET
-http://localhost:8080/system/add 
 
-localhost:8080/system/add
-#Insert data into Roles GroupServices Accounts Users Mentors
-#result  -->>  1 admin \\ 3 moderators \\ 15 mentors
+##Initial accounts setting
+#### 1 Admin,  3 Moderators, 5 Mentors, 5 Mentees
+    Email: RoleNumber@gmail.com      Password: Mentor4you
+    
+    Examples: 
+        * Admin1@gmail.com
+        * Moderator2@gmail.com
+        * Mentor3@gmail.com
+        * Mentee4@gmail.com
+
+
+## GET http://localhost:8080/system/add
+####Insert data into Roles GroupServices Accounts Users Mentors
+####result  -->>  1 admin \\ 3 moderators \\ 15 mentors
 
 
 # Project launch:Linc to swagger

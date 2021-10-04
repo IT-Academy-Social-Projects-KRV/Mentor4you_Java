@@ -9,6 +9,7 @@ import com.mentor4you.model.DTO.UserBanUpdateRequest;
 import com.mentor4you.model.Mentees;
 import com.mentor4you.model.User;
 import com.mentor4you.repository.UserRepository;
+import com.mentor4you.service.AmazonClient;
 import com.mentor4you.service.EmailService;
 import com.mentor4you.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,7 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
@@ -30,15 +31,17 @@ import java.util.Optional;
 @RequestMapping("/api/users")
 public class UserController {
 
-    @Autowired
     UserService userService;
     UserRepository userRepository;
     EmailService emailService;
+    AmazonClient amazonClient;
 
-    public UserController(UserService userService, UserRepository userRepository, EmailService emailService) {
+    @Autowired
+    public UserController(UserService userService, UserRepository userRepository, EmailService emailService, AmazonClient amazonClient) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.emailService = emailService;
+        this.amazonClient = amazonClient;
     }
 
     //select all accounts
@@ -90,20 +93,6 @@ public class UserController {
         return new ResponseEntity<String>(result, HttpStatus.OK);
     }
 
-    @Operation(summary = "change User's avatar")
-    @PutMapping("/changeAvatar")
-    ResponseEntity<?> changeAvatar(@RequestHeader("Authorization") String header, @RequestParam("avatarURL")String avatarURL) {
-        String result = userService.changeAvatar(header, avatarURL);
-        return new ResponseEntity<String>(result, HttpStatus.OK);
-    }
-
-    @Operation(summary = "change current user`s role")
-    @PutMapping("/changeRole")
-    ResponseEntity<?> changeRole(@RequestHeader("Authorization") String header) {
-        String result = userService.changeMyRole(header);
-        return new ResponseEntity<String>(result, HttpStatus.OK);
-    }
-
     @Operation(summary = "delete user account")
     @DeleteMapping("/delete")
     ResponseEntity<?> deleteUser(HttpServletRequest request){
@@ -117,5 +106,54 @@ public class UserController {
             res.put("message", e.getMessage());
             return ResponseEntity.badRequest().body(res);
         }
+    }
+
+    @Operation(summary = "upload new user`s avatar to cloud storage")
+    @PostMapping("/uploadAvatar")
+    ResponseEntity<?>  uploadAvatar(@RequestHeader("Authorization") String header, @RequestPart(value = "file") MultipartFile file) {
+        Map<String, String> res = new HashMap<>();
+        try{
+            int id = userService.getIdByHeader(header);
+            String fileURL = this.amazonClient.uploadFile(id, file);
+            String result = userService.changeAvatar(header, fileURL);
+            res.put("result", result);
+            res.put("new avatar URL",fileURL);
+            return ResponseEntity.ok(res);
+        } catch (Exception e){
+            res.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(res);
+        }
+
+    }
+
+    @DeleteMapping("/deleteAvatar")
+    ResponseEntity<?> deleteAvatar(@RequestHeader("Authorization") String header) {
+        try {
+            String fileUrl = userService.getAvatarByHeader(header);
+            userService.changeAvatar(header, "https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/standartUserAvatar.png");
+            String result = this.amazonClient.deleteFileFromS3Bucket(fileUrl);
+            return ResponseEntity.ok(result);
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @Operation(summary = "change User's avatar")
+    @PutMapping("/changeAvatar")
+    ResponseEntity<?> changeAvatar(@RequestHeader("Authorization") String header, @RequestParam("avatarURL")String avatarURL) {
+        try{
+            String result = userService.changeAvatar(header, avatarURL);
+            return new ResponseEntity<String>(result, HttpStatus.OK);
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+    }
+
+    @Operation(summary = "change current user`s role")
+    @PutMapping("/changeRole")
+    ResponseEntity<?> changeRole(@RequestHeader("Authorization") String header) {
+        String result = userService.changeMyRole(header);
+        return new ResponseEntity<String>(result, HttpStatus.OK);
     }
 }

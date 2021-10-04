@@ -60,7 +60,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
                         "/api/users/changeUser",//dell
                         "/api/users/changeAvatar",
                         "/api/users/changeRole",
-                        "/api/admin/appointModerator"
+                        "/api/admin/appointModerator",
+                        "/api/**"
                 ).permitAll()
                 .and()
                 .authorizeRequests().antMatchers("/api/**").authenticated()
