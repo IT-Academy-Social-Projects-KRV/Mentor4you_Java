@@ -90,15 +90,6 @@ public class UserController {
         return new ResponseEntity<String>(result, HttpStatus.OK);
     }
 
-
-    @Operation(summary = "change User's name")
-    @PutMapping("/changeUser")
-    ResponseEntity<?> changeUser() {
-        userRepository.updateUser("Change4", 5, "1_MENTOR@email.com");
-
-        return new ResponseEntity<String>(HttpStatus.OK);
-    }
-
     @Operation(summary = "change User's avatar")
     @PutMapping("/changeAvatar")
     ResponseEntity<?> changeAvatar(@RequestHeader("Authorization") String header, @RequestParam("avatarURL")String avatarURL) {
