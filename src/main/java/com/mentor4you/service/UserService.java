@@ -185,6 +185,8 @@ public class UserService {
         user.setStatus(false);
         userRepository.save(user);
 
+        //TODO: ADD email notification
+
         OnUserLogoutSuccessEvent logoutEventPublisher = new OnUserLogoutSuccessEvent(user.getEmail(),token);
         applicationEventPublisher.publishEvent(logoutEventPublisher);
 
