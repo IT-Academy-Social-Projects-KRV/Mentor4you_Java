@@ -48,9 +48,11 @@ public class JwtProvider {
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
         Date now = new Date();
         Date expireDate = new Date(now.getTime()+604800000);
+        Claims claims = Jwts.claims().setSubject(customUserDetails.getUsername());
+        claims.put("role",customUserDetails.getAuthorities());
 
         return Jwts.builder()
-                .setSubject(customUserDetails.getUsername())
+                .setClaims(claims)
                 .setIssuedAt(new Date())
                 .setExpiration(expireDate)
                 .signWith(SignatureAlgorithm.HS512,jwtSecret)
