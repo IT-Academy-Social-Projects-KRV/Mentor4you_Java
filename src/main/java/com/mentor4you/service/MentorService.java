@@ -8,6 +8,7 @@ import com.mentor4you.model.DTO.mentorsExtendedInfo.MentorGeneralResponseIdDTO;
 import com.mentor4you.repository.*;
 import com.mentor4you.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Transactional
@@ -36,7 +38,6 @@ public class MentorService {
 
 
     public MentorService(
-                         CityToMentorRepository cityToMentorRepository,
                          LanguagesService languagesService,
                          MentorsToCategory mentorsToCategory,
                          AccountRepository accountRepository,
@@ -45,7 +46,6 @@ public class MentorService {
                          MenteeService menteeService,
                          UserService userService,
                          JwtProvider jwtProvider) {
-        this.cityToMentorRepository = cityToMentorRepository;
         this.languagesService = languagesService;
         this.mentorsToCategory = mentorsToCategory;
         this.accountRepository = accountRepository;
@@ -69,7 +69,6 @@ public class MentorService {
     public ResponseEntity<MentorGeneralResponseIdDTO> getMentorById(int id){
 
         Mentors mentor = mentorRepository.findOneById(id);
-
         if(mentor!=null){
             MentorGeneralResponseIdDTO dto = new MentorGeneralResponseIdDTO();
             MenteeResponseDTO mDTO = userService.getOneMentee(mentor.getAccounts().getUser()).getBody();
@@ -190,14 +189,6 @@ public class MentorService {
         mentor.setGroupServ(dto.getGroupServ());
         mentor.setRating(dto.getRating());
         mentor.setCityToMentors(cityToMentors);
-
-
-
-
-
-
-
-
 
         mentorRepository.save(mentor);
         return new ResponseEntity<String>(HttpStatus.OK);

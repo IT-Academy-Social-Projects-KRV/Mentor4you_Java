@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class MenteeService
@@ -53,7 +54,7 @@ public class MenteeService
     public List<Mentees> getFullInfoAllMentees(){
         int theMentees = accountRepository.findByRole(Role.MENTEE).size();
         if(theMentees!=0){
-            return menteeRepository.findAll();
+            return menteeRepository.findAll().stream().filter(mentees -> mentees.getAccounts().getUser().getStatus()).collect(Collectors.toList());
         }
         throw new MentorNotFoundException("Mentees not found");
 
