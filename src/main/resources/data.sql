@@ -139,7 +139,7 @@ INSERT INTO mentor4you_db.certificats (id,description,link,name,certificats) VAL
 (6,'description','http://link','Very Cool Certificate',5),
 (7,'description','http://link','Very Cool Certificate',8),
 (8,'description','http://link','Very Cool Certificate',9);
-COMMIT;e
+COMMIT;
 
 INSERT INTO mentor4you_db.city (name) VALUES
 ('Poltava'),
