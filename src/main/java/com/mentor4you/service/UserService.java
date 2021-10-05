@@ -21,10 +21,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -212,5 +209,10 @@ public class UserService {
 
 
         return "Account has been deleted";
+    }
+
+    public User getUserById(String id) {
+        int userId = Integer.parseInt(id);
+        return userRepository.findOneById(userId);
     }
 }

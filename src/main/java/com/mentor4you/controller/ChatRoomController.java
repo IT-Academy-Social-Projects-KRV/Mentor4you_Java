@@ -1,9 +1,13 @@
 package com.mentor4you.controller;
 
+import com.mentor4you.exception.ChatNotFoundException;
 import com.mentor4you.model.ChatMessage;
 import com.mentor4you.model.ChatRoom;
+import com.mentor4you.model.DTO.ChatDTO;
+import com.mentor4you.model.User;
 import com.mentor4you.repository.ChatRoomRepository;
 import com.mentor4you.service.ChatService;
+import com.mentor4you.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -13,10 +17,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/chat")
 public class ChatRoomController {
 
     @Autowired
@@ -25,34 +30,47 @@ public class ChatRoomController {
     @Autowired
     ChatRoomRepository chatRoomRepository;
     ChatService chatService;
+    UserService userService;
 
-    public ChatRoomController(ChatRoomRepository chatRoomRepository, SimpMessagingTemplate simpMessagingTemplate, ChatService chatService) {
-        this.chatRoomRepository = chatRoomRepository;
+    public ChatRoomController(SimpMessagingTemplate simpMessagingTemplate, ChatRoomRepository chatRoomRepository, ChatService chatService, UserService userService) {
         this.simpMessagingTemplate = simpMessagingTemplate;
+        this.chatRoomRepository = chatRoomRepository;
         this.chatService = chatService;
+        this.userService = userService;
     }
 
-    @MessageMapping("/{to}")
+    @MessageMapping("/chat/{to}")
     public void sendMessage(@DestinationVariable String to, ChatMessage message) {
         message.setTimestamp(LocalDateTime.now());
         simpMessagingTemplate.convertAndSend("/topic/messages/" + to, message);
     }
 
     //get all chat
-    @GetMapping
-    ResponseEntity<?> getAllRoom(){
-        return ResponseEntity.ok(chatRoomRepository.findAll());
+    @GetMapping("/chat")
+    ResponseEntity<?> getAllMyRoom(HttpServletRequest request){
+        List<ChatRoom> chatList = chatService.findMyRoom(request);
+        List<ChatDTO> list = new ArrayList<>();
+        for(ChatRoom  s : chatList){
+            User user = userService.getUserById(s.getRecipientId());
+            list.add(new ChatDTO(s.getId(),s.getChatId(),s.getSenderId(),s.getRecipientId(),user.getFirst_name(),user.getAvatar()));
+        }
+        return ResponseEntity.ok(list);
     }
 
     //get or add new Chat room
-    @PostMapping("/{id}")
+    @PostMapping("/chat/user/{id}")
     ResponseEntity<?> getRoom(HttpServletRequest request, @PathVariable String id) {
-//        try {
-//            chatService.getRoom(request,id);
-//            return ResponseEntity.ok("me");
-//        }catch (NullPointerException e){
-            return ResponseEntity.ok(chatService.createRoom(request, id));
-//        }
+        try {
+            Optional<ChatRoom> chatRoom = chatService.getRoom(request, id);
+            User user = userService.getUserById(id);
+            ChatDTO result = new ChatDTO(chatRoom.get().getId(),chatRoom.get().getChatId(),chatRoom.get().getSenderId(),chatRoom.get().getRecipientId(),user.getFirst_name(),user.getAvatar());
+            return ResponseEntity.ok(result);
+        }catch (NullPointerException | ChatNotFoundException e){
+            ChatRoom chatRoom = chatService.createRoom(request, id);
+            User user = userService.getUserById(id);
+            ChatDTO result = new ChatDTO(chatRoom.getId(),chatRoom.getChatId(),chatRoom.getSenderId(),chatRoom.getRecipientId(),user.getFirst_name(),user.getAvatar());
+            return ResponseEntity.ok(result);
+        }
 
         }
 }

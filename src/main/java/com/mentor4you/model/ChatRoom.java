@@ -12,15 +12,18 @@ public class ChatRoom {
     private String chatId;
     private String senderId;
     private String recipientId;
-    private String recipientName;
-    private String recipientAvatar;
 
-    public ChatRoom(String chatId, String senderId, String recipientId, String recipientName, String recipientAvatar) {
+    public ChatRoom(String chatId, String senderId, String recipientId) {
         this.chatId = chatId;
         this.senderId = senderId;
         this.recipientId = recipientId;
-        this.recipientName = recipientName;
-        this.recipientAvatar = recipientAvatar;
+    }
+
+    public ChatRoom(String id, String chatId, String senderId, String recipientId) {
+        this.id = id;
+        this.chatId = chatId;
+        this.senderId = senderId;
+        this.recipientId = recipientId;
     }
 
     public ChatRoom() {
@@ -58,19 +61,4 @@ public class ChatRoom {
         this.recipientId = recipientId;
     }
 
-    public String getRecipientName() {
-        return recipientName;
-    }
-
-    public void setRecipientName(String recipientName) {
-        this.recipientName = recipientName;
-    }
-
-    public String getRecipientAvatar() {
-        return recipientAvatar;
-    }
-
-    public void setRecipientAvatar(String recipientAvatar) {
-        this.recipientAvatar = recipientAvatar;
-    }
 }
