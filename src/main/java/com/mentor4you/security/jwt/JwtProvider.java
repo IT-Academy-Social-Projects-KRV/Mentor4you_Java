@@ -28,20 +28,7 @@ public class JwtProvider {
 
     @Value("$(jwt.secret)")
     private String jwtSecret;
-
     private String header="Authorization";
-
-    public String generateToken(String login, Role role) {
-        Date date = Date.from(LocalDate.now().plusDays(15).atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Claims claims = Jwts.claims().setSubject(login);
-        claims.put("role",role);
-
-        return Jwts.builder()
-                .setClaims(claims)
-                .setExpiration(date)
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
-                .compact();
-    }
 
     public String generateAuthToken(Authentication authentication) {
 
