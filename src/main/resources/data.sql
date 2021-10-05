@@ -131,15 +131,15 @@ COMMIT;
 
 
 INSERT INTO mentor4you_db.certificats (id,description,link,name,certificats) VALUES
-(1,'description','http://link','Very Cool Certificat',5),
-(2,'description','http://link','Very Cool Certificat',6),
-(3,'description','http://link','Very Cool Certificat',7),
-(4,'description','http://link','Very Cool Certificat',8),
-(5,'description','http://link','Very Cool Certificat',9),
-(6,'description','http://link','Very Cool Certificat',5),
-(7,'description','http://link','Very Cool Certificat',8),
-(8,'description','http://link','Very Cool Certificat',9);
-COMMIT;
+(1,'description','http://link','Very Cool Certificate',5),
+(2,'description','http://link','Very Cool Certificate',6),
+(3,'description','http://link','Very Cool Certificate',7),
+(4,'description','http://link','Very Cool Certificate',8),
+(5,'description','http://link','Very Cool Certificate',9),
+(6,'description','http://link','Very Cool Certificate',5),
+(7,'description','http://link','Very Cool Certificate',8),
+(8,'description','http://link','Very Cool Certificate',9);
+COMMIT;e
 
 INSERT INTO mentor4you_db.city (name) VALUES
 ('Poltava'),
@@ -149,10 +149,9 @@ INSERT INTO mentor4you_db.city (name) VALUES
 COMMIT;
 
 INSERT INTO mentor4you_db.city_to_mentors (city_id, mentor_id) VALUES
-('3', '10'),
-('1', '11'),
-('3', '12'),
-('2', '13'),
-('4', '14'),
-('1', '15');
+('3', '5'),
+('1', '6'),
+('3', '7'),
+('2', '8'),
+('4', '9');
 COMMIT;
