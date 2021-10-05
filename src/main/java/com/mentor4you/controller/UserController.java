@@ -6,6 +6,7 @@ import com.mentor4you.model.DTO.EmailRequest;
 import com.mentor4you.model.DTO.PasswordDTO;
 import com.mentor4you.model.DTO.UserBanDTO;
 import com.mentor4you.model.DTO.UserBanUpdateRequest;
+import com.mentor4you.model.Mentees;
 import com.mentor4you.model.User;
 import com.mentor4you.repository.UserRepository;
 import com.mentor4you.service.AmazonClient;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 @RestController
@@ -71,7 +73,6 @@ public class UserController {
         return emailService.updateEmail(request.getEmail(), request.getId());
     }
 
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MODERATOR')")
     @Operation(summary = "get banned user")
     @GetMapping("/getAllBannedUser")
     ResponseEntity<List<UserBanDTO>> getAllBannedUser() {
