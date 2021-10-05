@@ -2,9 +2,8 @@ package com.mentor4you.controller;
 
 import com.mentor4you.exception.ErrorObject;
 import com.mentor4you.exception.MentorNotFoundException;
-import com.mentor4you.model.DTO.ExtendedMenteeDTO;
-import com.mentor4you.model.DTO.MentorsExtendedInfo.MentorGeneralResponseDTO;
-import com.mentor4you.model.DTO.MentorsExtendedInfo.MentorGeneralResponseIdDTO;
+import com.mentor4you.model.DTO.mentorsExtendedInfo.MentorGeneralResponseDTO;
+import com.mentor4you.model.DTO.mentorsExtendedInfo.MentorGeneralResponseIdDTO;
 import com.mentor4you.model.Mentors;
 import com.mentor4you.service.MentorService;
 import io.swagger.v3.oas.annotations.Operation;

@@ -40,7 +40,7 @@ public class Mentors {
     private List<Certificats> certificats;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "mentors")
-    private List<CityToMentors> cityToMentors;
+    private Set<CityToMentors> cityToMentors;
 
 
     @Column(name = "is_online")
@@ -159,11 +159,11 @@ public class Mentors {
         this.mentors_to_categories = mentors_to_categories;
     }
 
-    public List<CityToMentors> getCityToMentors() {
+    public Set<CityToMentors> getCityToMentors() {
         return cityToMentors;
     }
 
-    public void setCityToMentors(List<CityToMentors> cityToMentors) {
+    public void setCityToMentors(Set<CityToMentors> cityToMentors) {
         this.cityToMentors = cityToMentors;
     }
 
