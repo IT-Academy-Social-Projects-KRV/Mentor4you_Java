@@ -30,9 +30,9 @@ public class ChatService {
 
     public Optional<ChatRoom> getRoom(HttpServletRequest request, String id) {
 
-        String token = jwtProvider.getTokenFromRequest(request);
-        String email = jwtProvider.getLoginFromToken(token);
-        User user = userRepository.findUserByEmail(email);
+      //  String token = jwtProvider.getTokenFromRequest(request);
+     //   String email = jwtProvider.getLoginFromToken(token);
+        User user = userRepository.findUserByEmail("email");
 
         String userId = Integer.toString(user.getId());
 
@@ -45,9 +45,9 @@ public class ChatService {
 
     public ChatRoom createRoom(HttpServletRequest request, String id) {
 
-        String token = jwtProvider.getTokenFromRequest(request);
-        String email = jwtProvider.getLoginFromToken(token);
-        User user = userRepository.findUserByEmail(email);
+      //  String token = jwtProvider.getTokenFromRequest(request);
+     //   String email = jwtProvider.getLoginFromToken(token);
+        User user = userRepository.findUserByEmail("email");
         String userId = Integer.toString(user.getId());
 
         User recipient = userRepository.findOneById(Integer.parseInt(id));
@@ -62,11 +62,14 @@ public class ChatService {
     }
 
     public List<ChatRoom> findMyRoom(HttpServletRequest request) {
-        String token = jwtProvider.getTokenFromRequest(request);
-        String email = jwtProvider.getLoginFromToken(token);
-        User user = userRepository.findUserByEmail(email);
+     //   String token = jwtProvider.getTokenFromRequest(request);
+     //   String email = jwtProvider.getLoginFromToken(token);
+        User user = userRepository.findUserByEmail("email");
 
         List<ChatRoom> roomList = chatRoomRepository.findAllBySenderId(Integer.toString(user.getId()));
         return roomList;
     }
+
+
+
 }
