@@ -20,6 +20,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
@@ -102,7 +104,7 @@ public class UserController {
             String result = userService.deleteUser(request);
             res.put("message", result);
             return ResponseEntity.ok(res);
-        } catch (AdminDeleteException e) {
+        } catch (AdminDeleteException | MessagingException e) {
             res.put("message", e.getMessage());
             return ResponseEntity.badRequest().body(res);
         }
