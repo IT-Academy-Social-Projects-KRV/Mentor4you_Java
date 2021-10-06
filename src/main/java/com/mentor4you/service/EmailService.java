@@ -97,7 +97,7 @@ public class EmailService {
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
 
-        String htmlMsg = "<h3>"+text+"</h3>";
+        String htmlMsg = "<h3> "+text+" </h3>";
 
         message.setContent(htmlMsg, "text/html");
 
