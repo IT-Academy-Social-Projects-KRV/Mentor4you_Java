@@ -30,7 +30,7 @@ public class EmailService {
     }
 
     //check user email is existing in database
-    public boolean emailExist(String email){
+    public boolean emailExist(String email) {
         return userRepository.findByEmail(email).isPresent();
     }
 
@@ -42,25 +42,26 @@ public class EmailService {
         Pattern pattern = Pattern.compile(".+@.+\\..+");
         Matcher matcher = pattern.matcher(email);
 
-        return (matcher.matches() && length<130);
+        return (matcher.matches() && length < 130);
     }
 
-    public String updateEmail(String email, int id)
-    {
+    public String updateEmail(String email, int id) {
 
         //TODO check email to valid with sending testEmail
-        if (isEmailValidRegEx(email)){
+        if (isEmailValidRegEx(email)) {
 
             if (userRepository.findByEmail(email).isEmpty()) {
 
                 User userToUpdate = userRepository.findOneById(id);
                 userToUpdate.setEmail(email);
                 userRepository.save(userToUpdate);
-                return "Email updated to "+ userRepository.findOneById(id).getEmail();
+                return "Email updated to " + userRepository.findOneById(id).getEmail();
+            } else {
+                return "email " + email + " is exist";
             }
-            else { return "email "+email+" is exist";}
+        } else {
+            return "Something wrong with thr email ->  " + email;
         }
-        else {return "Something wrong with thr email ->  "+email;}
     }
 
 
@@ -82,7 +83,7 @@ public class EmailService {
         MimeMessageHelper helper = new MimeMessageHelper(message, multipart, "utf-8");
 
         String htmlMsg = "<h3>Im testing send a HTML email</h3>"
-                +code;
+                + code;
 
         message.setContent(htmlMsg, "text/html");
 
@@ -96,7 +97,7 @@ public class EmailService {
         return "Email Sent!";
     }
 
-  
+
     public String sendEmailToModer(EmailToModeratorRequest request) throws MessagingException {
 
         String name = request.getName();
@@ -106,10 +107,10 @@ public class EmailService {
 
         int id = 0;
 
-        if(isEmailValidRegEx(emailRec)){
+        if (isEmailValidRegEx(emailRec)) {
             //find user by ID
-            User user= userRepository.findUserByEmail(emailRec);
-            if(user!=null){
+            User user = userRepository.findUserByEmail(emailRec);
+            if (user != null) {
                 id = user.getId();
             }
 
@@ -118,31 +119,32 @@ public class EmailService {
 
             MimeMessageHelper helper = new MimeMessageHelper(message, multipart, "utf-8");
 
-            String htmlMsg = "<h3>"+messageText+"</h3>";
+            String htmlMsg = "<h3>" + messageText + "</h3>";
             message.setContent(htmlMsg, "text/html");
             helper.setTo(systemEmailsRepository.findEmailById(request.getEmailAdrId()));
 
-            if(id!=0){helper.setSubject(subject+ " from user with name "+name+ " and Id " + id);}
-            else{
-                helper.setSubject(subject+ " from user with name "+name);
+            if (id != 0) {
+                helper.setSubject(subject + " from user with name " + name + " and Id " + id);
+            } else {
+                helper.setSubject(subject + " from user with name " + name);
             }
 
             this.emailSender.send(message);
 
             return "Email Sent!";
-        }else{
+        } else {
             return "Email not valid";
         }
 
+    }
 
 
-
-    public void sendNotificationToEmail(String to, String text) throws MessagingException{
+    public void sendNotificationToEmail(String to, String text) throws MessagingException {
 
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
 
-        String htmlMsg = "<h3> "+text+" </h3>";
+        String htmlMsg = "<h3> " + text + " </h3>";
 
         message.setContent(htmlMsg, "text/html");
 
