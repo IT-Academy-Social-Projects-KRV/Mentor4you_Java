@@ -90,8 +90,7 @@ INSERT INTO mentor4you_db.type_contacts (id, name) VALUES
 (4, 'Facebook'),
 (5, 'Telegram'),
 (6, 'Skype'),
-(7, 'GitHub'),
-(8, 'Email');
+(7, 'GitHub');
 COMMIT;
 
 INSERT INTO mentor4you_db.contacts_to_accounts (contact_data, accounts_id, type_contacts_id) VALUES
