@@ -1,6 +1,6 @@
 package com.mentor4you.repository;
 
-import com.mentor4you.model.CoopStatus;
+import com.mentor4you.model.DTO.coopDTO.CoopStatus;
 import com.mentor4you.model.Cooperation;
 import com.mentor4you.model.Mentees;
 import com.mentor4you.model.Mentors;
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.Optional;
 import java.util.Set;
 
 @Repository

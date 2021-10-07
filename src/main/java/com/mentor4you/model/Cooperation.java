@@ -1,7 +1,8 @@
 package com.mentor4you.model;
 
+import com.mentor4you.model.DTO.coopDTO.CoopStatus;
+
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Table(name = "Cooperation")

@@ -1,6 +1,6 @@
-package com.mentor4you.model.DTO;
+package com.mentor4you.model.DTO.coopDTO;
 
-public class DTOforCop {
+public class DTOforCopUser {
 
     private int id ;
 
@@ -8,10 +8,12 @@ public class DTOforCop {
 
     private String secondName;
 
-    public DTOforCop() {
+    private String avatar;
+
+    public DTOforCopUser() {
     }
 
-    public DTOforCop(int id, String name, String secondName) {
+    public DTOforCopUser(int id, String name, String secondName) {
         this.id = id;
         this.name = name;
         this.secondName = secondName;
@@ -39,5 +41,13 @@ public class DTOforCop {
 
     public void setSecondName(String secondName) {
         this.secondName = secondName;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

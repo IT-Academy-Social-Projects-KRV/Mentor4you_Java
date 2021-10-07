@@ -1,6 +1,8 @@
 package com.mentor4you.controller;
 
-import com.mentor4you.model.DTO.DTOforCop;
+import com.mentor4you.model.DTO.coopDTO.CoopStatus;
+import com.mentor4you.model.DTO.coopDTO.DTOforCopUser;
+import com.mentor4you.model.DTO.coopDTO.DTOstatusCoopMentee;
 import com.mentor4you.service.CooperationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/coop")
+@RequestMapping("/api/Cooperation")
 public class CooperationController {
 
     @Autowired
@@ -28,17 +30,22 @@ public class CooperationController {
     }
 
     @GetMapping("/mentorCooperation")
-    public ResponseEntity<Set<DTOforCop>> getCooperationForMentor(HttpServletRequest request){
+    public ResponseEntity<Set<DTOforCopUser>> getCooperationForMentor(HttpServletRequest request){
         return  cooperationService.getCooperationForMentor(request);
     }
 
     @GetMapping("/menteeCooperation")
-    public ResponseEntity<Set<DTOforCop>> getCooperationForMentee(HttpServletRequest request){
+    public ResponseEntity<Set<DTOstatusCoopMentee>> getCooperationForMentee(HttpServletRequest request){
         return  cooperationService.getCooperationForMentee(request);
     }
 
     @PutMapping("/approve/{id}")
     public ResponseEntity<String> decisionsOnCoop(@PathVariable(value = "id")Integer id,@RequestBody Boolean status,HttpServletRequest request){
         return  cooperationService.decisionsOnCoop(request,id,status);
+    }
+
+    @PutMapping("/responseMentee/{id}")
+    public  ResponseEntity<String> responseMentee(@PathVariable(value = "id")Integer id,HttpServletRequest request){
+        return cooperationService.responseMentee(request,id);
     }
 }
