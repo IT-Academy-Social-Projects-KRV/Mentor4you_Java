@@ -4,8 +4,8 @@ import com.mentor4you.exception.ChatNotFoundException;
 import com.mentor4you.model.ChatMessage;
 import com.mentor4you.model.ChatRoom;
 import com.mentor4you.model.DTO.ChatDTO;
-import com.mentor4you.model.DTO.MentorGeneralResponseDTO;
 import com.mentor4you.model.User;
+import com.mentor4you.repository.ChatMessageRepository;
 import com.mentor4you.repository.ChatRoomRepository;
 import com.mentor4you.service.ChatService;
 import com.mentor4you.service.UserService;
@@ -35,31 +35,26 @@ public class ChatRoomController {
     ChatService chatService;
     UserService userService;
 
-    public ChatRoomController(SimpMessagingTemplate simpMessagingTemplate, ChatRoomRepository chatRoomRepository, ChatService chatService, UserService userService) {
+    public ChatRoomController(SimpMessagingTemplate simpMessagingTemplate, ChatRoomRepository chatRoomRepository, ChatService chatService, UserService userService, ChatMessageRepository chatMessageRepository) {
         this.simpMessagingTemplate = simpMessagingTemplate;
         this.chatRoomRepository = chatRoomRepository;
         this.chatService = chatService;
         this.userService = userService;
+        this.chatMessageRepository = chatMessageRepository;
     }
+
+    ChatMessageRepository chatMessageRepository;
+
+
 
     @MessageMapping("/chat/{to}")
     public void sendMessage(@DestinationVariable String to, ChatMessage message) {
         message.setTimestamp(LocalDateTime.now());
         simpMessagingTemplate.convertAndSend("/topic/messages/" + to, message);
-
+        chatMessageRepository.insert(message);
     }
 
-  /*  @Operation(summary = "select chat by sender and reciver")
-    @PutMapping("/loadchat/")
-    ResponseEntity<?> getAllmessage(HttpServletRequest request){
-        List<ChatMessage> chatmessage = chatService.
-        List<ChatDTO> list = new ArrayList<>();
-        for(ChatRoom  s : chatList){
-            User user = userService.getUserById(s.getRecipientId());
-            list.add(new ChatDTO(s.getId(),s.getChatId(),s.getSenderId(),s.getRecipientId(),user.getFirst_name(),user.getAvatar()));
-        }
-        return ResponseEntity.ok(list);
-    }*/
+
     //get all chat
     @GetMapping("/chat")
     ResponseEntity<?> getAllMyRoom(HttpServletRequest request){
@@ -90,16 +85,13 @@ public class ChatRoomController {
         }
     @Operation(summary = "")
     @GetMapping("/findmessage/{sendid}/{recivid}")
-    ResponseEntity<List<ChatRoom>> findmessage(@PathVariable("sendid") String sendid,
-                                                 @PathVariable("recivid") String recivid
-
-    ) {
+    ResponseEntity<List<ChatMessage>> findmessage(@PathVariable("sendid") String sendid,
+                                                 @PathVariable("recivid") String recivid) {
         List<ChatRoom> messages = chatRoomRepository.findAllBySenderIdAndRecipientId(sendid,recivid);
         if (messages.size() > 0) {
-
-            return new ResponseEntity<List<ChatRoom>>(HttpStatus.NOT_FOUND);
+            return chatService.findMessage(sendid,recivid);
         } else {
-            return new ResponseEntity<List<ChatRoom>>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<List<ChatMessage>>(HttpStatus.NOT_FOUND);
         }
     }
 
