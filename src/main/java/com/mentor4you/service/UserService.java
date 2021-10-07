@@ -166,6 +166,9 @@ public class UserService {
                 if(user.getLast_name()==null)
                 {mDTO.setLastName("");}
                 else{mDTO.setLastName(user.getLast_name());}
+                if(user.getAvatar()==null)
+                {mDTO.setAvatar("https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/standartUserAvatar.png");}
+                else{mDTO.setAvatar(user.getAvatar());}
                 mDTO.setEmail(user.getEmail());
                 mDTO.setSocialMap(socialMap);
                 return new ResponseEntity<MenteeResponseDTO>(mDTO, HttpStatus.OK);
@@ -184,6 +187,8 @@ public class UserService {
 
         user.setStatus(false);
         userRepository.save(user);
+
+        //TODO: ADD email notification
 
         OnUserLogoutSuccessEvent logoutEventPublisher = new OnUserLogoutSuccessEvent(user.getEmail(),token);
         applicationEventPublisher.publishEvent(logoutEventPublisher);
