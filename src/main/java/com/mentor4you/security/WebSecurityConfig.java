@@ -48,6 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
                 //TODO  chek all permits
 
                 .authorizeRequests().antMatchers("/api/auth/*",
+
                                                  "/api/registration",
                                                  "/api/users",
                                                  "/api/users/getAllBannedUser",
@@ -65,8 +66,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
                                                  "/api/users/uploadAvatar",
                                                  "/api/users/deleteAvatar",
                                                  "/api/mentors",
+                        "/api/emailToModerator/sendEmailToModer",// for ANY USER
                                                  "/api/mentees/**"
                                                  ).permitAll()
+
 
                 .and()
                 .authorizeRequests().antMatchers("/api/**").authenticated()

@@ -1,6 +1,8 @@
 package com.mentor4you.service;
 
+import com.mentor4you.model.DTO.EmailToModeratorRequest;
 import com.mentor4you.model.User;
+import com.mentor4you.repository.SystemEmailsRepository;
 import com.mentor4you.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -19,10 +21,12 @@ public class EmailService {
     @Autowired
     UserRepository userRepository;
     JavaMailSender emailSender;
+    SystemEmailsRepository systemEmailsRepository;
 
-    public EmailService(UserRepository userRepository, JavaMailSender emailSender) {
+    public EmailService(UserRepository userRepository, JavaMailSender emailSender, SystemEmailsRepository systemEmailsRepository) {
         this.userRepository = userRepository;
         this.emailSender = emailSender;
+        this.systemEmailsRepository = systemEmailsRepository;
     }
 
     //check user email is existing in database
@@ -92,6 +96,47 @@ public class EmailService {
         return "Email Sent!";
     }
 
+  
+    public String sendEmailToModer(EmailToModeratorRequest request) throws MessagingException {
+
+        String name = request.getName();
+        String subject = request.getSubject();
+        String messageText = request.getMessage();
+        String emailRec = request.getEmailAdres();
+
+        int id = 0;
+
+        if(isEmailValidRegEx(emailRec)){
+            //find user by ID
+            User user= userRepository.findUserByEmail(emailRec);
+            if(user!=null){
+                id = user.getId();
+            }
+
+            MimeMessage message = emailSender.createMimeMessage();
+            boolean multipart = true;
+
+            MimeMessageHelper helper = new MimeMessageHelper(message, multipart, "utf-8");
+
+            String htmlMsg = "<h3>"+messageText+"</h3>";
+            message.setContent(htmlMsg, "text/html");
+            helper.setTo(systemEmailsRepository.findEmailById(request.getEmailAdrId()));
+
+            if(id!=0){helper.setSubject(subject+ " from user with name "+name+ " and Id " + id);}
+            else{
+                helper.setSubject(subject+ " from user with name "+name);
+            }
+
+            this.emailSender.send(message);
+
+            return "Email Sent!";
+        }else{
+            return "Email not valid";
+        }
+
+
+
+
     public void sendNotificationToEmail(String to, String text) throws MessagingException{
 
         MimeMessage message = emailSender.createMimeMessage();
@@ -106,6 +151,7 @@ public class EmailService {
         helper.setSubject("Mentor4You team <3");
 
         this.emailSender.send(message);
+
     }
 
 }
