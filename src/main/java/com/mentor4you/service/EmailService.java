@@ -96,6 +96,7 @@ public class EmailService {
         return "Email Sent!";
     }
 
+  
     public String sendEmailToModer(EmailToModeratorRequest request) throws MessagingException {
 
         String name = request.getName();
@@ -134,6 +135,22 @@ public class EmailService {
         }
 
 
+
+
+    public void sendNotificationToEmail(String to, String text) throws MessagingException{
+
+        MimeMessage message = emailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
+
+        String htmlMsg = "<h3> "+text+" </h3>";
+
+        message.setContent(htmlMsg, "text/html");
+
+        helper.setTo(to);
+
+        helper.setSubject("Mentor4You team <3");
+
+        this.emailSender.send(message);
 
     }
 

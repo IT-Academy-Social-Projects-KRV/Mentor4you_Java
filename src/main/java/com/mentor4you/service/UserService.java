@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -176,7 +177,7 @@ public class UserService {
             return null;
     }
 
-    public String deleteUser(HttpServletRequest request) {
+    public String deleteUser(HttpServletRequest request) throws MessagingException {
         String token = jwtProvider.getTokenFromRequest(request);
         String email = jwtProvider.getLoginFromToken(token);
         User user = userRepository.findUserByEmail(email);
@@ -188,7 +189,7 @@ public class UserService {
         user.setStatus(false);
         userRepository.save(user);
 
-        //TODO: ADD email notification
+        emailService.sendNotificationToEmail(user.getEmail(),"Account has been deleted");
 
         OnUserLogoutSuccessEvent logoutEventPublisher = new OnUserLogoutSuccessEvent(user.getEmail(),token);
         applicationEventPublisher.publishEvent(logoutEventPublisher);
