@@ -2,6 +2,8 @@ package com.mentor4you.security.jwt;
 
 import com.mentor4you.exception.InvalidTokenRequestException;
 import com.mentor4you.model.Role;
+import com.mentor4you.model.User;
+import com.mentor4you.repository.UserRepository;
 import com.mentor4you.security.jwt.cache.event.OnUserLogoutSuccessEvent;
 import com.mentor4you.security.jwt.cache.TokenCache;
 import io.jsonwebtoken.*;
@@ -26,6 +28,13 @@ public class JwtProvider {
     @Autowired
     private TokenCache tokenCache;
 
+    @Autowired
+    UserRepository userRepository;
+
+    public JwtProvider(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     @Value("$(jwt.secret)")
     private String jwtSecret;
     private String header="Authorization";
@@ -35,8 +44,11 @@ public class JwtProvider {
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
         Date now = new Date();
         Date expireDate = new Date(now.getTime()+604800000);
+        User user = userRepository.findUserByEmail(customUserDetails.getUsername());
+        String id = Integer.toString(user.getId());
         Claims claims = Jwts.claims().setSubject(customUserDetails.getUsername());
         claims.put("role",customUserDetails.getAuthorities());
+        claims.put("id",id);
 
         return Jwts.builder()
                 .setClaims(claims)
