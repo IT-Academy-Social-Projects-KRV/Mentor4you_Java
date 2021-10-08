@@ -54,6 +54,10 @@ public class ChatRoomController {
         chatMessageRepository.insert(message);
     }
 
+    @GetMapping("/all")
+    ResponseEntity<?> getAll(){
+        return ResponseEntity.ok(chatRoomRepository.findAll());
+    }
 
     //get all chat
     @GetMapping("/chat")
