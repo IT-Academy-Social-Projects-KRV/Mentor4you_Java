@@ -25,6 +25,7 @@ fabric.properties
 /.settings/
 /.metadata/
 /.recommenders/
+/target/
 /bin/
 /build/
 /doc/
@@ -47,8 +48,6 @@ fabric.properties
 *.log
 
 # Package Files #
-*.jar
-*.war
 *.nar
 *.ear
 *.zip
