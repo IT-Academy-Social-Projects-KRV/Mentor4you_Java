@@ -128,7 +128,7 @@ public class SearchMentorsService {
                 }
             }
         } else {
-            return new ResponseEntity<List<SmallDataMentorDTO>>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<List<SmallDataMentorDTO>>(smallMentorDTOList, HttpStatus.NOT_FOUND);
         }
 
         Collections.sort(smallMentorDTOList, new Comparator<SmallDataMentorDTO>() {

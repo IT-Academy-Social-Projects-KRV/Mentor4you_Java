@@ -1,10 +1,13 @@
 package com.mentor4you.service;
 
 import com.mentor4you.model.DTO.EmailToModeratorRequest;
+import com.mentor4you.model.DTO.mentorsExtendedInfo.MentorGeneralResponseDTO;
 import com.mentor4you.model.User;
 import com.mentor4you.repository.SystemEmailsRepository;
 import com.mentor4you.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -98,7 +101,7 @@ public class EmailService {
     }
 
 
-    public String sendEmailToModer(EmailToModeratorRequest request) throws MessagingException {
+    public ResponseEntity<String> sendEmailToModer(EmailToModeratorRequest request) throws MessagingException {
 
         String name = request.getName();
         String subject = request.getSubject();
@@ -119,25 +122,29 @@ public class EmailService {
 
             MimeMessageHelper helper = new MimeMessageHelper(message, multipart, "utf-8");
 
-            String htmlMsg = "<h3>" + messageText + "</h3>";
-            message.setContent(htmlMsg, "text/html");
-            helper.setTo(systemEmailsRepository.findEmailById(request.getEmailAdrId()));
+            //String htmlMsg = "<h3>" + messageText + "</h3>";
+
+            String htmlMsg="";
 
             if (id != 0) {
-                helper.setSubject(subject + " from user with name " + name + " and Id " + id);
-            } else {
-                helper.setSubject(subject + " from user with name " + name);
-            }
+                // String htmlMsg = "<h3 style=\"color: green\">" + messageText + "</color> </h3>";
+                htmlMsg = "<h3>" + messageText + "<br><br>" + "from user with name " + name + " and Id " + id + "</h3>";
 
+            } else {
+                htmlMsg = "<h3>" + messageText + "<br><br>" + "from unauthorized with name " + name+ "</h3>";
+            }
+            message.setContent(htmlMsg, "text/html");
+            helper.setTo(systemEmailsRepository.findEmailById(request.getEmailAdrId()));
+            helper.setSubject(subject);
             this.emailSender.send(message);
 
-            return "Email Sent!";
+            return new ResponseEntity<String>("Email Sent!", HttpStatus.OK);
         } else {
-            return "Email not valid";
+            return new ResponseEntity<String>("Email not valid", HttpStatus.CONFLICT);
         }
 
-    }
 
+    }
 
     public void sendNotificationToEmail(String to, String text) throws MessagingException {
 
