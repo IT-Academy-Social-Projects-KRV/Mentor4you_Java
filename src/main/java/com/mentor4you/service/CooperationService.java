@@ -17,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
+
 import javax.servlet.http.HttpServletRequest;
 
 import java.util.HashSet;
@@ -178,7 +178,7 @@ public class CooperationService {
 ;
         Cooperation cooperation = cooperationRepository.coopIsPresent(menteeId,mentorId);
 
-        if(cooperation == null) return null;
+        if(cooperation == null)  return null;
         if(cooperation.getStatus() == CoopStatus.APPROVED||cooperation.getStatus() == CoopStatus.STARTED)
             return true;
         else return false;

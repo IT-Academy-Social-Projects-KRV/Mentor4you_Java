@@ -30,7 +30,7 @@ public class ReviewService {
     @Autowired
     private JwtProvider jwtProvider;
 
-    public ResponseEntity<String> addReview(int id, CreateReviewDTO reviewDTO,HttpServletRequest request){
+    public ResponseEntity<String> addReview(int id, CreateReviewDTO reviewDTO, HttpServletRequest request){
         String token =jwtProvider.getTokenFromRequest(request);
         String email =jwtProvider.getLoginFromToken(token);
 
