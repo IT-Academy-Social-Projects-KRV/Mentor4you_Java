@@ -18,7 +18,7 @@ public class Review {
 
     private String message;
 
-    private double rating;
+    private int rating;
 
     private boolean showStatus;
 
@@ -60,7 +60,7 @@ public class Review {
         return rating;
     }
 
-    public void setRating(double rating) {
+    public void setRating(int rating) {
         this.rating = rating;
     }
 

@@ -1,20 +1,19 @@
 package com.mentor4you.controller;
 
+
+import com.mentor4you.model.DTO.review.CreateReviewDTO;
 import com.mentor4you.model.Review;
 import com.mentor4you.repository.ReviewRepository;
 import com.mentor4you.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
 
 @RestController
 @RequestMapping("/api/review")
@@ -27,9 +26,9 @@ public class ReviewController {
     private ReviewRepository reviewRepository;
 
 
-    @PostMapping("addTest")
-    public ResponseEntity<Review> testAdd(){
-        return reviewService.addReview();
+    @PostMapping("addReview/{id}")
+    public ResponseEntity<String> addReview(@PathVariable("id")int id, @RequestBody CreateReviewDTO dto, HttpServletRequest request){
+        return reviewService.addReview(id,dto,request);
     }
     @GetMapping("getTest")
     public ResponseEntity<List<Review>> testGet(){
