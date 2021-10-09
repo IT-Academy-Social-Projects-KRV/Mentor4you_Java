@@ -139,7 +139,7 @@ public class UserService {
         } else {
             throw new MenteeNotFoundException("User with id = " + id + " not found");
         }
-        return new ResponseEntity<String>("ok", HttpStatus.OK);
+        return new ResponseEntity<String>(HttpStatus.OK);
     }
 
     public ResponseEntity<MenteeResponseDTO> getOneMentee(User user){

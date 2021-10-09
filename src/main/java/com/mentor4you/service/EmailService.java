@@ -119,22 +119,27 @@ public class EmailService {
 
             MimeMessageHelper helper = new MimeMessageHelper(message, multipart, "utf-8");
 
-            String htmlMsg = "<h3>" + messageText + "</h3>";
-            message.setContent(htmlMsg, "text/html");
-            helper.setTo(systemEmailsRepository.findEmailById(request.getEmailAdrId()));
+            //String htmlMsg = "<h3>" + messageText + "</h3>";
+
+            String htmlMsg="";
 
             if (id != 0) {
-                helper.setSubject(subject + " from user with name " + name + " and Id " + id);
-            } else {
-                helper.setSubject(subject + " from user with name " + name);
-            }
+                // String htmlMsg = "<h3 style=\"color: green\">" + messageText + "</color> </h3>";
+                htmlMsg = "<h3>" + messageText + "<br><br>" + "from user with name " + name + " and Id " + id + "</h3>";
 
+            } else {
+                htmlMsg = "<h3>" + messageText + "<br><br>" + "from unauthorized with name " + name+ "</h3>";
+            }
+            message.setContent(htmlMsg, "text/html");
+            helper.setTo(systemEmailsRepository.findEmailById(request.getEmailAdrId()));
+            helper.setSubject(subject);
             this.emailSender.send(message);
 
             return "Email Sent!";
         } else {
             return "Email not valid";
         }
+
 
     }
 

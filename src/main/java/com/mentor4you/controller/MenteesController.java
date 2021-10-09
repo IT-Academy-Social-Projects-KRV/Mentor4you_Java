@@ -86,7 +86,7 @@ public class MenteesController {
     }
 
     @Operation(summary = "update mentee by email")
-    @PostMapping("/updateMenteeByEmail")
+    @PutMapping("/updateMenteeByEmail")
     public ResponseEntity<String> updateMenteeByToken(@RequestBody MenteeResponseDTO request,
                                                       HttpServletRequest req4) {
 
