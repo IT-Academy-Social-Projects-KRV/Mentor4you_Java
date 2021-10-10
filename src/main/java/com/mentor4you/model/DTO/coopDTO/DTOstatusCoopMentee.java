@@ -1,23 +1,25 @@
 package com.mentor4you.model.DTO.coopDTO;
 
+import com.mentor4you.model.DTO.MinUserDTO;
+
 public class DTOstatusCoopMentee {
-    private DTOforCopUser mentor;
+    private MinUserDTO mentor;
 
     private CoopStatus coopStatus;
 
     public DTOstatusCoopMentee() {
     }
 
-    public DTOstatusCoopMentee(DTOforCopUser mentor, CoopStatus coopStatus) {
+    public DTOstatusCoopMentee(MinUserDTO mentor, CoopStatus coopStatus) {
         this.mentor = mentor;
         this.coopStatus = coopStatus;
     }
 
-    public DTOforCopUser getMentor() {
+    public MinUserDTO getMentor() {
         return mentor;
     }
 
-    public void setMentor(DTOforCopUser mentor) {
+    public void setMentor(MinUserDTO mentor) {
         this.mentor = mentor;
     }
 

@@ -62,7 +62,7 @@ INSERT INTO mentor4you_db.categories (name) VALUES
 COMMIT;
 
 INSERT INTO mentor4you_db.languages (id, name) VALUES
-(1, 'Ukranian'),
+(1, 'Ukrainian'),
 (2, 'English');
 COMMIT;
 
