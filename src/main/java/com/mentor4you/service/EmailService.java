@@ -142,12 +142,9 @@ public class EmailService {
         } else {
             return new ResponseEntity<String>("Email not valid", HttpStatus.CONFLICT);
         }
-
-
     }
 
 
-    }
 
     public void sendNotificationToEmail(String to, String text) throws MessagingException {
 
