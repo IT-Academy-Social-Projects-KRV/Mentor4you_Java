@@ -116,7 +116,8 @@ public class UserController {
         Map<String, String> res = new HashMap<>();
         try{
             int id = userService.getIdByHeader(header);
-            String fileURL = this.amazonClient.uploadFile(id, file);
+//          3-rd parameter is destination folder in cloud storage
+            String fileURL = this.amazonClient.uploadFile(id, file, "/avatars/");
             String result = userService.changeAvatar(header, fileURL);
             res.put("result", result);
             res.put("new avatar URL",fileURL);

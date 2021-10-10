@@ -53,12 +53,12 @@ public class AmazonClient {
                 .withCannedAcl(CannedAccessControlList.PublicRead));
     }
 
-    public String uploadFile(int id, MultipartFile multipartFile) {
+    public String uploadFile(int id, MultipartFile multipartFile, String folder) {
         String fileUrl = "";
         try {
             File file = convertMultiPartToFile(multipartFile);
             String fileName = generateFileName(id, multipartFile);
-            fileUrl = "https://" + bucketName + "." + endpointUrl + "/avatars/"+ fileName;
+            fileUrl = "https://" + bucketName + "." + endpointUrl + folder + fileName;
             uploadFileTos3bucket(fileName, file);
             file.delete();
         } catch (Exception e) {
@@ -69,7 +69,7 @@ public class AmazonClient {
 
     public String deleteFileFromS3Bucket(String fileUrl) {
         String fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
-        s3client.deleteObject(new DeleteObjectRequest(bucketName + "/avatar/", fileName));
+        s3client.deleteObject(new DeleteObjectRequest(bucketName + "/avatars", fileName));
         return "Successfully deleted";
     }
 }
