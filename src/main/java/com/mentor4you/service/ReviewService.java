@@ -127,6 +127,5 @@ public class ReviewService {
         return new ResponseEntity<String>("user not found",HttpStatus.BAD_REQUEST);
     }
 
-    private void RefreshRating
 
 }
