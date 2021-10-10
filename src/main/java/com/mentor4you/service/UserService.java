@@ -185,7 +185,7 @@ public class UserService {
         user.setStatus(false);
         userRepository.save(user);
 
-        emailService.sendNotificationToEmail(user.getEmail(),"Account has been deleted");
+//        emailService.sendNotificationToEmail(user.getEmail(),"Account has been deleted");
 
         OnUserLogoutSuccessEvent logoutEventPublisher = new OnUserLogoutSuccessEvent(user.getEmail(),token);
         applicationEventPublisher.publishEvent(logoutEventPublisher);
