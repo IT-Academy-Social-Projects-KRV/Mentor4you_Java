@@ -19,10 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -36,23 +33,22 @@ public class UserService {
     EmailService emailService;
     ContactsToAccountsService contactsToAccountsService;
     ContactsToAccountsRepository contactsToAccountsRepository;
-    @Autowired
     MentorRepository mentorRepository;
-    @Autowired
     MenteeRepository menteeRepository;
-    @Autowired
     AccountRepository accountRepository;
 
-    public UserService(PasswordService passwordService, UserRepository userRepository, JwtProvider jwtProvider, EmailService emailService, ContactsToAccountsService contactsToAccountsService, ContactsToAccountsRepository contactsToAccountsRepository,
-                       AuthenticationService authenticationService, ApplicationEventPublisher applicationEventPublisher) {
+    public UserService(ApplicationEventPublisher applicationEventPublisher, PasswordService passwordService, UserRepository userRepository, JwtProvider jwtProvider, AuthenticationService authenticationService, EmailService emailService, ContactsToAccountsService contactsToAccountsService, ContactsToAccountsRepository contactsToAccountsRepository, MentorRepository mentorRepository, MenteeRepository menteeRepository, AccountRepository accountRepository) {
+        this.applicationEventPublisher = applicationEventPublisher;
         this.passwordService = passwordService;
         this.userRepository = userRepository;
         this.jwtProvider = jwtProvider;
         this.authenticationService = authenticationService;
-        this.applicationEventPublisher = applicationEventPublisher;
         this.emailService = emailService;
         this.contactsToAccountsService = contactsToAccountsService;
         this.contactsToAccountsRepository = contactsToAccountsRepository;
+        this.mentorRepository = mentorRepository;
+        this.menteeRepository = menteeRepository;
+        this.accountRepository = accountRepository;
     }
 
     public List<User> getAllUsers(){
@@ -189,7 +185,7 @@ public class UserService {
         user.setStatus(false);
         userRepository.save(user);
 
-        emailService.sendNotificationToEmail(user.getEmail(),"Account has been deleted");
+//        emailService.sendNotificationToEmail(user.getEmail(),"Account has been deleted");
 
         OnUserLogoutSuccessEvent logoutEventPublisher = new OnUserLogoutSuccessEvent(user.getEmail(),token);
         applicationEventPublisher.publishEvent(logoutEventPublisher);
@@ -256,4 +252,8 @@ public class UserService {
         return getUserByHeader(header).getAvatar();
     }
 
+    public User getUserById(String id) {
+        int userId = Integer.parseInt(id);
+        return userRepository.findOneById(userId);
+    }
 }
