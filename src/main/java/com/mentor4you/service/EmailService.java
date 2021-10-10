@@ -1,10 +1,13 @@
 package com.mentor4you.service;
 
 import com.mentor4you.model.DTO.EmailToModeratorRequest;
+import com.mentor4you.model.DTO.mentorsExtendedInfo.MentorGeneralResponseDTO;
 import com.mentor4you.model.User;
 import com.mentor4you.repository.SystemEmailsRepository;
 import com.mentor4you.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -98,7 +101,7 @@ public class EmailService {
     }
 
 
-    public String sendEmailToModer(EmailToModeratorRequest request) throws MessagingException {
+    public ResponseEntity<String> sendEmailToModer(EmailToModeratorRequest request) throws MessagingException {
 
         String name = request.getName();
         String subject = request.getSubject();
@@ -135,14 +138,16 @@ public class EmailService {
             helper.setSubject(subject);
             this.emailSender.send(message);
 
-            return "Email Sent!";
+            return new ResponseEntity<String>("Email Sent!", HttpStatus.OK);
         } else {
-            return "Email not valid";
+            return new ResponseEntity<String>("Email not valid", HttpStatus.CONFLICT);
         }
 
 
     }
 
+
+    }
 
     public void sendNotificationToEmail(String to, String text) throws MessagingException {
 
