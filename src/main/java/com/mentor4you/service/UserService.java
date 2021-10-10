@@ -17,11 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -35,23 +33,22 @@ public class UserService {
     EmailService emailService;
     ContactsToAccountsService contactsToAccountsService;
     ContactsToAccountsRepository contactsToAccountsRepository;
-    @Autowired
     MentorRepository mentorRepository;
-    @Autowired
     MenteeRepository menteeRepository;
-    @Autowired
     AccountRepository accountRepository;
 
-    public UserService(PasswordService passwordService, UserRepository userRepository, JwtProvider jwtProvider, EmailService emailService, ContactsToAccountsService contactsToAccountsService, ContactsToAccountsRepository contactsToAccountsRepository,
-                       AuthenticationService authenticationService, ApplicationEventPublisher applicationEventPublisher) {
+    public UserService(ApplicationEventPublisher applicationEventPublisher, PasswordService passwordService, UserRepository userRepository, JwtProvider jwtProvider, AuthenticationService authenticationService, EmailService emailService, ContactsToAccountsService contactsToAccountsService, ContactsToAccountsRepository contactsToAccountsRepository, MentorRepository mentorRepository, MenteeRepository menteeRepository, AccountRepository accountRepository) {
+        this.applicationEventPublisher = applicationEventPublisher;
         this.passwordService = passwordService;
         this.userRepository = userRepository;
         this.jwtProvider = jwtProvider;
         this.authenticationService = authenticationService;
-        this.applicationEventPublisher = applicationEventPublisher;
         this.emailService = emailService;
         this.contactsToAccountsService = contactsToAccountsService;
         this.contactsToAccountsRepository = contactsToAccountsRepository;
+        this.mentorRepository = mentorRepository;
+        this.menteeRepository = menteeRepository;
+        this.accountRepository = accountRepository;
     }
 
     public List<User> getAllUsers(){
@@ -138,7 +135,7 @@ public class UserService {
         } else {
             throw new MenteeNotFoundException("User with id = " + id + " not found");
         }
-        return new ResponseEntity<String>("ok", HttpStatus.OK);
+        return new ResponseEntity<String>(HttpStatus.OK);
     }
 
     public ResponseEntity<MenteeResponseDTO> getOneMentee(User user){
@@ -166,6 +163,9 @@ public class UserService {
                 if(user.getLast_name()==null)
                 {mDTO.setLastName("");}
                 else{mDTO.setLastName(user.getLast_name());}
+                if(user.getAvatar()==null)
+                {mDTO.setAvatar("https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/standartUserAvatar.png");}
+                else{mDTO.setAvatar(user.getAvatar());}
                 mDTO.setEmail(user.getEmail());
                 mDTO.setSocialMap(socialMap);
                 return new ResponseEntity<MenteeResponseDTO>(mDTO, HttpStatus.OK);
@@ -173,7 +173,7 @@ public class UserService {
             return null;
     }
 
-    public String deleteUser(HttpServletRequest request) {
+    public String deleteUser(HttpServletRequest request) throws MessagingException {
         String token = jwtProvider.getTokenFromRequest(request);
         String email = jwtProvider.getLoginFromToken(token);
         User user = userRepository.findUserByEmail(email);
@@ -185,7 +185,7 @@ public class UserService {
         user.setStatus(false);
         userRepository.save(user);
 
-        //TODO: ADD email notification
+//        emailService.sendNotificationToEmail(user.getEmail(),"Account has been deleted");
 
         OnUserLogoutSuccessEvent logoutEventPublisher = new OnUserLogoutSuccessEvent(user.getEmail(),token);
         applicationEventPublisher.publishEvent(logoutEventPublisher);
@@ -252,4 +252,8 @@ public class UserService {
         return getUserByHeader(header).getAvatar();
     }
 
+    public User getUserById(String id) {
+        int userId = Integer.parseInt(id);
+        return userRepository.findOneById(userId);
+    }
 }

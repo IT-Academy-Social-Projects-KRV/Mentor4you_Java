@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -48,10 +49,10 @@ public class SearchMentorsController {
                                  ) {
         List<Mentors> mentList = mentorRepository.findMentorsByCategoryName(categoryName);
         if (mentList.size() > 0) {
-
-           return searchMentorsService.createSmallMentorDTOFiltr(mentList, city, categoryName, language, minPrice, maxPrice);
+            return searchMentorsService.createSmallMentorDTOFiltr(mentList, city, categoryName, language, minPrice, maxPrice);
         } else {
-            return new ResponseEntity<List<SmallDataMentorDTO>>(HttpStatus.NOT_FOUND);
+            List<SmallDataMentorDTO> smallMentorDTOListOut = new ArrayList<>();
+            return new ResponseEntity<List<SmallDataMentorDTO>>(smallMentorDTOListOut, HttpStatus.NOT_FOUND);
         }
     }
 

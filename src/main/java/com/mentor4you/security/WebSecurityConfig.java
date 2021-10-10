@@ -39,7 +39,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-
                 //виключив csrf захист щоб можна було надсилати POST запити
                 .cors().and().csrf().disable()
                 .sessionManagement()
@@ -48,6 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
                 //TODO  chek all permits
 
                 .authorizeRequests().antMatchers("/api/auth/*",
+
                                                  "/api/registration",
                                                  "/api/users",
                                                  "/api/users/getAllBannedUser",
@@ -64,10 +64,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
                                                  "/api/admin/appointModerator",
                                                  "/api/users/uploadAvatar",
                                                  "/api/users/deleteAvatar",
-                                                 "/api/mentors/**",
                                                  "/api/mentors",
+                                                 "/api/emailToModerator/sendEmailToModer",// for ANY USER
                                                  "/api/mentees/**",
+                                                 "/findmessage/{{sendid}}/{{recivid}}"
                                                  ).permitAll()
+
 
                 .and()
                 .authorizeRequests().antMatchers("/api/**").authenticated()

@@ -2,13 +2,10 @@ package com.mentor4you.service;
 
 import com.mentor4you.exception.MentorNotFoundException;
 import com.mentor4you.model.*;
-import com.mentor4you.model.DTO.ExtendedMenteeDTO;
 import com.mentor4you.model.DTO.MenteeResponseDTO;
-import com.mentor4you.model.DTO.MentorGeneralResponseDTO;
-import com.mentor4you.repository.AccountRepository;
-import com.mentor4you.repository.MentorRepository;
-import com.mentor4you.repository.MentorsToCategory;
-import com.mentor4you.repository.UserRepository;
+import com.mentor4you.model.DTO.mentorsExtendedInfo.MentorGeneralResponseDTO;
+import com.mentor4you.model.DTO.mentorsExtendedInfo.MentorGeneralResponseIdDTO;
+import com.mentor4you.repository.*;
 import com.mentor4you.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -22,15 +19,14 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.Set;
-
 
 @Transactional
 @Service
 public class MentorService {
 
     @Autowired
+    CityToMentorRepository cityToMentorRepository;
     MentorsToCategory mentorsToCategory;
     AccountRepository accountRepository;
     LanguagesService languagesService;
@@ -64,35 +60,42 @@ public class MentorService {
     public List<Mentors> getFullInfoAllMentors(){
         int theMentors = accountRepository.findByRole(Role.MENTOR).size();
         if(theMentors!=0){
-            return mentorRepository.findAll().stream().filter(mentors -> mentors.getAccounts().getUser().getStatus()).collect(Collectors.toList());
+            return mentorRepository.findAll();
         }
         throw new MentorNotFoundException("Mentors not found");
 
     }
     //    select mentor by id
-    public ResponseEntity<ExtendedMenteeDTO> getMentorById(int id){
+    public ResponseEntity<MentorGeneralResponseIdDTO> getMentorById(int id){
 
         Mentors mentor = mentorRepository.findOneById(id);
         if(mentor!=null){
-            ExtendedMenteeDTO dto = new ExtendedMenteeDTO();
+            MentorGeneralResponseIdDTO dto = new MentorGeneralResponseIdDTO();
+            MenteeResponseDTO mDTO = userService.getOneMentee(mentor.getAccounts().getUser()).getBody();
 
             dto.setId(mentor.getId());
-            dto.setName(mentor.getAccounts().getUser().getFirst_name());
-            dto.setSecondName(mentor.getAccounts().getUser().getLast_name());
+            dto.setAccountInfo(mDTO);
             dto.setOfflineIn(mentor.isOfflineIn());
             dto.setOfflineOut(mentor.isOfflineOut());
             dto.setOnline(mentor.isOnline());
-            dto.setCategories(mentor.getMentors_to_categories());
+            dto.setCategoriesList(mentor.getMentors_to_categories());
             dto.setDescription(mentor.getDescription());
             dto.setEducations(mentor.getEducations());
-            dto.setCertificats(mentor.getCertificats());
+            dto.setCertificates(mentor.getCertificats());
+            dto.setGroupServ(mentor.getGroupServ());
+            dto.setRating(mentor.getRating());
             Set<String>l =new HashSet<>();
             for (Languages language : mentor.getAccounts().getLanguagesList()) {
                 l.add(language.getName());
             }
             dto.setLanguages(l);
+            Set<City>cities = new HashSet();
+            for (CityToMentors n : mentor.getCityToMentors()){
+                cities.add(n.getCity());
+            }
+            dto.setCities(cities);
 
-            return new ResponseEntity<ExtendedMenteeDTO>(dto,HttpStatus.OK);
+            return new ResponseEntity<MentorGeneralResponseIdDTO>(dto,HttpStatus.OK);
         }
         else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
@@ -118,15 +121,23 @@ public class MentorService {
 
             MentorGeneralResponseDTO dto =new MentorGeneralResponseDTO();
             dto.setAccountInfo(mDTO);
-            dto.setCertificats(m.getCertificats());
+            dto.setCertificates(m.getCertificats());
             dto.setEducations(m.getEducations());
             dto.setDescription(m.getDescription());
-            dto.setCategories(m.getMentors_to_categories());
+            dto.setCategoriesList(m.getMentors_to_categories());
             dto.setOnline(m.isOnline());
             dto.setOfflineIn(m.isOfflineIn());
             dto.setOfflineOut(m.isOfflineOut());
             dto.setShowable_status(m.isShowable_status());
             dto.setLanguages(l);
+            dto.setGroupServ(m.getGroupServ());
+            dto.setRating(m.getRating());
+
+            Set<City>cities = new HashSet();
+            for (CityToMentors n : m.getCityToMentors()){
+                cities.add(n.getCity());
+            }
+            dto.setCities(cities);
 
             return new ResponseEntity<MentorGeneralResponseDTO>(dto, HttpStatus.OK);
         }
@@ -148,11 +159,11 @@ public class MentorService {
         if(user.getRole() ==Role.MENTOR && user!=null) {
         userService.updateUser(user,dto.getAccountInfo());
         Mentors mentor = mentorRepository.getById(user.getId());
-
+        cityToMentorRepository.deleteC(mentor);
 
 
         remove(mentor);
-        for (Mentors_to_categories n : dto.getCategories()){
+        for (Mentors_to_categories n : dto.getCategoriesList()){
                 n.setMentors(mentor);
         }
 
@@ -160,18 +171,24 @@ public class MentorService {
         if(dto.getLanguages()!=null){
             l = languagesService.getAllLanguages(dto.getLanguages());
         }
+        Set<CityToMentors> cityToMentors =new HashSet<>();
+        for(City city:dto.getCities()){
+            cityToMentors.add(new CityToMentors(city,mentor));
+        }
 
 
-        mentor.setMentors_to_categories(dto.getCategories());
-        mentor.setMentors_to_categories(dto.getCategories());
-        mentor.setCertificats(dto.getCertificats());
+        mentor.setMentors_to_categories(dto.getCategoriesList());
+        mentor.setCertificats(dto.getCertificates());
         mentor.setEducations(dto.getEducations());
         mentor.setShowable_status(dto.isShowable_status());
         mentor.setOnline(dto.isOnline());
         mentor.setOfflineOut(dto.isOfflineOut());
         mentor.setOfflineIn(dto.isOfflineIn());
         mentor.getAccounts().setLanguagesList(l);
-
+        mentor.setDescription(dto.getDescription());
+        mentor.setGroupServ(dto.getGroupServ());
+        mentor.setRating(dto.getRating());
+        mentor.setCityToMentors(cityToMentors);
 
         mentorRepository.save(mentor);
         return new ResponseEntity<String>(HttpStatus.OK);

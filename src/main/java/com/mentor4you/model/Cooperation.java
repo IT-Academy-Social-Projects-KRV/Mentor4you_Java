@@ -1,96 +1,64 @@
 package com.mentor4you.model;
 
+import com.mentor4you.model.DTO.coopDTO.CoopStatus;
+
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Table(name = "Cooperation")
 public class Cooperation {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-
     @ManyToOne
-    @JoinColumn(name = "id")
-    @MapsId
+    @JoinColumn(name = "mentees_id")
     private Mentees mentees;
 
     @ManyToOne
-    @JoinColumn(name = "id")
-    @MapsId
+    @JoinColumn(name = "mentor_id")
     private Mentors mentors;
 
-    @OneToOne
-    @JoinColumn(name = "id")
-    @MapsId
-    private Categories categories;
+    @Enumerated(EnumType.STRING)
+    private CoopStatus status;
 
-
-    private int mentee_id;
-
-    private int mentor_id;
-    private int status;
-    private int date_time;
-    private int categories_id;
 
     public Cooperation() {
     }
 
-    public Cooperation(int mentee_id,
-                       int mentor_id,
-                       int status,
-                       int date_time,
-                       int categories_id
 
-    ) {
+    public Mentees getMentees() {
+        return mentees;
+    }
 
-        this.mentee_id = mentee_id;
-        this.mentor_id = mentor_id;
+    public void setMentees(Mentees mentees) {
+        this.mentees = mentees;
+    }
+
+    public Mentors getMentors() {
+        return mentors;
+    }
+
+    public void setMentors(Mentors mentors) {
+        this.mentors = mentors;
+    }
+
+    public CoopStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(CoopStatus status) {
         this.status = status;
-        this.date_time = date_time;
-        this.categories_id = categories_id;
-
-    }
-
-    public int getId() {
-        return id;
-    }
-
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Cooperation cooperation = (Cooperation) o;
-        return id == cooperation.id
-                && mentee_id == cooperation.mentee_id
-                && mentor_id == cooperation.mentor_id
-                && status == cooperation.status
-                && date_time == cooperation.date_time
-                && categories_id == cooperation.categories_id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id,
-                mentee_id,
-                mentor_id,
-                status,
-                date_time,
-                categories_id
-               );
     }
 
     @Override
     public String toString() {
         return "Cooperation{" +
                 "id=" + id +
-                ", mentee_id='" + mentee_id + '\'' +
-                ", mentor_id=" + mentor_id +
+                ", mentees=" + mentees +
+                ", mentors=" + mentors +
                 ", status=" + status +
-                ", date_time=" + date_time +
-                ", categories_id=" + categories_id +
                 '}';
     }
 }

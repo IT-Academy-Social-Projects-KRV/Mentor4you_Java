@@ -35,12 +35,12 @@ INSERT INTO mentor4you_db.accounts (id, last_visit) VALUES
 COMMIT;
 
 INSERT INTO mentor4you_db.mentors (id, description, is_offline_in, is_offline_out,
-                                   is_online, showable_status, group_serv) VALUES
-(5, 'Java', 1, 1, 1, 1, 'YES'),
-(6, 'Web', 1, 1, 1, 1, 'YES'),
-(7, 'ArtI', 1, 0, 1, 1, 'YES'),
-(8, 'Design', 0, 1, 1, 1, 'YES'),
-(9, 'Mobile', 0, 0, 1, 1, 'YES');
+                                   is_online, showable_status, group_serv,rating) VALUES
+(5, 'Java', 1, 1, 1, 1, 'YES',5),
+(6, 'Web', 1, 1, 1, 1, 'YES',4),
+(7, 'ArtI', 1, 0, 1, 1, 'YES',3),
+(8, 'Design', 0, 1, 1, 1, 'YES',4),
+(9, 'Mobile', 0, 0, 1, 1, 'YES',5);
 COMMIT;
 
 INSERT INTO mentor4you_db.mentees VALUES
@@ -62,7 +62,7 @@ INSERT INTO mentor4you_db.categories (name) VALUES
 COMMIT;
 
 INSERT INTO mentor4you_db.languages (id, name) VALUES
-(1, 'Ukranian'),
+(1, 'Ukrainian'),
 (2, 'English');
 COMMIT;
 
@@ -90,27 +90,26 @@ INSERT INTO mentor4you_db.type_contacts (id, name) VALUES
 (4, 'Facebook'),
 (5, 'Telegram'),
 (6, 'Skype'),
-(7, 'GitHub'),
-(8, 'Email');
+(7, 'GitHub');
 COMMIT;
 
 INSERT INTO mentor4you_db.contacts_to_accounts (contact_data, accounts_id, type_contacts_id) VALUES
-('+380998877666', 1, 1), ('Admin1@gmail.com', 1, 8), ('My-site URL', 1, 3), ('My GitHub URL',1, 7),
-('+380998877667', 2, 1), ('Moderator1@gmail.com',2,8),
-('+380998877668', 3, 1), ('Moderator2@gmail.com',3,8),
-('+380998877669', 4, 1), ('Moderator3@gmail.com',4,8),
+('+380998877666', 1, 1),  ('My-site URL', 1, 3), ('My GitHub URL',1, 7),
+('+380998877667', 2, 1),
+('+380998877668', 3, 1),
+('+380998877669', 4, 1),
 
-('+380998877670', 5, 1), ('Mentor1@gmail.com', 5, 8), ('My-site URL', 5, 3), ('My GitHub URL',5, 7),
-('+380998877671', 6, 1), ('Mentor2@gmail.com', 6, 8), ('My-site URL', 6, 3), ('My GitHub URL',6, 7),
-('+380998877672', 7, 1), ('Mentor3@gmail.com', 7, 8), ('My-site URL', 7, 3), ('My GitHub URL',7, 7),
-('+380998877673', 8, 1), ('Mentor4@gmail.com', 8, 8), ('My-site URL', 8, 3), ('My GitHub URL',8, 7),
-('+380998877674', 9, 1), ('Mentor5@gmail.com', 9, 8), ('My-site URL', 9, 3), ('My GitHub URL',9, 7),
+('+380998877670', 5, 1),('My-site URL', 5, 3), ('My GitHub URL',5, 7),
+('+380998877671', 6, 1),('My-site URL', 6, 3), ('My GitHub URL',6, 7),
+('+380998877672', 7, 1),('My-site URL', 7, 3), ('My GitHub URL',7, 7),
+('+380998877673', 8, 1),('My-site URL', 8, 3), ('My GitHub URL',8, 7),
+('+380998877674', 9, 1),('My-site URL', 9, 3), ('My GitHub URL',9, 7),
 
-('+380998877675', 9, 1), ('Mentee1@gmail.com', 9, 8), ('My-site URL', 9, 3), ('My GitHub URL',9, 7),
-('+380998877676', 9, 1), ('Mentee2@gmail.com', 9, 8), ('My-site URL', 9, 3), ('My GitHub URL',9, 7),
-('+380998877677', 9, 1), ('Mentee3@gmail.com', 9, 8), ('My-site URL', 9, 3), ('My GitHub URL',9, 7),
-('+380998877678', 9, 1), ('Mentee4@gmail.com', 9, 8), ('My-site URL', 9, 3), ('My GitHub URL',9, 7),
-('+380998877679', 9, 1), ('Mentee5@gmail.com', 9, 8), ('My-site URL', 9, 3), ('My GitHub URL',9, 7);
+('+380998877675', 9, 1),('My-site URL', 9, 3), ('My GitHub URL',9, 7),
+('+380998877676', 9, 1),('My-site URL', 9, 3), ('My GitHub URL',9, 7),
+('+380998877677', 9, 1),('My-site URL', 9, 3), ('My GitHub URL',9, 7),
+('+380998877678', 9, 1),('My-site URL', 9, 3), ('My GitHub URL',9, 7),
+('+380998877679', 9, 1),('My-site URL', 9, 3), ('My GitHub URL',9, 7);
 COMMIT;
 
 INSERT INTO mentor4you_db.mentors_to_categories (id, currency, rate,categories_id ,mentors_id) VALUES
@@ -131,12 +130,27 @@ COMMIT;
 
 
 INSERT INTO mentor4you_db.certificats (id,description,link,name,certificats) VALUES
-(1,'description','http://link','Very Cool Certificat',5),
-(2,'description','http://link','Very Cool Certificat',6),
-(3,'description','http://link','Very Cool Certificat',7),
-(4,'description','http://link','Very Cool Certificat',8),
-(5,'description','http://link','Very Cool Certificat',9),
-(6,'description','http://link','Very Cool Certificat',5),
-(7,'description','http://link','Very Cool Certificat',8),
-(8,'description','http://link','Very Cool Certificat',9);
+(1,'description','http://link','Very Cool Certificate',5),
+(2,'description','http://link','Very Cool Certificate',6),
+(3,'description','http://link','Very Cool Certificate',7),
+(4,'description','http://link','Very Cool Certificate',8),
+(5,'description','http://link','Very Cool Certificate',9),
+(6,'description','http://link','Very Cool Certificate',5),
+(7,'description','http://link','Very Cool Certificate',8),
+(8,'description','http://link','Very Cool Certificate',9);
+COMMIT;
+
+INSERT INTO mentor4you_db.city (name) VALUES
+('Poltava'),
+('Ostroh'),
+('Kyiv'),
+('Lviv');
+COMMIT;
+
+INSERT INTO mentor4you_db.city_to_mentors (city_id, mentor_id) VALUES
+('3', '5'),
+('1', '6'),
+('3', '7'),
+('2', '8'),
+('4', '9');
 COMMIT;

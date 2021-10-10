@@ -102,7 +102,9 @@ public class SearchMentorsService {
                             if (checkMentorPrice(m, category, minRate, maxRate)) {
                                 //цена совпала
                                 //создаем объект
-                                smallMentorDTOList.add(createDTO(m, category));
+                                if(m.getAccounts().getUser().getStatus()) {
+                                    addSmalMentorToList(smallMentorDTOList, m, category);
+                                }
                             }
                         }
                     }
@@ -116,7 +118,9 @@ public class SearchMentorsService {
                                 if (checkMentorPrice(m, category, minRate, maxRate)) {
                                     //цена совпала
                                     //создаем объект
-                                    smallMentorDTOList.add(createDTO(m, category));
+                                    if(m.getAccounts().getUser().getStatus()) {
+                                        addSmalMentorToList(smallMentorDTOList, m, category);
+                                    }
                                 }
                             }
                         }
@@ -124,7 +128,7 @@ public class SearchMentorsService {
                 }
             }
         } else {
-            return new ResponseEntity<List<SmallDataMentorDTO>>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<List<SmallDataMentorDTO>>(smallMentorDTOList, HttpStatus.NOT_FOUND);
         }
 
         Collections.sort(smallMentorDTOList, new Comparator<SmallDataMentorDTO>() {
@@ -137,12 +141,19 @@ public class SearchMentorsService {
         return new ResponseEntity<List<SmallDataMentorDTO>>(smallMentorDTOList, HttpStatus.OK);
     }
 
+    private void addSmalMentorToList(List<SmallDataMentorDTO> smallMentorDTOListT, Mentors m, String category){
+        smallMentorDTOListT.add(createDTO(m, category));
+    }
+
+
     private boolean checkMentorCity(Mentors mentors, String city) {
         boolean cityExist = false;
-        for (CityToMentors cityToMentors : mentors.getCityToMentors()) {
-            if (cityToMentors.getCity().getName().equals(city)) {
-                cityExist = true;
-                break;
+        if(city.equals(" ")){return true;}else {
+            for (CityToMentors cityToMentors : mentors.getCityToMentors()) {
+                if (cityToMentors.getCity().getName().equals(city)) {
+                    cityExist = true;
+                    break;
+                }
             }
         }
         return cityExist;
@@ -150,10 +161,14 @@ public class SearchMentorsService {
 
     private boolean checkMentorLanguage(Mentors mentors, String language) {
         boolean languageExist = false;
-        for (Languages languageTemp : mentors.getAccounts().getLanguagesList()) {
-            if (languageTemp.getName().equals(language)) {
-                languageExist = true;
-                break;
+        if(language.equals(" ")){
+            return true;
+        }else {
+            for (Languages languageTemp : mentors.getAccounts().getLanguagesList()) {
+                if (languageTemp.getName().equals(language)) {
+                    languageExist = true;
+                    break;
+                }
             }
         }
         return languageExist;
