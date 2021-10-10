@@ -1,6 +1,7 @@
 package com.mentor4you.repository;
 
 import com.mentor4you.model.Accounts;
+import com.mentor4you.model.Mentors;
 import com.mentor4you.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

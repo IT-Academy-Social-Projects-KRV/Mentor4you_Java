@@ -40,14 +40,16 @@ public class Accounts {
     @OneToMany(mappedBy = "accounts")
     private Set<ContactsToAccounts> contactsToAccounts;
 
+
+    public Accounts() {
+    }
+
     public Accounts(User user,
                     LocalDateTime last_visit) {
         this.user = user;
         this.last_visit = last_visit;
     }
 
-    public Accounts() {
-    }
 
     public int getId() {return id;}
 

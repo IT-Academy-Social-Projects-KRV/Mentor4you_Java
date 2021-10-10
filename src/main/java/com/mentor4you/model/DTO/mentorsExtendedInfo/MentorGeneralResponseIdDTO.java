@@ -1,15 +1,15 @@
-package com.mentor4you.model.DTO;
+package com.mentor4you.model.DTO.mentorsExtendedInfo;
 
 
-import com.mentor4you.model.Certificats;
-import com.mentor4you.model.Educations;
-
-import com.mentor4you.model.Mentors_to_categories;
+import com.mentor4you.model.*;
+import com.mentor4you.model.DTO.MenteeResponseDTO;
 
 import java.util.List;
 import java.util.Set;
 
-public class MentorGeneralResponseDTO {
+public class MentorGeneralResponseIdDTO {
+
+    private int id;
 
     private MenteeResponseDTO accountInfo;
 
@@ -19,29 +19,22 @@ public class MentorGeneralResponseDTO {
     private boolean isOfflineIn;
     private boolean isOfflineOut;
 
+    private GroupServ groupServ;
+
+    private int rating;
+
     private List<Educations> educations;
 
-    private List<Certificats> certificats;
+    private List<Certificats> certificates;
 
-    private Set<Mentors_to_categories> categories;
+    private Set<Mentors_to_categories> categoriesList;
 
     private Set<String> languages;
 
+    private Set<City> cities;
 
-    public MentorGeneralResponseDTO() {
-    }
 
-    public MentorGeneralResponseDTO(MenteeResponseDTO accountInfo, String description, boolean showable_status, boolean isOnline, boolean isOfflineIn, boolean isOfflineOut, List<Educations> educations, List<Certificats> certificats, Set<Mentors_to_categories> categories, Set<String> languages) {
-        this.accountInfo = accountInfo;
-        this.description = description;
-        this.showable_status = showable_status;
-        this.isOnline = isOnline;
-        this.isOfflineIn = isOfflineIn;
-        this.isOfflineOut = isOfflineOut;
-        this.educations = educations;
-        this.certificats = certificats;
-        this.categories = categories;
-        this.languages = languages;
+    public MentorGeneralResponseIdDTO() {
     }
 
     public String getDescription() {
@@ -92,20 +85,20 @@ public class MentorGeneralResponseDTO {
         this.educations = educations;
     }
 
-    public List<Certificats> getCertificats() {
-        return certificats;
+    public List<Certificats> getCertificates() {
+        return certificates;
     }
 
-    public void setCertificats(List<Certificats> certificats) {
-        this.certificats = certificats;
+    public void setCertificates(List<Certificats> certificats) {
+        this.certificates = certificats;
     }
 
-    public Set<Mentors_to_categories> getCategories() {
-        return categories;
+    public Set<Mentors_to_categories> getCategoriesList() {
+        return categoriesList;
     }
 
-    public void setCategories(Set<Mentors_to_categories> categories) {
-        this.categories = categories;
+    public void setCategoriesList(Set<Mentors_to_categories> categories) {
+        this.categoriesList = categories;
     }
 
     public MenteeResponseDTO getAccountInfo() {
@@ -122,5 +115,37 @@ public class MentorGeneralResponseDTO {
 
     public void setLanguages(Set<String> languages) {
         this.languages = languages;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public GroupServ getGroupServ() {
+        return groupServ;
+    }
+
+    public void setGroupServ(GroupServ groupServ) {
+        this.groupServ = groupServ;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public Set<City> getCities() {
+        return cities;
+    }
+
+    public void setCities(Set<City> cities) {
+        this.cities = cities;
     }
 }

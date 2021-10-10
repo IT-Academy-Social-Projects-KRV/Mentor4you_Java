@@ -15,9 +15,6 @@ public class Categories {
 
     private String name;
 
-    @OneToOne (mappedBy = "categories")
-    private Cooperation cooperation;
-
     @OneToMany (cascade = CascadeType.ALL,mappedBy = "categories")
     private List<Mentors_to_categories> mentors_to_categories;
 

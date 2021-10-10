@@ -3,14 +3,11 @@ package com.mentor4you.service;
 import com.mentor4you.exception.AdminDeleteException;
 import com.mentor4you.exception.MenteeNotFoundException;
 import com.mentor4you.exception.RegistrationException;
-import com.mentor4you.model.ContactsToAccounts;
+import com.mentor4you.model.*;
 import com.mentor4you.model.DTO.MenteeResponseDTO;
 import com.mentor4you.model.DTO.MenteeUpdateRequest;
 import com.mentor4you.model.DTO.UserBanDTO;
-import com.mentor4you.model.Role;
-import com.mentor4you.model.User;
-import com.mentor4you.repository.ContactsToAccountsRepository;
-import com.mentor4you.repository.UserRepository;
+import com.mentor4you.repository.*;
 import com.mentor4you.security.jwt.JwtProvider;
 import com.mentor4you.security.jwt.cache.event.OnUserLogoutSuccessEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
@@ -35,6 +33,12 @@ public class UserService {
     EmailService emailService;
     ContactsToAccountsService contactsToAccountsService;
     ContactsToAccountsRepository contactsToAccountsRepository;
+    @Autowired
+    MentorRepository mentorRepository;
+    @Autowired
+    MenteeRepository menteeRepository;
+    @Autowired
+    AccountRepository accountRepository;
 
     public UserService(PasswordService passwordService, UserRepository userRepository, JwtProvider jwtProvider, EmailService emailService, ContactsToAccountsService contactsToAccountsService, ContactsToAccountsRepository contactsToAccountsRepository,
                        AuthenticationService authenticationService, ApplicationEventPublisher applicationEventPublisher) {
@@ -107,28 +111,6 @@ public class UserService {
             else { return "User ban status has not been changed";}
         }
     }
-    public String changeAvatar(String header, String avatarURL) {
-        String email = jwtProvider.getLoginFromToken(header.substring(7));
-        User user = userRepository.findUserByEmail(email);
-        if (user == null) {
-            throw new UsernameNotFoundException("User is not found.");
-        }
-        if(!(avatarURL.startsWith("http://") || avatarURL.startsWith("https://"))) {
-            return "New Avatar URL is incorrect";
-        }
-        user.setAvatar(avatarURL);
-        userRepository.save(user);
-        return "You avatar is changed";
-    }
-
-    public String changeMyRole(String header){
-        String email = jwtProvider.getLoginFromToken(header.substring(7));
-        User user = userRepository.findUserByEmail(email);
-        if (user.getRole().equals(Role.MENTOR)) {user.setRole(Role.MENTEE);}
-        else if (user.getRole().equals(Role.MENTEE)) {user.setRole(Role.MENTOR);}
-        userRepository.save(user);
-        return "Congratulation, you are become a ".concat(user.getRole().name());
-    }
     public ResponseEntity<String> updateUser(User userToUpdate, MenteeResponseDTO request){
         String emailNew = request.getEmail();
         int id = userToUpdate.getId();
@@ -154,19 +136,16 @@ public class UserService {
         } else {
             throw new MenteeNotFoundException("User with id = " + id + " not found");
         }
-        return new ResponseEntity<String>("ok", HttpStatus.OK);
+        return new ResponseEntity<String>(HttpStatus.OK);
     }
 
     public ResponseEntity<MenteeResponseDTO> getOneMentee(User user){
 
         int id = user.getId();
-
-
             Map<String, String> socialMap = new HashMap<>();
 
             //Social_networks socialNetworks = socialNetworksRepository.getById(id);
             if (user != null) {
-
                 List<ContactsToAccounts> listConToAkk = contactsToAccountsRepository.findAllByAccounts(id);
 
                 if (listConToAkk.size() > 0) {
@@ -185,6 +164,9 @@ public class UserService {
                 if(user.getLast_name()==null)
                 {mDTO.setLastName("");}
                 else{mDTO.setLastName(user.getLast_name());}
+                if(user.getAvatar()==null)
+                {mDTO.setAvatar("https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/standartUserAvatar.png");}
+                else{mDTO.setAvatar(user.getAvatar());}
                 mDTO.setEmail(user.getEmail());
                 mDTO.setSocialMap(socialMap);
                 return new ResponseEntity<MenteeResponseDTO>(mDTO, HttpStatus.OK);
@@ -192,7 +174,7 @@ public class UserService {
             return null;
     }
 
-    public String deleteUser(HttpServletRequest request) {
+    public String deleteUser(HttpServletRequest request) throws MessagingException {
         String token = jwtProvider.getTokenFromRequest(request);
         String email = jwtProvider.getLoginFromToken(token);
         User user = userRepository.findUserByEmail(email);
@@ -204,15 +186,71 @@ public class UserService {
         user.setStatus(false);
         userRepository.save(user);
 
+        emailService.sendNotificationToEmail(user.getEmail(),"Account has been deleted");
+
         OnUserLogoutSuccessEvent logoutEventPublisher = new OnUserLogoutSuccessEvent(user.getEmail(),token);
         applicationEventPublisher.publishEvent(logoutEventPublisher);
-
 
         return "Account has been deleted";
     }
 
-    public User getUserById(String id) {
-        int userId = Integer.parseInt(id);
-        return userRepository.findOneById(userId);
+    public String changeAvatar(String header, String avatarURL) throws Exception {
+        User user = getUserByHeader(header);
+        if (user == null) {
+            throw new UsernameNotFoundException("User is not found.");
+        }
+        if(!(avatarURL.startsWith("http://") || avatarURL.startsWith("https://"))) {
+            throw new Exception("New Avatar URL is incorrect");
+        }
+        user.setAvatar(avatarURL);
+        userRepository.save(user);
+        return "You avatar is changed";
     }
+
+    public String changeMyRole(String header){
+        try {
+            User user = getUserByHeader(header);
+            Accounts accounts = accountRepository.getById(user.getId());
+            if (user.getRole().equals(Role.MENTOR)) {
+                user.setRole(Role.MENTEE);
+                if(!menteeRepository.existsById(user.getId())) {
+                    Mentees mentee = new Mentees();
+                    mentee.setAccounts(accounts);
+                    menteeRepository.save(mentee);
+                }
+            } else if (user.getRole().equals(Role.MENTEE)) {
+                user.setRole(Role.MENTOR);
+                if(!mentorRepository.existsById(user.getId())) {
+                    Mentors mentor = new Mentors();
+                    mentor.setAccounts(accounts);
+                    mentorRepository.save(mentor);
+                }
+            }
+            userRepository.save(user);
+            return "Congratulation, you are become a ".concat(user.getRole().name());
+        } catch (Exception e){
+            return e.getMessage();
+        }
+    }
+
+    public int getIdByHeader(String header) throws Exception{
+        return getUserByHeader(header).getId();
+    }
+    private User getUserByHeader(String header) throws Exception{
+        String token;
+        if(header.startsWith("Bearer ")){
+            token = header.substring(7);
+        } else {
+            token = header;
+        }
+        if(!jwtProvider.validateToken(token)){
+            throw new Exception("Your token is expired");
+        }
+        String email = jwtProvider.getLoginFromToken(token);
+        return userRepository.findUserByEmail(email);
+    }
+    public String getAvatarByHeader (String header) throws Exception{
+        return getUserByHeader(header).getAvatar();
+    }
+
 }

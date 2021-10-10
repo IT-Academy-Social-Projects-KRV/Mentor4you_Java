@@ -1,5 +1,6 @@
 package com.mentor4you.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ public class Mentors {
     private String description;
 
     private boolean showable_status;
+
 
     @OneToOne
     @JoinColumn(name = "id")
@@ -37,6 +39,10 @@ public class Mentors {
     @JoinColumn(name="certificats")
     private List<Certificats> certificats;
 
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "mentors")
+    private Set<CityToMentors> cityToMentors;
+
+
     @Column(name = "is_online")
     private boolean isOnline;
 
@@ -46,6 +52,8 @@ public class Mentors {
     @Column(name = "is_offline_out")
     private boolean isOfflineOut;
 
+    @Column(name = "rating")
+    private int rating;
 
     public Mentors() {
     }
@@ -56,7 +64,8 @@ public class Mentors {
                    GroupServ groupServ,
                    boolean is_online,
                    boolean is_offline_in,
-                   boolean is_offline_out
+                   boolean is_offline_out,
+                   int rating
     ) {
         this.accounts = accounts;
         this.description = description;
@@ -65,6 +74,7 @@ public class Mentors {
         this.isOnline = is_online;
         this.isOfflineIn = is_offline_in;
         this.isOfflineOut = is_offline_out;
+        this.rating = rating;
     }
 
     public int getId() {
@@ -147,6 +157,22 @@ public class Mentors {
 
     public void setMentors_to_categories(Set<Mentors_to_categories> mentors_to_categories) {
         this.mentors_to_categories = mentors_to_categories;
+    }
+
+    public Set<CityToMentors> getCityToMentors() {
+        return cityToMentors;
+    }
+
+    public void setCityToMentors(Set<CityToMentors> cityToMentors) {
+        this.cityToMentors = cityToMentors;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 
     @Override

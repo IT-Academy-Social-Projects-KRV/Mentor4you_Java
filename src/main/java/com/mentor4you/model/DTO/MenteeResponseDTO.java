@@ -16,19 +16,20 @@ public class MenteeResponseDTO {
     private String email;
 
     @NotNull
+    private String avatar;
+
+    @NotNull
     private Map<String, String> socialMap;
     //map(a->a.mapIncom)
-
-
-
 
     public MenteeResponseDTO() {
     }
 
-    public MenteeResponseDTO(String firstName, String lastName, String email, Map<String, String> socialMap) {
+    public MenteeResponseDTO( String firstName,String lastName,String email,String avatar,Map<String, String> socialMap) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.avatar = avatar;
         this.socialMap = socialMap;
     }
 
@@ -62,5 +63,13 @@ public class MenteeResponseDTO {
 
     public void setSocialMap(Map<String, String> socialMap) {
         this.socialMap = socialMap;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }
