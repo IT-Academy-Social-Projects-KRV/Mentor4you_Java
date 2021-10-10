@@ -3,7 +3,7 @@ package com.mentor4you.service;
 
 import com.mentor4you.model.*;
 import com.mentor4you.model.DTO.coopDTO.CoopStatus;
-import com.mentor4you.model.DTO.coopDTO.DTOforCopUser;
+import com.mentor4you.model.DTO.MinUserDTO;
 import com.mentor4you.model.DTO.coopDTO.DTOstatusCoopMentee;
 import com.mentor4you.model.DTO.coopDTO.StatusBoolDTO;
 import com.mentor4you.repository.CooperationRepository;
@@ -74,24 +74,24 @@ public class CooperationService {
     }
 
 
-    public ResponseEntity<Set<DTOforCopUser>>getCooperationForMentor(HttpServletRequest request){
+    public ResponseEntity<Set<MinUserDTO>>getCooperationForMentor(HttpServletRequest request){
         String token =jwtProvider.getTokenFromRequest(request);
 
         String email =jwtProvider.getLoginFromToken(token);
 
         User user = userRepository.findUserByEmail(email);
 
-        Set<DTOforCopUser> s =new HashSet<>();
+        Set<MinUserDTO> s =new HashSet<>();
 
         for(Cooperation c :cooperationRepository.findByMentors(user.getId(),CoopStatus.CREATED)){
-            DTOforCopUser dto = new DTOforCopUser();
+            MinUserDTO dto = new MinUserDTO();
             dto.setId(c.getMentees().getId());
             dto.setName(c.getMentees().getAccounts().getUser().getFirst_name());
             dto.setSecondName(c.getMentees().getAccounts().getUser().getLast_name());
             dto.setAvatar(c.getMentees().getAccounts().getUser().getAvatar());
             s.add(dto);
         }
-            return new ResponseEntity<Set<DTOforCopUser>>(s,HttpStatus.OK);
+            return new ResponseEntity<Set<MinUserDTO>>(s,HttpStatus.OK);
     }
 
     public ResponseEntity<Set<DTOstatusCoopMentee>> getCooperationForMentee(HttpServletRequest request){
@@ -108,7 +108,7 @@ public class CooperationService {
         coop.add(CoopStatus.REJECTED);
 
         for(Cooperation c :cooperationRepository.findByMentees(user.getId(),coop)){
-            DTOforCopUser dtoUser = new DTOforCopUser();
+            MinUserDTO dtoUser = new MinUserDTO();
 
             dtoUser.setId(c.getMentors().getId());
             dtoUser.setName(c.getMentors().getAccounts().getUser().getFirst_name());
@@ -178,7 +178,7 @@ public class CooperationService {
 ;
         Cooperation cooperation = cooperationRepository.coopIsPresent(menteeId,mentorId);
 
-        if(cooperation == null)  return null;
+        if(cooperation == null)  return false;
         if(cooperation.getStatus() == CoopStatus.APPROVED||cooperation.getStatus() == CoopStatus.STARTED)
             return true;
         else return false;

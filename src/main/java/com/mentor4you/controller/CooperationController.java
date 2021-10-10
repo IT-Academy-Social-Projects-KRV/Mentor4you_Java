@@ -1,7 +1,6 @@
 package com.mentor4you.controller;
 
-import com.mentor4you.model.DTO.coopDTO.CoopStatus;
-import com.mentor4you.model.DTO.coopDTO.DTOforCopUser;
+import com.mentor4you.model.DTO.MinUserDTO;
 import com.mentor4you.model.DTO.coopDTO.DTOstatusCoopMentee;
 import com.mentor4you.model.DTO.coopDTO.StatusBoolDTO;
 import com.mentor4you.service.CooperationService;
@@ -31,7 +30,7 @@ public class CooperationController {
     }
 
     @GetMapping("/mentorCooperation")
-    public ResponseEntity<Set<DTOforCopUser>> getCooperationForMentor(HttpServletRequest request){
+    public ResponseEntity<Set<MinUserDTO>> getCooperationForMentor(HttpServletRequest request){
         return  cooperationService.getCooperationForMentor(request);
     }
 
