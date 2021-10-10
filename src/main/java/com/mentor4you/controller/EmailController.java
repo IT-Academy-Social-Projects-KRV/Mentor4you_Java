@@ -1,9 +1,11 @@
 package com.mentor4you.controller;
 
 import com.mentor4you.model.DTO.EmailToModeratorRequest;
+import com.mentor4you.model.DTO.mentorsExtendedInfo.MentorGeneralResponseDTO;
 import com.mentor4you.service.EmailService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,9 +27,9 @@ public class EmailController {
 
     @Operation(summary = "send email to moderator")
     @PostMapping("/sendEmailToModer")
-    public String sendEmailToModer(@RequestBody EmailToModeratorRequest request) throws MessagingException {
+    public ResponseEntity<String> sendEmailToModer(@RequestBody EmailToModeratorRequest request) throws MessagingException {
 
-        return emailService.sendEmailToModer(request);
+        return  emailService.sendEmailToModer(request);
     }
 }
 
