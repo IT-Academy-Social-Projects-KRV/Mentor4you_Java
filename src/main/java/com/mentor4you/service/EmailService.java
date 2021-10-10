@@ -147,8 +147,6 @@ public class EmailService {
     }
 
 
-    }
-
     public void sendNotificationToEmail(String to, String text) throws MessagingException {
 
         MimeMessage message = emailSender.createMimeMessage();
