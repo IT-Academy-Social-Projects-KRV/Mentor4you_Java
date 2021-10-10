@@ -92,7 +92,6 @@ public class ReviewService {
                 dto.add(new ReviewDTO(usr,r));
             }
         }
-        System.out.println(reviewRepository.avg(8));
         return new ResponseEntity<Set<ReviewDTO>>(dto,HttpStatus.OK);
 
     }
