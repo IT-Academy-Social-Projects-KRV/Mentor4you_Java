@@ -67,7 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
                                                  "/api/mentors",
                                                  "/api/emailToModerator/sendEmailToModer",// for ANY USER
                                                  "/api/mentees/**",
-                                                 "/api/review"
+                                                 "/findmessage/{{sendid}}/{{recivid}}"
                                                  ).permitAll()
 
 
