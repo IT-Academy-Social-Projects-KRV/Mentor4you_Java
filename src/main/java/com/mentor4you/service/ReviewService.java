@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -69,6 +70,7 @@ public class ReviewService {
 
         reviewRepository.save(review);
 
+        avg(id);
 
         return new ResponseEntity<String>(HttpStatus.OK);
         }
@@ -106,7 +108,7 @@ public class ReviewService {
 
             if(review==null)
                 return new ResponseEntity<String>("Review does not exist",HttpStatus.NOT_FOUND);
-            if(user.getId()!=review.getSenderId()||user.getRole()!=Role.MODERATOR||user.getRole()!=Role.ADMIN)
+            if(user.getId()!=review.getSenderId())
                 return new ResponseEntity<String>("This user does not have permission to update",HttpStatus.LOCKED);
 
 
@@ -124,6 +126,13 @@ public class ReviewService {
             return new ResponseEntity<String>(HttpStatus.OK);
         }
         return new ResponseEntity<String>("user not found",HttpStatus.BAD_REQUEST);
+    }
+
+    private void avg(int mentor){
+        List<Review> reviews = reviewRepository.reviewByMentor(mentor);
+        double result =reviews.stream().filter(o -> o.getRating()>=0).mapToDouble(o->o.getRating()).average().getAsDouble();
+        mentorRepository.updateRating(mentor,result);
+        System.out.println(result);
     }
 
 }
