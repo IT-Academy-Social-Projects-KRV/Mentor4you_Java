@@ -1,6 +1,7 @@
 package com.mentor4you.model;
 
 public enum TypeComplain {
-    ONE,
-    SECOND
+    ONMENTOR,
+    ONCOMMENT,
+    ONMENTEE
 }
