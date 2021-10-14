@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -122,6 +123,7 @@ public class ReviewService {
 
             reviewRepository.save(review);
 
+            avg(review.getMentorId());
 
             return new ResponseEntity<String>(HttpStatus.OK);
         }
@@ -130,8 +132,9 @@ public class ReviewService {
 
     private void avg(int mentor){
         List<Review> reviews = reviewRepository.reviewByMentor(mentor);
-        double result =reviews.stream().filter(o -> o.getRating()>=0).mapToDouble(o->o.getRating()).average().getAsDouble();
-        mentorRepository.updateRating(mentor,result);
+        double result =reviews.stream().mapToDouble(o->o.getRating()).average().getAsDouble();
+        result=Math.round(result * 100.0) / 100.0;
+        mentorRepository.updateRating(result,mentor);
         System.out.println(result);
     }
 

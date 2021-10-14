@@ -34,6 +34,6 @@ public interface MentorRepository
 
     @Transactional
     @Modifying
-    @Query("UPDATE Mentors m SET m.rating = rating WHERE m.id = id")
-    void updateRating(@Param("id") int id, @Param("rating") double rating);
+    @Query("UPDATE Mentors m SET m.rating = ?1 WHERE m.id = ?2")
+    void updateRating( double rating, int id);
 }

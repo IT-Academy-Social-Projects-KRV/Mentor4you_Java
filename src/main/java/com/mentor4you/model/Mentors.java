@@ -53,7 +53,7 @@ public class Mentors {
     private boolean isOfflineOut;
 
     @Column(name = "rating")
-    private int rating;
+    private double rating;
 
     public Mentors() {
     }
@@ -167,11 +167,11 @@ public class Mentors {
         this.cityToMentors = cityToMentors;
     }
 
-    public int getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 

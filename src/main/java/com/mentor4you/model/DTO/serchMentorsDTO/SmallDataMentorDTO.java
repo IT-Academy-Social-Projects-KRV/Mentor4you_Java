@@ -19,7 +19,7 @@ public class SmallDataMentorDTO{
     private String avatar;
     private String foundCategory="";
     private int rate;
-    private int rating;
+    private double rating;
     private String currency;
     private boolean isOnline;
     private List<String> categories = new ArrayList<>();
@@ -107,11 +107,11 @@ public class SmallDataMentorDTO{
         isOnline = online;
     }
 
-    public int getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 
