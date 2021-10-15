@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoriesService {
@@ -36,5 +37,11 @@ public class CategoriesService {
             return theCategory;
         }
         throw new MentorNotFoundException("Category with id = "+ id +" not found");
+    }
+
+    public void addNewCategory(String name) {
+        Categories c = new Categories();
+        c.setName(name);
+        categoriesRepository.save(c);
     }
 }
