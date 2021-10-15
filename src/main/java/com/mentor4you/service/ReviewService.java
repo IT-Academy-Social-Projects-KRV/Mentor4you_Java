@@ -130,12 +130,19 @@ public class ReviewService {
         return new ResponseEntity<String>("user not found",HttpStatus.BAD_REQUEST);
     }
 
+    public ResponseEntity<String> hideReview(String id){
+        Review review=reviewRepository.reviewById(id);
+        if(review ==null)return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+        review.setShowStatus(false);
+        reviewRepository.save(review);
+        return new ResponseEntity<String>(HttpStatus.OK);
+
+    }
+
     private void avg(int mentor){
         List<Review> reviews = reviewRepository.reviewByMentor(mentor);
         double result =reviews.stream().mapToDouble(o->o.getRating()).average().getAsDouble();
         result=Math.round(result * 100.0) / 100.0;
         mentorRepository.updateRating(result,mentor);
-        System.out.println(result);
     }
-
 }
