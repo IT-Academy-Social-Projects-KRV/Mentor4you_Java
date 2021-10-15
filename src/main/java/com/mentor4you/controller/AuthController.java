@@ -8,6 +8,7 @@ import com.mentor4you.model.DTO.LoginDTO;
 import com.mentor4you.security.jwt.cache.CurrentUser;
 import com.mentor4you.security.jwt.CustomUserDetails;
 import com.mentor4you.service.AuthenticationService;
+import com.mentor4you.service.UserService;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,9 +27,11 @@ public class AuthController {
 
     @Autowired
     AuthenticationService authenticationService;
+    UserService userService;
 
-    public AuthController(AuthenticationService authenticationService) {
+    public AuthController(AuthenticationService authenticationService, UserService userService) {
         this.authenticationService = authenticationService;
+        this.userService = userService;
     }
 
     @PostMapping("/login")
@@ -36,13 +39,16 @@ public class AuthController {
         Map<String, String> res = new HashMap<>();
         try {
             String token = authenticationService.login(request);
+            String avatar = userService.getAvatarByToken(token);
             res.put("message","You have successfully logged in");
             res.put("token", token);
+            res.put("avatar",avatar);
             return ResponseEntity.ok(res);
-        }catch (AuthenticationException ex) {
+        }catch (Exception ex) {
             res.put("message", ex.getMessage());
             return ResponseEntity.badRequest().body(res);
         }
+
     }
 
     @PutMapping("/logout")

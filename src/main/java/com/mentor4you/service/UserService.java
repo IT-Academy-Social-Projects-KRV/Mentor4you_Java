@@ -256,4 +256,10 @@ public class UserService {
         int userId = Integer.parseInt(id);
         return userRepository.findOneById(userId);
     }
+
+    public String getAvatarByToken (String token) throws Exception{
+        String email = jwtProvider.getLoginFromToken(token);
+        User user = userRepository.findUserByEmail(email);
+        return user.getAvatar();
+    }
 }
