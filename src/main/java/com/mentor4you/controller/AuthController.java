@@ -44,8 +44,11 @@ public class AuthController {
             res.put("token", token);
             res.put("avatar",avatar);
             return ResponseEntity.ok(res);
-        }catch (Exception ex) {
+        }catch (AuthenticationException ex) {
             res.put("message", ex.getMessage());
+            return ResponseEntity.badRequest().body(res);
+        }catch (Exception exception) {
+            exception.printStackTrace();
             return ResponseEntity.badRequest().body(res);
         }
 
