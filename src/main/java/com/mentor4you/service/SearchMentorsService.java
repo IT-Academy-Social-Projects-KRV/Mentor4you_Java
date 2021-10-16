@@ -8,6 +8,10 @@ import com.mentor4you.repository.CityRepository;
 import com.mentor4you.repository.LanguagesRepository;
 import com.mentor4you.repository.MentorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -80,7 +84,7 @@ public class SearchMentorsService {
     }
 
 
-    public ResponseEntity<List<SmallDataMentorDTO>> createSmallMentorDTOFiltr(
+    public List<SmallDataMentorDTO> createSmallMentorDTOFiltr(
             List<Mentors> mentorsList, String city, String category, String language, int minRate, int maxRate) {
         boolean isOnline = false;
         if (city.equals("Online")) {
@@ -128,7 +132,7 @@ public class SearchMentorsService {
                 }
             }
         } else {
-            return new ResponseEntity<List<SmallDataMentorDTO>>(smallMentorDTOList, HttpStatus.NOT_FOUND);
+            return smallMentorDTOList;
         }
 
         Collections.sort(smallMentorDTOList, new Comparator<SmallDataMentorDTO>() {
@@ -138,7 +142,7 @@ public class SearchMentorsService {
             }
         });
 
-        return new ResponseEntity<List<SmallDataMentorDTO>>(smallMentorDTOList, HttpStatus.OK);
+        return smallMentorDTOList;
     }
 
     private void addSmalMentorToList(List<SmallDataMentorDTO> smallMentorDTOListT, Mentors m, String category){
@@ -244,6 +248,24 @@ public class SearchMentorsService {
         searchMentorsDTO.setLanguagesList(findAllLanfuagesName());
         searchMentorsDTO.setCityList(findAllCityName());
         return searchMentorsDTO;
+    }
+
+    public Page<SmallDataMentorDTO> findPaginated(List<SmallDataMentorDTO> mentorsList, Pageable pageable, String categoryName) {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+        List<SmallDataMentorDTO> list;
+
+        if (mentorsList.size() < startItem) {
+            list = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, mentorsList.size());
+            list = mentorsList.subList(startItem, toIndex);
+        }
+        Page<SmallDataMentorDTO> bookPage
+                = new PageImpl<SmallDataMentorDTO>(list, PageRequest.of(currentPage, pageSize), mentorsList.size());
+
+        return bookPage;
     }
 }
 

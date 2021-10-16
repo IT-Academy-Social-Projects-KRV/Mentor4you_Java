@@ -6,7 +6,9 @@ import com.mentor4you.model.DTO.EmailRequest;
 import com.mentor4you.model.DTO.PasswordDTO;
 import com.mentor4you.model.DTO.UserBanDTO;
 import com.mentor4you.model.DTO.UserBanUpdateRequest;
+import com.mentor4you.model.DTO.serchMentorsDTO.SmallDataMentorDTO;
 import com.mentor4you.model.Mentees;
+import com.mentor4you.model.Mentors;
 import com.mentor4you.model.User;
 import com.mentor4you.repository.UserRepository;
 import com.mentor4you.service.AmazonClient;
@@ -23,10 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 
 @RestController
@@ -92,7 +91,7 @@ public class UserController {
     @PutMapping("/changeBanToUser")
     ResponseEntity<?> changeBanToUser(@RequestBody UserBanUpdateRequest dto) {
         String result = userService.changeBanToUser(dto.banStatus, dto.getId());
-        return new ResponseEntity<String>(result, HttpStatus.OK);
+        return new ResponseEntity<String>(HttpStatus.OK);
     }
 
     @Operation(summary = "delete user account")
@@ -158,4 +157,6 @@ public class UserController {
         String result = userService.changeMyRole(header);
         return new ResponseEntity<String>(result, HttpStatus.OK);
     }
+
+
 }

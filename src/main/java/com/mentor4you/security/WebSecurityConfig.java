@@ -66,7 +66,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
                                                  "/api/users/deleteAvatar",
                                                  "/api/mentors",
                         "/api/emailToModerator/sendEmailToModer",// for ANY USER
-                                                 "/api/mentees/**"
+                                                 "/api/mentees/**",
+                "/api/searchMentor/findMentorsBestRatingTest/{{number}}/{{page}}",
+                "/api/searchMentor/filterGetListSmallMentorsPPP/{{city}}/{{categoryName}}/{{language}}/{{minPrice}}/{{maxPrice}}/{{currentPage}}/{{pageSize}}"
                                                  ).permitAll()
 
 
