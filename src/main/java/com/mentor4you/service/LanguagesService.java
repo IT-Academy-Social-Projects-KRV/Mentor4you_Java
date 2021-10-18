@@ -31,4 +31,9 @@ public class LanguagesService {
     }
 
 
+    public void addNewLanguages(String name) {
+        Languages l = new Languages();
+        l.setName(name);
+        languagesRepository.save(l);
+    }
 }

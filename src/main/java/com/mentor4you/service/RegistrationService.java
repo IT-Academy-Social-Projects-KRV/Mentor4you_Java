@@ -43,7 +43,7 @@ public class RegistrationService{
         Accounts accounts = new Accounts();
 
         user.setEmail(email);
-
+        user.setAvatar("https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/standartUserAvatar.png");
         //checking user password is valid
         String password = userDTO.getPassword();
         if(!passwordService.isValidPassword(password)){

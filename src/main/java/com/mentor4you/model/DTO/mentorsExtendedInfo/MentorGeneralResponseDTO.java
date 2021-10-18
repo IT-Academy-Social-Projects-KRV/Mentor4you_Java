@@ -19,7 +19,7 @@ public class MentorGeneralResponseDTO {
 
     private GroupServ groupServ;
 
-    private int rating;
+    private double rating;
 
     private List<Educations> educations;
 
@@ -121,11 +121,11 @@ public class MentorGeneralResponseDTO {
         this.groupServ = groupServ;
     }
 
-    public int getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 
