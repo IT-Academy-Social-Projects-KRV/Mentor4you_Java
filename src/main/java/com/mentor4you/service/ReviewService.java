@@ -1,5 +1,7 @@
 package com.mentor4you.service;
 
+import com.mentor4you.exception.CooperationNotFoundException;
+import com.mentor4you.exception.UserNotFoundException;
 import com.mentor4you.model.DTO.MinUserDTO;
 import com.mentor4you.model.DTO.review.CreateReviewDTO;
 import com.mentor4you.model.DTO.review.ReviewDTO;
@@ -40,22 +42,19 @@ public class ReviewService {
     @Autowired
     private JwtProvider jwtProvider;
 
-    public ResponseEntity<String> addReview(int id, CreateReviewDTO reviewDTO, HttpServletRequest request){
-        String token =jwtProvider.getTokenFromRequest(request);
-        String email =jwtProvider.getLoginFromToken(token);
-
+    public Boolean addReview(int id, CreateReviewDTO reviewDTO, String email){
         User user = userRepository.findUserByEmail(email);
         if(user != null && user.getRole() == Role.MENTEE){
 
         Review review =new Review();
 
         if(userRepository.findOneById(id)==null)
-            return new ResponseEntity<String>("mentor does not exist",HttpStatus.NOT_FOUND);
+            throw  new UserNotFoundException("mentor does not exist");
         if (!cooperationService.checkInfo(user.getId(), id))
-            return new ResponseEntity<String>("Cooperation don`t started",HttpStatus.LOCKED);
+            throw new CooperationNotFoundException("Cooperation don`t started");
 
         if(!reviewRepository.existsByUsers(user.getId(),id).isEmpty())
-            return new ResponseEntity<String>("review already exist",HttpStatus.LOCKED);
+            throw  new RuntimeException("review already exist");
 
         review.setMentorId(id);
 
@@ -73,15 +72,15 @@ public class ReviewService {
 
         avg(id);
 
-        return new ResponseEntity<String>(HttpStatus.OK);
+        return true;
         }
-        return new ResponseEntity<String>("user not found or user role not mentee",HttpStatus.BAD_REQUEST);
+        throw new RuntimeException("user not found or user role not mentee");
     }
 
-    public ResponseEntity<Set<ReviewDTO>> getMentorReview(int id){
+    public Set<ReviewDTO> getMentorReview(int id){
         User user =userRepository.findOneById(id);
         if(user == null){
-            return new ResponseEntity<Set<ReviewDTO>>(HttpStatus.NOT_FOUND);
+            throw  new UserNotFoundException("mentor does not exist");
         }
 
 
@@ -95,12 +94,10 @@ public class ReviewService {
                 dto.add(new ReviewDTO(usr,r));
             }
         }
-        return new ResponseEntity<Set<ReviewDTO>>(dto,HttpStatus.OK);
+        return dto;
 
     }
-    public ResponseEntity<String> updateReview(String id, CreateReviewDTO reviewDTO, HttpServletRequest request){
-        String token =jwtProvider.getTokenFromRequest(request);
-        String email =jwtProvider.getLoginFromToken(token);
+    public Boolean updateReview(String id, CreateReviewDTO reviewDTO, String email){
 
         User user = userRepository.findUserByEmail(email);
         if(user != null){
@@ -108,9 +105,9 @@ public class ReviewService {
             Review review = reviewRepository.reviewById(id);
 
             if(review==null)
-                return new ResponseEntity<String>("Review does not exist",HttpStatus.NOT_FOUND);
+                throw  new NullPointerException("Review does not exist");
             if(user.getId()!=review.getSenderId())
-                return new ResponseEntity<String>("This user does not have permission to update",HttpStatus.LOCKED);
+                throw  new RuntimeException("This user does not have permission to update");
 
 
             review.setMessage(reviewDTO.getMessage());
@@ -125,17 +122,20 @@ public class ReviewService {
 
             avg(review.getMentorId());
 
-            return new ResponseEntity<String>(HttpStatus.OK);
+            return true;
         }
-        return new ResponseEntity<String>("user not found",HttpStatus.BAD_REQUEST);
+        throw  new UserNotFoundException("user not found");
     }
 
-    public ResponseEntity<String> hideReview(String id){
+    public Boolean hideReview(String id){
         Review review=reviewRepository.reviewById(id);
-        if(review ==null)return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+        if(review ==null)
+            throw  new NullPointerException("review not found");
+        if(!review.isShowStatus())
+            return true;
         review.setShowStatus(false);
         reviewRepository.save(review);
-        return new ResponseEntity<String>(HttpStatus.OK);
+        return true;
 
     }
 
