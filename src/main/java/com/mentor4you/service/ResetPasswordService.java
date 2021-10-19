@@ -59,11 +59,20 @@ public class ResetPasswordService {
         user.setPassword(passwordService.encodePassword(password));
         userRepository.save(user);
         if (emailService.emailExist(email)) {
-            emailService.sendEmailRandomCode(email, password , "Whant to change something");
+            emailService.sendEmailRandomCode(email, generateRandomPassword() , "Whant to change something");
 
         }
 
     }
+    public static String generateRandomPassword() {
+        String letters = "abcdefghjkmnpqrstuvwxyzABCDEFGH1234567891234567890JKMNPQRSTUVWXYZ";
 
+        String pw = "";
+        for (int i = 0; i < 10; i++) {
+            int index = (int) (RANDOM.nextDouble() * letters.length());
+            pw += letters.substring(index, index + 1);
+        }
+        return pw;
+    }
 
 }
