@@ -8,7 +8,6 @@ import com.mentor4you.model.DTO.mentorsExtendedInfo.MentorGeneralResponseIdDTO;
 import com.mentor4you.repository.*;
 import com.mentor4you.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,8 +17,8 @@ import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -60,11 +59,12 @@ public class MentorService {
     public List<Mentors> getFullInfoAllMentors(){
         int theMentors = accountRepository.findByRole(Role.MENTOR).size();
         if(theMentors!=0){
-            return mentorRepository.findAll();
+            return mentorRepository.findAll().stream().filter(mentors -> mentors.getAccounts().getUser().getStatus()).collect(Collectors.toList());
         }
         throw new MentorNotFoundException("Mentors not found");
 
     }
+
     //    select mentor by id
     public ResponseEntity<MentorGeneralResponseIdDTO> getMentorById(int id){
 
@@ -100,6 +100,7 @@ public class MentorService {
         else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
     }
+
     public ResponseEntity<MentorGeneralResponseDTO> getOneMentorByToken(HttpServletRequest request){
         String token = jwtProvider.getTokenFromRequest(request);
 
@@ -147,7 +148,7 @@ public class MentorService {
         }
 
     }
-    //////////////////////////////////
+
     public ResponseEntity<String> updateMentorByToken(MentorGeneralResponseDTO dto,
                                                                      HttpServletRequest request) {
 
@@ -196,6 +197,7 @@ public class MentorService {
         else return  new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 
     }
+
       public void remove(Mentors m){
         if(m.getMentors_to_categories()!=null)
             mentorsToCategory.removeByMentors(m);
