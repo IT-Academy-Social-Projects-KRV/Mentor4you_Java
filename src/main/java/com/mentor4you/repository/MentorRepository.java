@@ -4,6 +4,7 @@ import com.mentor4you.model.Accounts;
 import com.mentor4you.model.ContactsToAccounts;
 import com.mentor4you.model.Mentors;
 import com.mentor4you.model.TypeContacts;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -28,6 +29,7 @@ public interface MentorRepository
 
     @Query(value = "Select distinct m from Mentors m ORDER BY m.rating DESC")
     List<Mentors> findMentorsBestRating(Pageable pageable);
+
 
 
     Mentors findOneById(int id);

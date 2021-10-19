@@ -57,6 +57,8 @@ public class RegistrationService{
 
         user.setStatus(true);
 
+        user.setBan(false);
+
         accounts.setUser(user);
 
         //add role and create record
