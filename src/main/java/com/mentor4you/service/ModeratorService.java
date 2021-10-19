@@ -1,5 +1,7 @@
 package com.mentor4you.service;
 
+import com.mentor4you.exception.MenteeNotFoundException;
+import com.mentor4you.exception.UserNotFoundException;
 import com.mentor4you.model.*;
 import com.mentor4you.model.DTO.MenteeResponseDTO;
 import com.mentor4you.model.DTO.ModeratorDTO;
@@ -39,13 +41,12 @@ public class ModeratorService {
         this.jwtProvider = jwtProvider;
     }
 
-    public ResponseEntity<ModeratorDTO> getModeratorByToken(HttpServletRequest request){
+    public ModeratorDTO getModeratorByToken(HttpServletRequest request){
         String token = jwtProvider.getTokenFromRequest(request);
         String email = jwtProvider.getLoginFromToken(token);
-
         User user = userRepository.findUserByEmail(email);
 
-        try{
+        if(user!=null){
             ModeratorDTO dto =new ModeratorDTO();
             dto.setId(user.getId());
             dto.setAvatar(user.getAvatar());
@@ -53,12 +54,9 @@ public class ModeratorService {
             dto.setFirstName(user.getFirst_name());
             dto.setLastName(user.getLast_name());
 
-            return new ResponseEntity<ModeratorDTO>(dto, HttpStatus.OK);
+            return new ModeratorDTO;
         }
-        catch (EntityNotFoundException e)
-        {
-            return new ResponseEntity<ModeratorDTO>(HttpStatus.NOT_FOUND);
-        }
-
+        else{
+            return null;}
     }
 }
