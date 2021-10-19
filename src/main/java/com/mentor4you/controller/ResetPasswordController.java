@@ -58,6 +58,7 @@ public class ResetPasswordController {
 
     }
 
+
     @Operation(summary = "send security test email")
     @GetMapping("/sendSecurityEmail/{sendTo}")
     public void sendSecurityEmail(@PathVariable(value = "sendTo") String sendTo) throws MessagingException {
