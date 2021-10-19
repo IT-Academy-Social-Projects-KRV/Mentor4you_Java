@@ -59,7 +59,7 @@ public class ResetPasswordService {
         user.setPassword(passwordService.encodePassword(password));
         userRepository.save(user);
         if (emailService.emailExist(email)) {
-            emailService.sendEmailRandomCode(email, generateRandomPassword() , "Whant to change something");
+            emailService.resetPasswordmessage(email, "" , generateRandomPassword() );
 
         }
 
