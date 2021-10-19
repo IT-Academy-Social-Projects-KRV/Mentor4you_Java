@@ -99,6 +99,25 @@ public class EmailService {
 
         return "Email Sent!";
     }
+    public String resetPasswordmessage(String sendTo, String messageText, String code) throws MessagingException {
+
+        MimeMessage message = emailSender.createMimeMessage();
+        boolean multipart = true;
+        MimeMessageHelper helper = new MimeMessageHelper(message, multipart, "utf-8");
+        String htmlMsg = "<h3>You have a new password, do not tell anyone" +
+                "</h3>" + code;
+
+        message.setContent(htmlMsg, "text/html");
+
+        helper.setTo(sendTo);
+
+        helper.setSubject("Test send HTML email");
+
+
+        this.emailSender.send(message);
+
+        return "Email Sent!";
+    }
 
 
     public ResponseEntity<String> sendEmailToModer(EmailToModeratorRequest request) throws MessagingException {
