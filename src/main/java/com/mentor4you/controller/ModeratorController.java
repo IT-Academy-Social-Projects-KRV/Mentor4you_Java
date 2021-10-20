@@ -1,19 +1,22 @@
 package com.mentor4you.controller;
 
 import com.mentor4you.model.DTO.ModeratorDTO;
+import com.mentor4you.model.DTO.ModeratorResponseDTO;
 import com.mentor4you.model.DTO.mentorsExtendedInfo.MentorGeneralResponseDTO;
+import com.mentor4you.model.User;
 import com.mentor4you.service.ModeratorService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+@RestController
+@RequestMapping("/api/moderator")
 public class ModeratorController {
+
     @Autowired
     ModeratorService moderatorService;
 
@@ -35,8 +38,13 @@ public class ModeratorController {
 
     @Operation(summary = "update mentor by token")
     @PutMapping("/updateModerator/")
-    ResponseEntity<String> updateModeratorByToken
-            (HttpServletRequest req,@RequestBody ModeratorResponseDTO dto) {
-        return moderatorService.updateModeratorByToken(dto,req);
+    ResponseEntity<User> updateModeratorByToken
+            (HttpServletRequest req, @RequestBody ModeratorResponseDTO dto) {
+        User user =  moderatorService.updateModeratorByToken(dto,req);
+        if(user!=null){
+            return new ResponseEntity<User>(HttpStatus.OK);
+        }else{
+            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        }
     }
 }

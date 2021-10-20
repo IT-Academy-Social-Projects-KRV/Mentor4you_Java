@@ -21,7 +21,7 @@ public class ComplainService {
     }
 
 
-    public void insertNewComplain(ComplainResponseDTO dto,
+    /*public void insertNewComplain(ComplainResponseDTO dto,
                                   HttpServletRequest request) {
 
         String token = jwtProvider.getTokenFromRequest(request);
@@ -35,5 +35,5 @@ public class ComplainService {
         message.setTimestamp(LocalDateTime.now());
         simpMessagingTemplate.convertAndSend("/topic/messages/" + to, message);
         .insert(message);
-    }
+    }*/
 }
