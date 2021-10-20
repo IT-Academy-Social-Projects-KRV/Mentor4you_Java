@@ -32,6 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
     @Autowired
     JwtConfigurer jwtConfigurer;
 
+
     public WebSecurityConfig(JwtFilter jwtFilter) {
         this.jwtFilter = jwtFilter;
     }
@@ -68,7 +69,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
                                                  "/api/emailToModerator/sendEmailToModer",// for ANY USER
                                                  "/api/mentees/**",
                                                  "/findmessage/{{sendid}}/{{recivid}}",
-                                                 "/api/mentors/{id}"
+                                                 "/api/mentors/{id}",
+                                                 "/sendSecurityEmail/{{sendTo}}"
+
                                                  ).permitAll()
 
 
