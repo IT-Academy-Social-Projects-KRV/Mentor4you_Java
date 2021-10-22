@@ -4,6 +4,7 @@ import com.mentor4you.exception.CooperationNotFoundException;
 import com.mentor4you.exception.UserNotFoundException;
 import com.mentor4you.model.DTO.MinUserDTO;
 import com.mentor4you.model.DTO.review.CreateReviewDTO;
+import com.mentor4you.model.DTO.review.ResponseMentorDTO;
 import com.mentor4you.model.DTO.review.ReviewDTO;
 import com.mentor4you.model.Review;
 import com.mentor4you.model.Role;
@@ -124,8 +125,10 @@ public class ReviewService {
 
             return true;
         }
+
         throw  new UserNotFoundException("user not found");
     }
+
 
     public Boolean hideReview(String id){
         Review review=reviewRepository.reviewById(id);
@@ -137,6 +140,26 @@ public class ReviewService {
         reviewRepository.save(review);
         return true;
 
+    }
+    public Boolean responseReview(ResponseMentorDTO dto, String email){
+
+        User user = userRepository.findUserByEmail(email);
+        if(user != null){
+
+            Review review = reviewRepository.reviewById(dto.getId());
+
+            if(review==null)
+                throw  new NullPointerException("Review does not exist");
+            if(user.getId()!=review.getMentorId())
+                throw  new RuntimeException("This user does not have permission to update");
+
+            review.setResponse(dto.getResponse());
+
+            reviewRepository.save(review);
+
+            return true;
+        }
+        throw  new UserNotFoundException("user not found");
     }
 
     private void avg(int mentor){
