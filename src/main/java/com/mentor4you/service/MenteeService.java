@@ -82,8 +82,8 @@ public class MenteeService
     }
 
     public ResponseEntity<String> updateUserByToken(MenteeResponseDTO request,
-                                                    HttpServletRequest req4){
-        String token = jwtProvider.getTokenFromRequest(req4);
+                                                    HttpServletRequest req){
+        String token = jwtProvider.getTokenFromRequest(req);
 
         String emailFromToken = jwtProvider.getLoginFromToken(token);
 

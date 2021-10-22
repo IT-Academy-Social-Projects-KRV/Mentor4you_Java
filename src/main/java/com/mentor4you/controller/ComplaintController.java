@@ -20,7 +20,8 @@ public class ComplaintController {
     ComplainRepository complainRepository;
     ComplainService complainService;
 
-    public ComplaintController(ComplainRepository complainRepository, ComplainService complainService) {
+    public ComplaintController(ComplainRepository complainRepository,
+                               ComplainService complainService) {
         this.complainRepository = complainRepository;
         this.complainService = complainService;
     }
