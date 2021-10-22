@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ReviewRepository extends MongoRepository<Review,Integer>{
 
- @Query("{ 'senderId' : ?0 },{ 'mentorId':?1 }")
+ @Query("{ 'senderId' : ?0 , 'mentorId':?1 }")
  List<Review> existsByUsers(int sender, int mentor);
 
  @Query("{'mentorId':?0 ,showStatus: true}")
