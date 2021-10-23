@@ -46,7 +46,7 @@ public class ResetPasswordService {
 
     }
     public void chekemail(String email) throws MessagingException {
-        String password = "pAssword12345";
+        String password = generateRandomPassword();
 
         User user = userRepository.findUserByEmail(email);
         if (user == null) {
@@ -59,11 +59,12 @@ public class ResetPasswordService {
         user.setPassword(passwordService.encodePassword(password));
         userRepository.save(user);
         if (emailService.emailExist(email)) {
-            emailService.resetPasswordmessage(email, "" , generateRandomPassword() );
+            emailService.resetPasswordmessage(email, "" , password );
 
         }
 
     }
+
     public static String generateRandomPassword() {
         String letters = "abcdefghjkmnpqrstuvwxyzABCDEFGH1234567891234567890JKMNPQRSTUVWXYZ";
 
