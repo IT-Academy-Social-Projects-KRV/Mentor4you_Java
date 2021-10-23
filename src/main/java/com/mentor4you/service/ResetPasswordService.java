@@ -64,6 +64,7 @@ public class ResetPasswordService {
         }
 
     }
+
     public static String generateRandomPassword() {
         String letters = "abcdefghjkmnpqrstuvwxyzABCDEFGH1234567891234567890JKMNPQRSTUVWXYZ";
 
