@@ -19,4 +19,6 @@ public interface CategoriesRepository extends JpaRepository<Categories,Integer> 
 
     @Query("Select a.name from Categories a")
     List<String> findAllCategoryName();
+
+    void deleteByName(String name);
 }

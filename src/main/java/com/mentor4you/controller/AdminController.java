@@ -24,4 +24,18 @@ public class AdminController {
         String result = adminService.appointModerator(email);
         return new ResponseEntity<String>(result, HttpStatus.OK);
     }
+
+    @Operation(summary = "Add category")
+    @PostMapping("/addCategory")
+    ResponseEntity<?> addCategory(@RequestHeader("Authorization") String header, @RequestParam String newCategoryName) throws Exception {
+        String result = adminService.addCategory(header, newCategoryName);
+        return new ResponseEntity<String>(result, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Delete category")
+    @PostMapping("/deleteCategory")
+    ResponseEntity<?> deleteCategory(@RequestHeader("Authorization") String header, @RequestParam String categoryName) throws Exception {
+        String result = adminService.addCategory(header, categoryName);
+        return new ResponseEntity<String>(result, HttpStatus.OK);
+    }
 }

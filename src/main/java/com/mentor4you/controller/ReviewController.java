@@ -4,6 +4,7 @@ package com.mentor4you.controller;
 import com.mentor4you.exception.CooperationNotFoundException;
 import com.mentor4you.exception.UserNotFoundException;
 import com.mentor4you.model.DTO.review.CreateReviewDTO;
+import com.mentor4you.model.DTO.review.ResponseMentorDTO;
 import com.mentor4you.model.DTO.review.ReviewDTO;
 import com.mentor4you.model.Review;
 import com.mentor4you.repository.ReviewRepository;
@@ -55,6 +56,20 @@ public class ReviewController {
 
         try{
             reviewService.updateReview(id,dto,emailFromToken(request));
+            return new ResponseEntity<String>(HttpStatus.OK);
+        }catch (UserNotFoundException e){
+            return new ResponseEntity<String>(e.getMessage(),HttpStatus.NOT_FOUND);
+        }catch (NullPointerException e){
+            return new ResponseEntity<String>(e.getMessage(),HttpStatus.NOT_FOUND);
+        }catch (RuntimeException e){
+            return new ResponseEntity<String>(e.getMessage(),HttpStatus.LOCKED);
+        }
+    }
+    @PutMapping("responseReview")
+    public ResponseEntity<String> responseReview(@RequestBody ResponseMentorDTO dto, HttpServletRequest request){
+
+        try{
+            reviewService.responseReview(dto,emailFromToken(request));
             return new ResponseEntity<String>(HttpStatus.OK);
         }catch (UserNotFoundException e){
             return new ResponseEntity<String>(e.getMessage(),HttpStatus.NOT_FOUND);

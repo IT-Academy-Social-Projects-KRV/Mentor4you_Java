@@ -23,6 +23,8 @@ public class Review {
 
     private LocalDateTime timestamp;
 
+    private String response;
+
     public Review() {
 
     }
@@ -77,5 +79,13 @@ public class Review {
 
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getResponse() {
+        return response;
+    }
+
+    public void setResponse(String response) {
+        this.response = response;
     }
 }
