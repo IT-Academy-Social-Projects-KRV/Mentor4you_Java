@@ -235,7 +235,7 @@ public class UserService {
     public int getIdByHeader(String header) throws Exception{
         return getUserByHeader(header).getId();
     }
-    private User getUserByHeader(String header) throws Exception{
+    public User getUserByHeader(String header) throws Exception{
         String token;
         if(header.startsWith("Bearer ")){
             token = header.substring(7);
