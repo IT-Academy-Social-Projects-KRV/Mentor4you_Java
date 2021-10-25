@@ -53,7 +53,7 @@ COMMIT;
 
 INSERT INTO mentor4you_db.categories (name) VALUES
 ('Java'),
-('Pyton'),
+('Python'),
 ('HTML'),
 ('TypeScript'),
 ('JavaScript'),
