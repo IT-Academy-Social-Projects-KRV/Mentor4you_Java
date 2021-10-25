@@ -62,8 +62,10 @@ INSERT INTO mentor4you_db.categories (name) VALUES
 COMMIT;
 
 INSERT INTO mentor4you_db.languages (id, name) VALUES
-(1, 'Ukrainian'),
-(2, 'English');
+(1,'Ukrainian'),
+(2,'English'),
+(3,'Russian'),
+(4,'Polish');
 COMMIT;
 
 INSERT INTO mentor4you_db.languages_to_accounts (account_id, languages_id) VALUES
@@ -145,6 +147,7 @@ INSERT INTO mentor4you_db.city (name) VALUES
 ('Ostroh'),
 ('Rivne'),
 ('Kyiv'),
+('Rivne')
 ('Lviv');
 COMMIT;
 
