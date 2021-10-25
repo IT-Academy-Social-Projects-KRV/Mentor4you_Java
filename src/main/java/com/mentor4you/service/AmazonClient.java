@@ -44,8 +44,8 @@ public class AmazonClient {
         return convFile;
     }
 
-    private String generateFileName(int id, MultipartFile multiPart) {
-        return id+"_userAvatar"+multiPart.getOriginalFilename().substring(multiPart.getOriginalFilename().lastIndexOf("."));
+    private String generateFileName(int id) {
+        return id+"_userAvatar.png";
     }
 
     private void uploadFileTos3bucket(String fileName, File file) {
@@ -57,7 +57,7 @@ public class AmazonClient {
         String fileUrl = "";
         try {
             File file = convertMultiPartToFile(multipartFile);
-            String fileName = generateFileName(id, multipartFile);
+            String fileName = generateFileName(id);
             fileUrl = "https://" + bucketName + "." + endpointUrl + folder + fileName;
             uploadFileTos3bucket(fileName, file);
             file.delete();
@@ -69,6 +69,9 @@ public class AmazonClient {
 
     public String deleteFileFromS3Bucket(String fileUrl) {
         String fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
+        if(fileName.equals("standartUserAvatar.png")){
+            return "This avatar cannot be deleted";
+        }
         s3client.deleteObject(new DeleteObjectRequest(bucketName + "/avatars", fileName));
         return "Successfully deleted";
     }

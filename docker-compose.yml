@@ -50,14 +50,14 @@ services:
       MONGODB_STATUS_PORT: 28017
 
 
-#  frontend:
-#    container_name: frontend_mentor4you
-#    image: frontend
-#    restart: always
-#    build:
-#      context: ./
-#      dockerfile: Dockerfile
-#    ports:
-#    - "4200:4200"
-#    depends_on:
-#      - "backend"
+  frontend:
+    container_name: frontend_mentor4you
+    image: frontend
+    restart: always
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+    - "4200:4200"
+    depends_on:
+      - "backend"

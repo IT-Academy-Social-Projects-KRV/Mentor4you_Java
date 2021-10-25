@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class AdminService {
 
@@ -49,12 +51,12 @@ public class AdminService {
         return "New Category was added";
     }
 
-    public String deleteCategory(String header, String category) throws Exception {
+    public String deleteCategory(String header, String categoryName) throws Exception {
         User user = userService.getUserByHeader(header);
         if (!user.getRole().equals(Role.ADMIN)) {
             throw new Exception("Required ADMINISTRATOR right");
         }
-        categoriesRepository.deleteByName(category);
+        categoriesRepository.deleteByName(categoryName);
         return "Category was deleted";
     }
 }

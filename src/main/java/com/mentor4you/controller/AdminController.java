@@ -27,15 +27,15 @@ public class AdminController {
 
     @Operation(summary = "Add category")
     @PostMapping("/addCategory")
-    ResponseEntity<?> addCategory(@RequestHeader("Authorization") String header, @RequestParam String newCategoryName) throws Exception {
+    ResponseEntity<?> addCategory(@RequestHeader("Authorization") String header, @RequestParam("newCategoryName") String newCategoryName) throws Exception {
         String result = adminService.addCategory(header, newCategoryName);
         return new ResponseEntity<String>(result, HttpStatus.OK);
     }
 
     @Operation(summary = "Delete category")
-    @PostMapping("/deleteCategory")
-    ResponseEntity<?> deleteCategory(@RequestHeader("Authorization") String header, @RequestParam String categoryName) throws Exception {
-        String result = adminService.addCategory(header, categoryName);
+    @DeleteMapping("/deleteCategory")
+    ResponseEntity<?> deleteCategory(@RequestHeader("Authorization") String header, @RequestParam("categoryName") String categoryName) throws Exception {
+        String result = adminService.deleteCategory(header, categoryName);
         return new ResponseEntity<String>(result, HttpStatus.OK);
     }
 }
