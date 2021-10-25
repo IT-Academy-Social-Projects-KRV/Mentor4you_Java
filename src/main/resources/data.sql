@@ -147,7 +147,6 @@ INSERT INTO mentor4you_db.city (name) VALUES
 ('Ostroh'),
 ('Rivne'),
 ('Kyiv'),
-('Rivne')
 ('Lviv');
 COMMIT;
 
