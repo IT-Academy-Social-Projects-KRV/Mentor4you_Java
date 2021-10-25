@@ -4,17 +4,17 @@ INSERT INTO mentor4you_db.users (avatar, email, first_name, last_name, password,
 ('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/moderatorAvatar.jpg','Moderator2@gmail.com', 'Mod', 'Moder', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MODERATOR',true),
 ('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/moderatorAvatar.jpg','Moderator3@gmail.com', 'Modest', 'Moderovich', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MODERATOR',true),
 
-('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/standartUserAvatar.png','Mentor1@gmail.com', 'Andrii', 'Android', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MENTOR',true),
-('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/standartUserAvatar.png','Mentor2@gmail.com', 'Mykola', 'Myhalkov', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MENTOR',true),
-('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/standartUserAvatar.png','Mentor3@gmail.com', 'Vasyl', 'Vasyliv', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MENTOR',true),
-('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/standartUserAvatar.png','Mentor4@gmail.com', 'Ivan', 'Ivanov', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MENTOR',true),
-('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/standartUserAvatar.png','Mentor5@gmail.com', 'Leonard', 'Vasyliv', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MENTOR',true),
+('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/5_userAvatar.png','Mentor1@gmail.com', 'Andrii', 'Android', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MENTOR',true),
+('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/6_userAvatar.png','Mentor2@gmail.com', 'Mykola', 'Myhalkov', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MENTOR',true),
+('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/7_userAvatar.png','Mentor3@gmail.com', 'Vasyl', 'Vasyliv', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MENTOR',true),
+('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/8_userAvatar.png','Mentor4@gmail.com', 'Ivan', 'Ivanov', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MENTOR',true),
+('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/9_userAvatar.png','Mentor5@gmail.com', 'Leonard', 'Vasyliv', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MENTOR',true),
 
-('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/standartUserAvatar.png','Mentee1@gmail.com', 'Orest', 'Knyazev', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MENTEE',true),
-('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/standartUserAvatar.png','Mentee2@gmail.com', 'Dmytro', 'Vasiv', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MENTEE',true),
-('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/standartUserAvatar.png','Mentee3@gmail.com', 'Bogdan', 'Ivanov', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MENTEE',true),
-('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/standartUserAvatar.png','Mentee4@gmail.com', 'Peter', 'Kwit', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MENTEE',true),
-('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/standartUserAvatar.png','Mentee5@gmail.com', 'Herasim', 'Nechai', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MENTEE',true);
+('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/10_userAvatar.png','Mentee1@gmail.com', 'Orest', 'Knyazev', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MENTEE',true),
+('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/11_userAvatar.png','Mentee2@gmail.com', 'Dmytro', 'Vasiv', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MENTEE',true),
+('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/12_userAvatar.png','Mentee3@gmail.com', 'Bogdan', 'Ivanov', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MENTEE',true),
+('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/13_userAvatar.png','Mentee4@gmail.com', 'Peter', 'Kwit', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MENTEE',true),
+('https://awss3mentor4you.s3.eu-west-3.amazonaws.com/avatars/14_userAvatar.png','Mentee5@gmail.com', 'Herasim', 'Nechai', '$2a$10$iFfOLYfhGHPURIbw5kWwlepRKL5YCQ9ye7KItSGBrogUn3M9H5RLu', '2021-09-13 10:42:19.236442', 'MENTEE',true);
 COMMIT;
 
 INSERT INTO mentor4you_db.accounts (id, last_visit) VALUES
@@ -112,12 +112,12 @@ INSERT INTO mentor4you_db.contacts_to_accounts (contact_data, accounts_id, type_
 ('+380998877679', 9, 1),('My-site URL', 9, 3), ('My GitHub URL',9, 7);
 COMMIT;
 
-INSERT INTO mentor4you_db.mentors_to_categories (id, currency, rate,categories_id ,mentors_id) VALUES
-(1, 'UAH', 150, 1,5),
-(4, 'UAH', 175, 2,6),
-(2, 'USD', 10, 2,7),
-(5, 'UAH', 230, 3,8),
-(6, 'UAH', 250, 4,9);
+INSERT INTO mentor4you_db.mentors_to_categories (currency, rate,categories_id ,mentors_id) VALUES
+('UAH', 150, 1,5),('UAH', 150, 6,5),
+('UAH', 175, 4,6),('UAH', 175, 5,6),
+('UAH', 160, 2,7),
+('UAH', 230, 3,8),
+('UAH', 250, 1,9),('UAH', 250, 4,9),('UAH', 250, 6,9);
 COMMIT;
 
 INSERT INTO mentor4you_db.educations (id,description,name,education) VALUES
@@ -143,6 +143,7 @@ COMMIT;
 INSERT INTO mentor4you_db.city (name) VALUES
 ('Poltava'),
 ('Ostroh'),
+('Rivne'),
 ('Kyiv'),
 ('Lviv');
 COMMIT;
@@ -150,7 +151,7 @@ COMMIT;
 INSERT INTO mentor4you_db.city_to_mentors (city_id, mentor_id) VALUES
 ('3', '5'),
 ('1', '6'),
-('3', '7'),
+('5', '7'),
 ('2', '8'),
 ('4', '9');
 COMMIT;
